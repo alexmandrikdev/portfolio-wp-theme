@@ -1,0 +1,63 @@
+// ============
+// Breakpoint Mixins
+// ============
+
+// Minimum breakpoint (mobile first)
+// Usage: @include breakpoint-up(md) { ... }
+@mixin breakpoint-up($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+
+		@media (min-width: $breakpoint-value) {
+			@content;
+		}
+	} @else {
+		@warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints: #{map-keys($breakpoints)}";
+	}
+}
+
+// Maximum breakpoint
+// Usage: @include breakpoint-down(md) { ... }
+@mixin breakpoint-down($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		$breakpoint-value: map-get($breakpoints, $breakpoint);
+
+		@media (max-width: ($breakpoint-value - $breakpoint-interval)) {
+			@content;
+		}
+	} @else {
+		@warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints: #{map-keys($breakpoints)}";
+	}
+}
+
+// Minimum and maximum breakpoint
+// Usage: @include breakpoint-only(md) { ... }
+@mixin breakpoint-only($breakpoint) {
+	@if map-has-key($breakpoints, $breakpoint) {
+		$lower-bound: map-get($breakpoints, $breakpoint);
+		$upper-bound: map-get-next($breakpoints, $breakpoint);
+
+		@if $upper-bound {
+			@media (min-width: $lower-bound) and (max-width: ($upper-bound - $breakpoint-interval)) {
+				@content;
+			}
+		} @else {
+			@media (min-width: $lower-bound) {
+				@content;
+			}
+		}
+	} @else {
+		@warn "Invalid breakpoint: #{$breakpoint}. Available breakpoints: #{map-keys($breakpoints)}";
+	}
+}
+
+@function map-get-next($map, $key) {
+	$keys: map-keys($map);
+	$index: index($keys, $key);
+
+	@if $index != null and $index < length($keys) {
+		@return map-get($map, nth($keys, $index + 1));
+	}
+
+	@return null;
+}
