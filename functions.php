@@ -1,4 +1,7 @@
 <?php
+
+include get_theme_file_path('inc/helpers.php');
+
 function my_theme_init()
 {
 	if (function_exists('wp_register_block_types_from_metadata_collection')) {
