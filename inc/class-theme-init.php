@@ -2,6 +2,8 @@
 
 namespace AMPortfolioTheme;
 
+defined('ABSPATH') || exit;
+
 class Theme_Init
 {
     public static function init()
