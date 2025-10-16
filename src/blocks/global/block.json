@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/global",
+	"version": "0.1.0",
+	"title": "Global",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "global",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

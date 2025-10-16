@@ -17,20 +17,27 @@ class Theme_Init {
 
 	public function register_block_types() {
 		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found, Squiz.Commenting.InlineComment.InvalidEndChar
-			// wp_register_block_types_from_metadata_collection( __DIR__ . '/build/blocks', __DIR__ . '/build/blocks-manifest.php' );
+			wp_register_block_types_from_metadata_collection( get_theme_file_path( '/build/blocks' ), get_theme_file_path( '/build/blocks-manifest.php' ) );
 			return;
 		}
 	}
 
 	public function enqueue_scripts() {
-		$asset = include get_theme_file_path( 'build/index.asset.php' );
+		$asset = include get_theme_file_path( 'build/blocks/global/view.asset.php' );
 
 		wp_enqueue_style(
 			'portfolio-style',
-			get_parent_theme_file_uri( 'build/index.css' ),
+			get_parent_theme_file_uri( 'build/blocks/global/style-index.css' ),
 			$asset['dependencies'],
 			$asset['version']
+		);
+
+		wp_enqueue_script(
+			'portfolio-script',
+			get_parent_theme_file_uri( 'build/blocks/global/view.js' ),
+			$asset['dependencies'],
+			$asset['version'],
+			true
 		);
 	}
 }
