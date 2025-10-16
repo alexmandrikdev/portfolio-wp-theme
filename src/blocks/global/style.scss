@@ -1,9 +1,42 @@
 @import "../../scss/shared/variables";
 @import "../../scss/shared/mixins";
+@import "./normalize";
+@import "./components";
 
-@include breakpoint-up("lg") {
-	body {
-		--wp--style--root--padding-right: 48px;
-		--wp--style--root--padding-left: 48px;
+:root {
+	--color-text-primary: #000;
+	--color-background-primary: #fff;
+	--color-border-divider: #e5e5e5;
+	--color-hover-overlay: rgba(0, 0, 0, 0.04);
+	--color-accent-primary: #0066ff;
+
+	--container-gutter: 24px;
+
+	@include breakpoint-up("xl") {
+		--container-gutter: 48px;
 	}
+}
+
+[data-theme="dark"] {
+	--color-text-primary: #fff;
+	--color-background-primary: #1a1a1a;
+	--color-border-divider: #3a3a3a;
+	--color-hover-overlay: rgba(255, 255, 255, 0.05);
+}
+
+body {
+	background-color: var(--color-background-primary);
+	color: var(--color-text-primary);
+}
+
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: inherit;
+}
+
+a {
+	text-decoration: none;
 }

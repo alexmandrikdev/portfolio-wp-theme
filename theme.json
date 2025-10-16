@@ -4,17 +4,6 @@
 	"settings": {
 		"layout": {
 			"contentSize": "1280px"
-		},
-		"useRootPaddingAwareAlignments": true
-	},
-	"styles": {
-		"spacing": {
-			"padding": {
-				"top": "0",
-				"bottom": "0",
-				"left": "24px",
-				"right": "24px"
-			}
 		}
 	}
 }
