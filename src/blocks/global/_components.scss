@@ -1,0 +1,15 @@
+.btn--primary {
+	background: var(--color-accent-primary);
+	color: white;
+	padding: 16px 32px;
+	border-radius: 8px;
+	font-weight: 600;
+	font-size: 1rem;
+	box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+	transition: all 0.2s ease-out;
+
+	&:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 16px rgba(0, 102, 255, 0.4);
+	}
+}
