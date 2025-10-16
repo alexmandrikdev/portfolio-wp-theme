@@ -1,0 +1,9 @@
+@import "shared/variables";
+@import "shared/mixins";
+
+@include breakpoint-up("lg") {
+	body {
+		--wp--style--root--padding-right: 48px;
+		--wp--style--root--padding-left: 48px;
+	}
+}

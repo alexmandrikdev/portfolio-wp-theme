@@ -1,4 +1,20 @@
 {
 	"$schema": "https://schemas.wp.org/wp/6.7/theme.json",
-	"version": 3
+	"version": 3,
+	"settings": {
+		"layout": {
+			"contentSize": "1280px"
+		},
+		"useRootPaddingAwareAlignments": true
+	},
+	"styles": {
+		"spacing": {
+			"padding": {
+				"top": "0",
+				"bottom": "0",
+				"left": "24px",
+				"right": "24px"
+			}
+		}
+	}
 }

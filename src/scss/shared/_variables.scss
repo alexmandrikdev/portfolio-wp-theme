@@ -1,0 +1,8 @@
+$breakpoints: (
+	"sm": 40rem,
+	"md": 48rem,
+	"lg": 64rem,
+	"xl": 80rem,
+) !default;
+
+$breakpoint-interval: 0.00125rem; // 0.02px
