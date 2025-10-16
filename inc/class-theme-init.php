@@ -11,6 +11,7 @@ class Theme_Init {
 
 		add_action( 'init', array( $self, 'register_block_types' ) );
 		add_action( 'wp_enqueue_scripts', array( $self, 'enqueue_scripts' ) );
+		add_action( 'wp_head', array( $self, 'add_head_script' ), 10 );
 
 		return $self;
 	}
@@ -39,5 +40,28 @@ class Theme_Init {
 			$asset['version'],
 			true
 		);
+	}
+
+	public function add_head_script() {
+		?>
+		<script type="text/javascript">
+			(function() {
+				const storedTheme = localStorage.getItem('theme') || 'auto';
+				
+				let theme = storedTheme;
+	  
+				if (storedTheme === 'auto') {
+					const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+					theme = systemDark ? 'dark' : 'light';
+				}
+				
+				if(theme === 'dark') {
+					document.documentElement.setAttribute('data-theme', 'dark');
+				} else {
+					document.documentElement.removeAttribute('data-theme');
+				}
+			})();
+		</script>
+		<?php
 	}
 }
