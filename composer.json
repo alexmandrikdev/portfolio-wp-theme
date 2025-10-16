@@ -1,0 +1,16 @@
+{
+	"name": "alexmandrik/portfolio",
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.0"
+	},
+	"scripts": {
+		"format": "./vendor/bin/phpcbf --report-summary --report-source || true",
+		"lint": "./vendor/bin/phpcs",
+		"lint:no-colors": "./vendor/bin/phpcs --no-colors"
+	}
+}
