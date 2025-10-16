@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') || exit;
+
 if (!function_exists('dump')) {
     function dump(...$vars)
     {
