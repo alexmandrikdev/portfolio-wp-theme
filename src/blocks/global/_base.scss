@@ -1,0 +1,20 @@
+// Base styles
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--font-family);
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--color-text-primary);
+	background-color: var(--color-background-primary);
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+}
+
+// Section spacing
+section {
+	padding: var(--section-spacing) 0;
+}

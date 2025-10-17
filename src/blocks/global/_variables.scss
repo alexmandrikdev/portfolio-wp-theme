@@ -1,0 +1,72 @@
+// Color variables
+:root {
+	--color-background-primary: #ffffff;
+	--color-background-secondary: #f8f9fa;
+	--color-text-primary: #000000;
+	--color-text-secondary: #5a5a5a;
+	--color-text-tertiary: #8a8a8a;
+	--color-accent-primary: #0066ff;
+	--color-accent-secondary: #00cc88;
+	--color-border-divider: #e5e5e5;
+	--color-hover-overlay: rgba(0, 0, 0, 0.04);
+}
+
+// Dark theme overrides
+[data-theme="dark"] {
+	--color-background-primary: #1a1a1a;
+	--color-background-secondary: #2a2a2a;
+	--color-text-primary: #ffffff;
+	--color-text-secondary: #a0a0a0;
+	--color-text-tertiary: #707070;
+	--color-border-divider: #3a3a3a;
+	--color-hover-overlay: rgba(255, 255, 255, 0.05);
+}
+
+// Typography
+:root {
+	--font-family: "Inter", sans-serif;
+}
+
+// Layout and spacing
+:root {
+	--container-max-width: 1280px;
+	--section-spacing: 120px;
+	--element-spacing: 80px;
+	--container-gutter: 24px;
+
+	@include breakpoint-up("xl") {
+		--container-gutter: 48px;
+	}
+}
+
+// Border radius scale
+:root {
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-full: 50%;
+}
+
+// Spacing scale
+:root {
+	--space-xs: 8px;
+	--space-sm: 16px;
+	--space-md: 24px;
+	--space-lg: 32px;
+	--space-xl: 48px;
+	--space-xxl: 64px;
+}
+
+// Shadow system
+:root {
+	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
+	--shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
+	--shadow-large: 0 8px 40px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.4);
+	--shadow-medium: 0 4x 20px rgba(0, 0, 0, 0.5);
+	--shadow-large: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
