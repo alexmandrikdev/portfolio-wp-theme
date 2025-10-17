@@ -1,4 +1,4 @@
-/*! modern-normalize v3.0.1 | MIT License | https://github.com/sindresorhus/modern-normalize */
+/*! modified modern-normalize v3.0.1 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
 /*
 Document
@@ -12,6 +12,8 @@ Use a better box model (opinionated).
 *,
 ::before,
 ::after {
+	margin: 0;
+	padding: 0;
 	box-sizing: border-box;
 }
 
@@ -208,4 +210,16 @@ Add the correct display in Chrome and Safari.
 
 summary {
 	display: list-item;
+}
+
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	color: inherit;
+}
+
+a {
+	text-decoration: none;
 }
