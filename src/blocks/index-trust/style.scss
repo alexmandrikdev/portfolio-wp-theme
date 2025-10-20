@@ -1,0 +1,33 @@
+@import "../../scss/shared/variables";
+@import "../../scss/shared/mixins";
+
+.trust {
+	background: var(--color-background-secondary);
+	padding: var(--space-xl) 0;
+
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: var(--space-xl);
+
+		@include breakpoint-up("md") {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	&__item {
+		text-align: center;
+	}
+
+	&__number {
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: var(--color-accent-primary);
+		margin-bottom: var(--space-xs);
+	}
+
+	&__label {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+	}
+}
