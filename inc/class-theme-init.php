@@ -24,18 +24,18 @@ class Theme_Init {
 	}
 
 	public function enqueue_scripts() {
-		$asset = include get_theme_file_path( 'build/blocks/global/view.asset.php' );
+		$asset = include get_theme_file_path( 'build/components/global/index.asset.php' );
 
 		wp_enqueue_style(
-			'portfolio-style',
-			get_parent_theme_file_uri( 'build/blocks/global/style-index.css' ),
+			'portfolio-global-style',
+			get_parent_theme_file_uri( 'build/components/global/style-index.css' ),
 			$asset['dependencies'],
 			$asset['version']
 		);
 
 		wp_enqueue_script(
-			'portfolio-script',
-			get_parent_theme_file_uri( 'build/blocks/global/view.js' ),
+			'portfolio-global-script',
+			get_parent_theme_file_uri( 'build/components/global/index.js' ),
 			$asset['dependencies'],
 			$asset['version'],
 			true
