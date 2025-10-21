@@ -20,7 +20,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<BlockContainer>
 			<Card style={ { width: '100%' } }>
 				<CardHeader>
-					<h4>{ __( 'Header Content', 'portfolio' ) }</h4>
+					<h4>{ __( 'Hero Content', 'portfolio' ) }</h4>
 				</CardHeader>
 				<CardBody>
 					<BaseControl
