@@ -2,6 +2,7 @@
 
 require get_parent_theme_file_path( 'inc/helpers.php' );
 require get_parent_theme_file_path( 'inc/class-theme-init.php' );
+require get_parent_theme_file_path( 'inc/class-asset-helper.php' );
 
 require get_parent_theme_file_path( 'inc/post-types/class-project-cpt.php' );
 require get_parent_theme_file_path( 'inc/taxonomies/class-project-taxonomies.php' );
