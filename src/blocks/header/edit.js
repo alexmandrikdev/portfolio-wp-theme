@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { trash as trashIcon } from '@wordpress/icons';
-import { useBlockProps } from '@wordpress/block-editor';
 import {
 	BaseControl,
 	Button,
@@ -15,6 +14,7 @@ import {
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import './editor.scss';
+import BlockContainer from '../../js/shared/edit/components/block-container';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { menu_items: menuItems = [] } = attributes;
@@ -53,15 +53,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	return (
-		<div
-			{ ...useBlockProps( {
-				style: {
-					paddingLeft: '24px',
-					paddingRight: '24px',
-					marginBottom: '24px',
-				},
-			} ) }
-		>
+		<BlockContainer>
 			<Card style={ { width: '100%' } }>
 				<CardHeader>
 					<h4>{ __( 'Header', 'portfolio' ) }</h4>
@@ -103,6 +95,6 @@ export default function Edit( { attributes, setAttributes } ) {
 					</BaseControl>
 				</CardBody>
 			</Card>
-		</div>
+		</BlockContainer>
 	);
 }
