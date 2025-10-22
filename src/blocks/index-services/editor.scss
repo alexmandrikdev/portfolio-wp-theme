@@ -1,0 +1,22 @@
+.wp-block-portfolio-index-services {
+
+	.service-items-list {
+		margin-bottom: 16px;
+	}
+
+	.service-item {
+
+		.components-card__header {
+			background-color: #f8f9f9;
+			border-bottom: 1px solid #e0e0e0;
+		}
+	}
+
+	.components-button {
+
+		&.is-tertiary:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	}
+}
