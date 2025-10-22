@@ -22,6 +22,11 @@ const { actions, state } = store( 'header', {
 			context.isOpen = ! context.isOpen;
 		},
 
+		closeMenu: () => {
+			const context = getContext();
+			context.isOpen = false;
+		},
+
 		switchTheme: ( theme ) => {
 			state.theme = theme;
 			let visualTheme = theme;
@@ -45,6 +50,8 @@ const { actions, state } = store( 'header', {
 			const theme = attributes[ 'data-target-theme' ];
 
 			actions.switchTheme( theme );
+
+			actions.closeMenu();
 		},
 
 		applyTheme: ( theme ) => {
