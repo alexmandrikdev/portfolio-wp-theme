@@ -7,6 +7,8 @@ require get_parent_theme_file_path( 'inc/class-asset-helper.php' );
 require get_parent_theme_file_path( 'inc/post-types/class-project-cpt.php' );
 require get_parent_theme_file_path( 'inc/taxonomies/class-project-taxonomies.php' );
 
+require get_parent_theme_file_path( 'inc/components/class-project-card.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();
