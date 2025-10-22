@@ -1,71 +1,73 @@
-import { store, getContext, getElement } from "@wordpress/interactivity";
+import { store, getContext, getElement } from '@wordpress/interactivity';
 
-const { actions, state } = store("header", {
+const { actions, state } = store( 'header', {
 	state: {
-		theme: "auto",
+		theme: 'auto',
 
 		get isLightTheme() {
-			return state.theme === "light";
+			return state.theme === 'light';
 		},
 
 		get isDarkTheme() {
-			return state.theme === "dark";
+			return state.theme === 'dark';
 		},
 
 		get isAutoTheme() {
-			return state.theme === "auto";
+			return state.theme === 'auto';
 		},
 	},
 	actions: {
 		toggleMenu: () => {
 			const context = getContext();
-			context.isOpen = !context.isOpen;
+			context.isOpen = ! context.isOpen;
 		},
 
-		switchTheme: (theme) => {
+		switchTheme: ( theme ) => {
 			state.theme = theme;
 			let visualTheme = theme;
 
-			localStorage.setItem("theme", theme);
+			window.localStorage.setItem( 'theme', theme );
 
-			if (theme === "auto") {
-				visualTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-					? "dark"
-					: "light";
+			if ( theme === 'auto' ) {
+				visualTheme = window.matchMedia(
+					'(prefers-color-scheme: dark)'
+				).matches
+					? 'dark'
+					: 'light';
 			}
 
-			actions.applyTheme(visualTheme);
+			actions.applyTheme( visualTheme );
 		},
 
 		switchToTargetTheme: () => {
 			const { attributes } = getElement();
 
-			const theme = attributes["data-target-theme"];
+			const theme = attributes[ 'data-target-theme' ];
 
-			actions.switchTheme(theme);
+			actions.switchTheme( theme );
 		},
 
-		applyTheme: (theme) => {
-			if (theme === "dark") {
-				document.documentElement.setAttribute("data-theme", "dark");
+		applyTheme: ( theme ) => {
+			if ( theme === 'dark' ) {
+				document.documentElement.setAttribute( 'data-theme', 'dark' );
 			} else {
-				document.documentElement.removeAttribute("data-theme");
+				document.documentElement.removeAttribute( 'data-theme' );
 			}
 		},
 	},
 	callbacks: {
 		initThemeSwitcher: () => {
-			const theme = localStorage.getItem("theme") || "auto";
+			const theme = window.localStorage.getItem( 'theme' ) || 'auto';
 
-			actions.switchTheme(theme);
+			actions.switchTheme( theme );
 
 			window
-				.matchMedia("(prefers-color-scheme: dark)")
-				.addEventListener("change", (e) => {
-					if (state.theme === "auto") {
-						actions.applyTheme(e.matches ? "dark" : "light");
+				.matchMedia( '(prefers-color-scheme: dark)' )
+				.addEventListener( 'change', ( e ) => {
+					if ( state.theme === 'auto' ) {
+						actions.applyTheme( e.matches ? 'dark' : 'light' );
 					}
-				});
+				} );
 		},
 	},
-});
+} );

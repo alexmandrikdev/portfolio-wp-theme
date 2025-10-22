@@ -10,7 +10,7 @@ import {
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { title = '', subtitle = '', cta_note = '' } = attributes;
+	const { title = '', subtitle = '', cta_note: ctaNote = '' } = attributes;
 
 	const updateAttribute = ( attributeName, value ) => {
 		setAttributes( { [ attributeName ]: value } );
@@ -19,7 +19,11 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<div
 			{ ...useBlockProps( {
-				style: { paddingLeft: '24px', paddingRight: '24px' },
+				style: {
+					paddingLeft: '24px',
+					paddingRight: '24px',
+					marginBottom: '24px',
+				},
 			} ) }
 		>
 			<Card style={ { width: '100%' } }>
@@ -30,8 +34,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<BaseControl
 						__nextHasNoMarginBottom
 						label={ __( 'Title', 'portfolio' ) }
+						id="hero-title"
 					>
 						<TextControl
+							id="hero-title"
 							value={ title }
 							onChange={ ( value ) =>
 								updateAttribute( 'title', value )
@@ -43,8 +49,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<BaseControl
 						__nextHasNoMarginBottom
 						label={ __( 'Subtitle', 'portfolio' ) }
+						id="hero-subtitle"
 					>
 						<TextControl
+							id="hero-subtitle"
 							value={ subtitle }
 							onChange={ ( value ) =>
 								updateAttribute( 'subtitle', value )
@@ -56,9 +64,11 @@ export default function Edit( { attributes, setAttributes } ) {
 					<BaseControl
 						__nextHasNoMarginBottom
 						label={ __( 'Call to Action Note', 'portfolio' ) }
+						id="hero-cta-note"
 					>
 						<TextControl
-							value={ cta_note }
+							id="hero-cta-note"
+							value={ ctaNote }
 							onChange={ ( value ) =>
 								updateAttribute( 'cta_note', value )
 							}
