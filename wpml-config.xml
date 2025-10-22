@@ -1,0 +1,9 @@
+<wpml-config>
+    <custom-types>
+        <custom-type translate="1">project</custom-type>
+    </custom-types>
+    <taxonomies>
+        <taxonomy translate="1">project_type</taxonomy>
+        <taxonomy translate="1">project_technology</taxonomy>
+    </taxonomies>
+</wpml-config>
