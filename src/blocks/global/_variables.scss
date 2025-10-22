@@ -1,12 +1,12 @@
 // Color variables
 :root {
-	--color-background-primary: #ffffff;
+	--color-background-primary: #fff;
 	--color-background-secondary: #f8f9fa;
-	--color-text-primary: #000000;
+	--color-text-primary: #000;
 	--color-text-secondary: #5a5a5a;
 	--color-text-tertiary: #8a8a8a;
-	--color-accent-primary: #0066ff;
-	--color-accent-secondary: #00cc88;
+	--color-accent-primary: #06f;
+	--color-accent-secondary: #0c8;
 	--color-border-divider: #e5e5e5;
 	--color-hover-overlay: rgba(0, 0, 0, 0.04);
 }
@@ -15,7 +15,7 @@
 [data-theme="dark"] {
 	--color-background-primary: #1a1a1a;
 	--color-background-secondary: #2a2a2a;
-	--color-text-primary: #ffffff;
+	--color-text-primary: #fff;
 	--color-text-secondary: #a0a0a0;
 	--color-text-tertiary: #707070;
 	--color-border-divider: #3a3a3a;
@@ -67,6 +67,6 @@
 
 [data-theme="dark"] {
 	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.4);
-	--shadow-medium: 0 4x 20px rgba(0, 0, 0, 0.5);
+	--shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.5);
 	--shadow-large: 0 8px 40px rgba(0, 0, 0, 0.6);
 }
