@@ -16,10 +16,10 @@
 
 .btn-secondary {
 	background: transparent;
-	color: var(--color-accent-primary);
+	color: var(--color-text-accent-primary);
 	padding: 16px 32px;
 	border-radius: var(--radius-md);
-	border: 2px solid var(--color-accent-primary);
+	border: 2px solid var(--color-text-accent-primary);
 	font-weight: 600;
 	font-size: 1rem;
 	transition: all 0.2s ease-out;
