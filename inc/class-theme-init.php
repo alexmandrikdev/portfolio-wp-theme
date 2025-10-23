@@ -24,22 +24,7 @@ class Theme_Init {
 	}
 
 	public function enqueue_scripts() {
-		$asset = include get_theme_file_path( 'build/components/global/index.asset.php' );
-
-		wp_enqueue_style(
-			'portfolio-global-style',
-			get_parent_theme_file_uri( 'build/components/global/style-index.css' ),
-			$asset['dependencies'],
-			$asset['version']
-		);
-
-		wp_enqueue_script(
-			'portfolio-global-script',
-			get_parent_theme_file_uri( 'build/components/global/index.js' ),
-			$asset['dependencies'],
-			$asset['version'],
-			true
-		);
+		Asset_Helper::enqueue_component( 'global' );
 	}
 
 	public function add_head_script() {
