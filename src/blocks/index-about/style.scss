@@ -52,5 +52,9 @@
 		&--large {
 			font-size: 1.125rem;
 		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 }
