@@ -8,11 +8,15 @@
 		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
 		"start": "wp-scripts start --blocks-manifest --experimental-modules",
-		"create-block": "cd ./src/blocks && wp-create-block --no-plugin --namespace portfolio"
+		"create-block": "cd ./src/blocks && wp-create-block --no-plugin --namespace portfolio",
+		"clean": "rimraf build",
+		"prestart": "npm run clean",
+		"prebuild": "npm run clean"
 	},
 	"devDependencies": {
 		"@wordpress/create-block": "^4.75.0",
-		"@wordpress/scripts": "^30.25.0"
+		"@wordpress/scripts": "^30.25.0",
+		"rimraf": "^6.0.1"
 	},
 	"dependencies": {
 		"@wordpress/icons": "^10.32.0"
