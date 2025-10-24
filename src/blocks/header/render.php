@@ -8,6 +8,7 @@
 	echo get_block_wrapper_attributes();
 	?>
 	data-wp-interactive="header"
+	data-wp-watch="callbacks.bodyScrollLock"
 	<?php
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo wp_interactivity_data_wp_context(
