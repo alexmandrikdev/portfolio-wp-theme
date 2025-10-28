@@ -6,7 +6,6 @@ import {
 	CardHeader,
 	TextControl,
 } from '@wordpress/components';
-import './editor.scss';
 import BlockContainer from '../../js/shared/edit/components/block-container';
 
 export default function Edit( { attributes, setAttributes } ) {
