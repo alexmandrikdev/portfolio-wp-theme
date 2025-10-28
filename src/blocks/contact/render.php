@@ -4,6 +4,10 @@
 			<h2 class="cta-section__title scroll-fade"><?php echo esc_html( $attributes['title'] ); ?></h2>
 		<?php endif; ?>
 
+		<?php if ( ! empty( $attributes['subtitle'] ) ) : ?>
+			<p class="cta-section__subtitle scroll-fade"><?php echo esc_html( $attributes['subtitle'] ); ?></h2>
+		<?php endif; ?>
+
 		<?php
 		$primary_button_text      = $attributes['primary_button_text'] ?? '';
 		$secondary_button_text    = $attributes['secondary_button_text'] ?? '';

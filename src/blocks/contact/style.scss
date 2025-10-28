@@ -20,6 +20,14 @@
 
 	}
 
+	&__subtitle {
+		color: #fff;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
 	&__buttons {
 		display: flex;
 		gap: var(--space-md);
