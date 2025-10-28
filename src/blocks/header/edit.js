@@ -13,7 +13,6 @@ import {
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
-import './editor.scss';
 import BlockContainer from '../../js/shared/edit/components/block-container';
 
 export default function Edit( { attributes, setAttributes } ) {
