@@ -12,5 +12,8 @@
 		"format": "./vendor/bin/phpcbf --report-summary --report-source || true",
 		"lint": "./vendor/bin/phpcs",
 		"lint:no-colors": "./vendor/bin/phpcs --no-colors"
+	},
+	"require": {
+		"erusev/parsedown": "^1.7"
 	}
 }
