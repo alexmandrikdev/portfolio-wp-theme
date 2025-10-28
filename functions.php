@@ -10,7 +10,13 @@ require get_parent_theme_file_path( 'inc/class-markdown-helper.php' );
 require get_parent_theme_file_path( 'inc/post-types/class-project-cpt.php' );
 require get_parent_theme_file_path( 'inc/taxonomies/class-project-taxonomies.php' );
 
+require get_parent_theme_file_path( 'inc/post-types/class-contact-submission-cpt.php' );
+require get_parent_theme_file_path( 'inc/ajax-handlers/class-contact-form-handler.php' );
+
 require get_parent_theme_file_path( 'inc/components/class-project-card.php' );
+
+require get_theme_file_path( 'inc/emails/class-admin-contact-notification.php' );
+require get_theme_file_path( 'inc/emails/class-sender-confirmation-email.php' );
 
 require get_parent_theme_file_path( 'inc/admin/class-settings-page.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
@@ -20,6 +26,9 @@ AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();
 AMPortfolioTheme\Taxonomies\Project_Taxonomies::init();
+
+AMPortfolioTheme\PostTypes\Contact_Submission_CPT::init();
+AMPortfolioTheme\AjaxHandlers\Contact_Form_Handler::init();
 
 AMPortfolioTheme\Admin\Settings_Page::init();
 AMPortfolioTheme\Admin\Settings_API::init();

@@ -1,6 +1,8 @@
 // Focus management for keyboard navigation
 button:focus-visible,
-a:focus-visible {
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
 	outline: 2px solid var(--color-accent-primary);
 	outline-offset: 2px;
 }

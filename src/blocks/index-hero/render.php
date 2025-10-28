@@ -14,7 +14,11 @@
 			<?php endif; ?>
 			
 			<div class="hero__cta">
-				<button class="btn-primary">
+				<button 
+					class="btn-primary"
+					data-wp-interactive="contactFormModal"
+					data-wp-on--click="actions.openModal"
+				>
 					Get a Free Project Estimate
 				</button>
 			</div>

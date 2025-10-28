@@ -24,7 +24,11 @@
 				<?php endif; ?>
 
 				<?php if ( ! empty( $primary_button_text ) ) : ?>
-					<button class="btn-secondary scroll-fade"><?php echo esc_html( $primary_button_text ); ?></button>
+					<button 
+						class="btn-secondary scroll-fade"
+						data-wp-interactive="contactFormModal"
+						data-wp-on--click="actions.openModal"
+					><?php echo esc_html( $primary_button_text ); ?></button>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

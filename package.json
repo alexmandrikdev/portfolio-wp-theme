@@ -19,6 +19,8 @@
 		"rimraf": "^6.0.1"
 	},
 	"dependencies": {
-		"@wordpress/icons": "^10.32.0"
+		"@wordpress/icons": "^10.32.0",
+		"easymde": "^2.20.0",
+		"glob": "^11.0.3"
 	}
 }
