@@ -13,6 +13,8 @@ require get_parent_theme_file_path( 'inc/taxonomies/class-project-taxonomies.php
 require get_parent_theme_file_path( 'inc/post-types/class-contact-submission-cpt.php' );
 require get_parent_theme_file_path( 'inc/ajax-handlers/class-contact-form-handler.php' );
 
+require get_parent_theme_file_path( 'inc/components/class-project-card-data-loader.php' );
+require get_parent_theme_file_path( 'inc/components/class-project-card-data.php' );
 require get_parent_theme_file_path( 'inc/components/class-project-card.php' );
 
 require get_theme_file_path( 'inc/emails/class-admin-contact-notification.php' );
