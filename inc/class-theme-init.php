@@ -3,6 +3,8 @@
 namespace AMPortfolioTheme;
 
 use AMPortfolioTheme\Admin\Settings_Page;
+use AMPortfolioTheme\Emails\Admin_Contact_Notification;
+use AMPortfolioTheme\Emails\Sender_Confirmation_Email;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -16,6 +18,11 @@ class Theme_Init {
 		add_action( 'wp_head', array( $self, 'add_head_script' ), 10 );
 
 		add_action( 'admin_init', array( $self, 'check_recaptcha_settings' ) );
+		add_action( 'admin_init', array( $self, 'check_action_scheduler_availability' ) );
+
+		$self->register_email_scheduler_actions();
+
+		add_action( 'wp_ajax_am_dismiss_action_scheduler_notice', array( $self, 'handle_notice_dismissal' ) );
 
 		return $self;
 	}
@@ -65,6 +72,98 @@ class Theme_Init {
 			})();
 		</script>
 		<?php
+	}
+
+	public function register_email_scheduler_actions() {
+		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
+			return;
+		}
+
+		add_action(
+			Admin_Contact_Notification::SCHEDULED_ACTION_HOOK,
+			array( Admin_Contact_Notification::class, 'handle_scheduled_send' ),
+			10,
+			1
+		);
+
+		add_action(
+			Sender_Confirmation_Email::SCHEDULED_ACTION_HOOK,
+			array( Sender_Confirmation_Email::class, 'handle_scheduled_send' ),
+			10,
+			1
+		);
+	}
+
+	public function check_action_scheduler_availability() {
+		if ( ! current_user_can( 'manage_options' ) || wp_doing_ajax() ) {
+			return;
+		}
+
+		if ( function_exists( 'as_enqueue_async_action' ) ) {
+			return;
+		}
+
+		$notice_dismissed = get_option( 'am_action_scheduler_notice_dismissed', false );
+		if ( $notice_dismissed ) {
+			return;
+		}
+
+		add_action( 'admin_notices', array( $this, 'action_scheduler_missing_notice' ) );
+	}
+
+	public function action_scheduler_missing_notice() {
+		?>
+		<div class="notice notice-warning">
+			<h3><?php esc_html_e( 'Portfolio Theme - Background Processing Recommended', 'am-portfolio-theme' ); ?></h3>
+			<p>
+				<?php esc_html_e( 'For better performance and user experience, it\'s recommended to install the Action Scheduler plugin. This will enable background processing for contact form emails, preventing delays during form submissions.', 'am-portfolio-theme' ); ?>
+			</p>
+			<p>
+				<strong><?php esc_html_e( 'Current behavior:', 'am-portfolio-theme' ); ?></strong> 
+				<?php esc_html_e( 'Emails are sent immediately, which may cause brief delays during form submission.', 'am-portfolio-theme' ); ?>
+			</p>
+			<p>
+				<strong><?php esc_html_e( 'With Action Scheduler:', 'am-portfolio-theme' ); ?></strong> 
+				<?php esc_html_e( 'Emails are processed in the background, providing instant form submission feedback.', 'am-portfolio-theme' ); ?>
+			</p>
+			<p>
+				<?php if ( current_user_can( 'install_plugins' ) ) : ?>
+					<a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=action+scheduler&tab=search&type=term' ) ); ?>" class="button button-primary">
+						<?php esc_html_e( 'Install Action Scheduler Plugin', 'am-portfolio-theme' ); ?>
+					</a>
+				<?php endif; ?>
+				<a href="https://wordpress.org/plugins/action-scheduler/" target="_blank" class="button">
+					<?php esc_html_e( 'Learn More', 'am-portfolio-theme' ); ?>
+				</a>
+				<button type="button" class="button button-link" id="am-dismiss-action-scheduler-notice" style="margin-left: 10px;">
+					<?php esc_html_e( 'Dismiss', 'am-portfolio-theme' ); ?>
+				</button>
+			</p>
+		</div>
+		<script>
+			(function($) {
+				$( '#am-dismiss-action-scheduler-notice' ).on( 'click', function() {
+					$.post( ajaxurl, {
+						action: 'am_dismiss_action_scheduler_notice',
+						nonce: '<?php echo esc_js( wp_create_nonce( 'am_dismiss_action_scheduler_notice' ) ); ?>'
+					} );
+					$( this ).closest( '.notice' ).fadeOut();
+				} );
+			})(jQuery);
+		</script>
+		<?php
+	}
+
+	public function handle_notice_dismissal() {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- wp_verify_nonce handles validation and unslashing
+		$nonce = isset( $_POST['nonce'] ) ? wp_unslash( $_POST['nonce'] ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, 'am_dismiss_action_scheduler_notice' ) ) {
+			wp_die( -1, 403 );
+		}
+
+		update_option( 'am_action_scheduler_notice_dismissed', true );
+		wp_die( 1 );
 	}
 
 	public function check_recaptcha_settings() {

@@ -1,5 +1,5 @@
-// Color variables
 :root {
+	// Color variables
 	--color-background-primary: #fff;
 	--color-background-secondary: #f8f9fa;
 	--color-text-primary: #000;
@@ -10,27 +10,14 @@
 	--color-text-accent-primary: var(--color-accent-primary);
 	--color-border-divider: #e5e5e5;
 	--color-hover-overlay: rgba(0, 0, 0, 0.04);
-}
+	--color-error: #d00;
+	--color-error-light: #fdd;
+	--color-error-dark: #b00;
 
-// Dark theme overrides
-[data-theme="dark"] {
-	--color-background-primary: #1a1a1a;
-	--color-background-secondary: #2a2a2a;
-	--color-text-primary: #fff;
-	--color-text-secondary: #a0a0a0;
-	--color-text-tertiary: #828282;
-	--color-text-accent-primary: #4d94ff;
-	--color-border-divider: #3a3a3a;
-	--color-hover-overlay: rgba(255, 255, 255, 0.05);
-}
-
-// Typography
-:root {
+	// Typography
 	--font-family: "Inter", sans-serif;
-}
 
-// Layout and spacing
-:root {
+	// Layout and spacing
 	--container-max-width: 1280px;
 	--section-spacing: 120px;
 	--element-spacing: 80px;
@@ -39,35 +26,43 @@
 	@include breakpoint-up("xl") {
 		--container-gutter: 48px;
 	}
-}
 
-// Border radius scale
-:root {
+	// Border radius scale
 	--radius-sm: 4px;
 	--radius-md: 8px;
 	--radius-lg: 12px;
 	--radius-xl: 16px;
 	--radius-full: 50%;
-}
 
-// Spacing scale
-:root {
+	// Spacing scale
 	--space-xs: 8px;
 	--space-sm: 16px;
 	--space-md: 24px;
 	--space-lg: 32px;
 	--space-xl: 48px;
 	--space-xxl: 64px;
-}
 
-// Shadow system
-:root {
+	// Shadow system
 	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
 	--shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
 	--shadow-large: 0 8px 40px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="dark"] {
+	// Color variables
+	--color-background-primary: #1a1a1a;
+	--color-background-secondary: #2a2a2a;
+	--color-text-primary: #fff;
+	--color-text-secondary: #a0a0a0;
+	--color-text-tertiary: #828282;
+	--color-text-accent-primary: #4d94ff;
+	--color-border-divider: #3a3a3a;
+	--color-hover-overlay: rgba(255, 255, 255, 0.05);
+	--color-error: #f44;
+	--color-error-light: #422;
+	--color-error-dark: #f88;
+
+	// Shadow system
 	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.4);
 	--shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.5);
 	--shadow-large: 0 8px 40px rgba(0, 0, 0, 0.6);

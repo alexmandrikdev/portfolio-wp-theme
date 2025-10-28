@@ -1,5 +1,7 @@
 import { store, getContext, getElement } from '@wordpress/interactivity';
 
+const { actions: contactFormModalActions } = store( 'contactFormModal' );
+
 const { actions, state } = store( 'header', {
 	state: {
 		theme: 'auto',
@@ -60,6 +62,13 @@ const { actions, state } = store( 'header', {
 			} else {
 				document.documentElement.removeAttribute( 'data-theme' );
 			}
+		},
+
+		openContactFormModal: () => {
+			contactFormModalActions.openModal();
+
+			const context = getContext();
+			context.isOpen = false;
 		},
 	},
 	callbacks: {

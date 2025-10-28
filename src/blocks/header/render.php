@@ -67,7 +67,9 @@
 			</div>
 
 			<div class="wp-block-portfolio-header__actions">
-				<button class="btn-primary">Get a Free Project Estimate</button>
+				<button 	
+					data-wp-on--click="actions.openContactFormModal" 
+					class="btn-primary">Get a Free Project Estimate</button>
 
 				<div class="wp-block-portfolio-header__languages">
 					<?php foreach ( pll_the_languages( array( 'raw' => 1 ) ) as $code => $details ) : ?>
