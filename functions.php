@@ -9,7 +9,14 @@ require get_parent_theme_file_path( 'inc/taxonomies/class-project-taxonomies.php
 
 require get_parent_theme_file_path( 'inc/components/class-project-card.php' );
 
+require get_parent_theme_file_path( 'inc/admin/class-settings-page.php' );
+require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
+require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();
 AMPortfolioTheme\Taxonomies\Project_Taxonomies::init();
+
+AMPortfolioTheme\Admin\Settings_Page::init();
+AMPortfolioTheme\Admin\Settings_API::init();

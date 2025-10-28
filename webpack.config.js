@@ -20,17 +20,46 @@ const getComponentEntries = () => {
 	return entries;
 };
 
-module.exports = defaultConfig.map( ( config ) => {
+const getAdminEntries = () => {
+	const entryFiles = glob.sync(
+		path.resolve( process.cwd(), 'src/admin/**/index.js' )
+	);
+
+	const entries = {};
+
+	entryFiles.forEach( ( filePath ) => {
+		const adminPath = path
+			.relative( path.resolve( process.cwd(), 'src' ), filePath )
+			.replace( /\.js$/, '' );
+
+		entries[ adminPath ] = filePath;
+	} );
+
+	return entries;
+};
+
+const componentEntries = getComponentEntries();
+const adminEntries = getAdminEntries();
+
+module.exports = defaultConfig.map( ( config, index ) => {
 	return {
 		...config,
 		entry: async () => {
 			const originalEntryPoints = await config.entry();
-			const componentEntries = getComponentEntries();
 
-			return {
+			let entryPoints = {
 				...originalEntryPoints,
 				...componentEntries,
 			};
+
+			if ( index === 0 ) {
+				entryPoints = {
+					...entryPoints,
+					...adminEntries,
+				};
+			}
+
+			return entryPoints;
 		},
 	};
 } );
