@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<a href="<?php echo esc_url( $data['permalink'] ); ?>" class="project-card <?php echo esc_attr( $attributes['class'] ); ?>">
+<a href="<?php echo esc_url( $data->permalink ); ?>" class="project-card <?php echo esc_attr( $attributes['class'] ); ?>">
 	<div class="project-card__image">
-		<?php if ( ! empty( $data['thumbnail']['url'] ) ) : ?>
+		<?php if ( ! empty( $data->thumbnail['url'] ) ) : ?>
 			<img
-				src="<?php echo esc_url( $data['thumbnail']['url'] ); ?>"
-				alt="<?php echo esc_attr( $data['thumbnail']['alt'] ); ?>"
+				src="<?php echo esc_url( $data->thumbnail['url'] ); ?>"
+				alt="<?php echo esc_attr( $data->thumbnail['alt'] ); ?>"
 				class="project-card__img"
 			/>
 		<?php endif; ?>
@@ -18,13 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<div class="project-card__content">
-		<h3 class="project-card__title"><?php echo esc_html( $data['title'] ); ?></h3>
-		<p class="project-card__excerpt"><?php echo esc_html( $data['excerpt'] ); ?></p>
+		<h3 class="project-card__title"><?php echo esc_html( $data->title ); ?></h3>
+		<p class="project-card__excerpt"><?php echo esc_html( $data->excerpt ); ?></p>
 		
-		<?php if ( ! empty( $data['technologies'] ) ) : ?>
+		<?php if ( ! empty( $data->technologies ) ) : ?>
 			<div class="project-card__tags">
-				<?php foreach ( $data['technologies'] as $technology ) : ?>
-					<span class="project-card__tag"><?php echo esc_html( $technology ); ?></span>
+				<?php foreach ( $data->technologies as $technology ) : ?>
+					<span class="project-card__tag">
+						<?php echo esc_html( $technology['name'] ); ?>
+					</span>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
