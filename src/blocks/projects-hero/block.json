@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/projects-hero",
+	"version": "0.1.0",
+	"title": "Projects Page Hero Section",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "projects-hero",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}
