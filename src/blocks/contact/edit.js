@@ -5,15 +5,16 @@ import {
 	CardBody,
 	CardHeader,
 	TextControl,
+	TextareaControl,
 	ComboboxControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import './editor.scss';
 import BlockContainer from '../../js/shared/edit/components/block-container';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		title = '',
+		subtitle = '',
 		primary_button_text: primaryButtonText = '',
 		secondary_button_text: secondaryButtonText = '',
 		secondary_button_page_id: secondaryButtonPageId = null,
@@ -44,7 +45,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<BlockContainer>
 			<Card style={ { width: '100%' } }>
 				<CardHeader>
-					<h4>{ __( 'Button Configuration', 'portfolio' ) }</h4>
+					<h4>{ __( 'Contact Section', 'portfolio' ) }</h4>
 				</CardHeader>
 				<CardBody>
 					<BaseControl
@@ -59,6 +60,22 @@ export default function Edit( { attributes, setAttributes } ) {
 								updateAttribute( 'title', value )
 							}
 							placeholder={ __( 'Enter title', 'portfolio' ) }
+						/>
+					</BaseControl>
+
+					<BaseControl
+						__nextHasNoMarginBottom
+						label={ __( 'Subtitle', 'portfolio' ) }
+						id="block-subtitle"
+					>
+						<TextareaControl
+							id="block-subtitle"
+							value={ subtitle }
+							onChange={ ( value ) =>
+								updateAttribute( 'subtitle', value )
+							}
+							placeholder={ __( 'Enter subtitle', 'portfolio' ) }
+							rows={ 3 }
 						/>
 					</BaseControl>
 
