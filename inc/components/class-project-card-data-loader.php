@@ -11,10 +11,15 @@ defined( 'ABSPATH' ) || exit;
 
 class Project_Card_Data_Loader {
 
-	public static function load_project_cards_data( array $post_ids = array() ): array {
+	public static function load_project_cards_data( array $post_ids = array(), bool $load_types = false ): array {
 		$posts_data        = self::load_projects_base_data( $post_ids );
 		$thumbnails_data   = self::load_projects_thumbnails_data( $post_ids );
 		$technologies_data = self::load_projects_technologies_data( $post_ids );
+
+		$types_data = array();
+		if ( $load_types ) {
+			$types_data = self::load_projects_types_data( $post_ids );
+		}
 
 		$result = array();
 		foreach ( $posts_data as $post_id => $post_data ) {
@@ -27,7 +32,8 @@ class Project_Card_Data_Loader {
 					'url' => '',
 					'alt' => '',
 				),
-				isset( $technologies_data[ $post_id ] ) ? $technologies_data[ $post_id ] : array()
+				isset( $technologies_data[ $post_id ] ) ? $technologies_data[ $post_id ] : array(),
+				isset( $types_data[ $post_id ] ) ? $types_data[ $post_id ] : array()
 			);
 		}
 
@@ -90,7 +96,7 @@ class Project_Card_Data_Loader {
 		return $result;
 	}
 
-	private static function load_projects_technologies_data( array $post_ids = array() ): array {
+	private static function load_projects_taxonomy_data( array $post_ids = array(), string $taxonomy ): array {
 		global $wpdb;
 
 		$base_query = "SELECT tr.object_id, t.term_id, t.name
@@ -98,7 +104,7 @@ class Project_Card_Data_Loader {
                   INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
                   INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id";
 
-		$where_conditions = array( "tt.taxonomy = 'project_technology'" );
+		$where_conditions = array( $wpdb->prepare( 'tt.taxonomy = %s', $taxonomy ) );
 		$order_by         = 'ORDER BY tr.object_id, t.name';
 
 		if ( empty( $post_ids ) ) {
@@ -129,5 +135,13 @@ class Project_Card_Data_Loader {
 		}
 
 		return $result;
+	}
+
+	private static function load_projects_technologies_data( array $post_ids = array() ): array {
+		return self::load_projects_taxonomy_data( $post_ids, 'project_technology' );
+	}
+
+	private static function load_projects_types_data( array $post_ids = array() ): array {
+		return self::load_projects_taxonomy_data( $post_ids, 'project_type' );
 	}
 }
