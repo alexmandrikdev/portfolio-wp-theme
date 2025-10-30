@@ -4,7 +4,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<a href="<?php echo esc_url( $data->permalink ); ?>" class="project-card <?php echo esc_attr( $attributes['class'] ); ?>">
+<a href="<?php echo esc_url( $data->permalink ); ?>" 
+	class="project-card <?php echo esc_attr( $attributes['class'] ); ?>"
+	<?php
+	foreach ( $attributes as $key => $value ) {
+		if ( 'class' === $key ) {
+			continue;
+		}
+
+		echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
+	}
+	?>
+>
 	<div class="project-card__image">
 		<?php if ( ! empty( $data->thumbnail['url'] ) ) : ?>
 			<img
