@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/projects-listing",
+	"version": "0.1.0",
+	"title": "Projects Page Project Listing Section",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false,
+		"interactivity": true
+	},
+	"textdomain": "projects-listing",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}

@@ -55,6 +55,8 @@ class Project_Card_Data_Loader {
 			$query = $base_query;
 		}
 
+		$query .= ' ORDER BY post_date DESC';
+
 		$results = $wpdb->get_results( $query, OBJECT_K );
 
 		return $results ? $results : array();
@@ -128,7 +130,7 @@ class Project_Card_Data_Loader {
 			if ( ! isset( $result[ $term->object_id ] ) ) {
 				$result[ $term->object_id ] = array();
 			}
-			$result[ $term->object_id ][] = array(
+			$result[ $term->object_id ][ $term->term_id ] = array(
 				'id'   => $term->term_id,
 				'name' => $term->name,
 			);
