@@ -18,6 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<div class="project-card__content">
+		<?php if ( ! empty( $data->types ) ) : ?>
+			<div class="project-card__types">
+				<?php foreach ( $data->types as $item ) : ?>
+					<span class="project-card__type">
+						<?php echo esc_html( $item['name'] ); ?>
+					</span>
+				<?php endforeach; ?>
+			</div>
+		<?php endif ?>
+
 		<h3 class="project-card__title"><?php echo esc_html( $data->title ); ?></h3>
 		<p class="project-card__excerpt"><?php echo esc_html( $data->excerpt ); ?></p>
 		
