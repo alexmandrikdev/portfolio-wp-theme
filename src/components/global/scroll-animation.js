@@ -11,8 +11,6 @@ class ScrollAnimation {
 	init() {
 		const options = {
 			root: null,
-			rootMargin: '0px 0px -10% 0px', // Trigger when 10% of element is in viewport
-			threshold: 0.1, // Trigger when at least 10% of element is visible
 		};
 
 		this.observer = new window.IntersectionObserver( ( entries ) => {
