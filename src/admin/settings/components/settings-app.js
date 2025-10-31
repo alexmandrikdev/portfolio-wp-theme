@@ -3,12 +3,18 @@ import { __ } from '@wordpress/i18n';
 import { TabPanel, Notice } from '@wordpress/components';
 import { useSettingsAPI } from '../hooks/use-settings-api';
 import { RecaptchaSettings } from './recaptcha-settings';
+import { GeneralSettings } from './general-settings';
 
 export function SettingsApp() {
-	const [ , setActiveTab ] = useState( 'recaptcha' );
+	const [ , setActiveTab ] = useState( 'general' );
 	const { settings, error, saveSettings } = useSettingsAPI();
 
 	const tabs = [
+		{
+			name: 'general',
+			title: __( 'General', 'portfolio' ),
+			className: 'tab-general',
+		},
 		{
 			name: 'recaptcha',
 			title: __( 'reCAPTCHA', 'portfolio' ),
@@ -18,6 +24,13 @@ export function SettingsApp() {
 
 	const renderTabContent = ( tabName ) => {
 		switch ( tabName ) {
+			case 'general':
+				return (
+					<GeneralSettings
+						settings={ settings }
+						onSave={ saveSettings }
+					/>
+				);
 			case 'recaptcha':
 				return (
 					<RecaptchaSettings
