@@ -1,0 +1,58 @@
+@import "../../scss/shared/variables";
+@import "../../scss/shared/mixins";
+
+.project-detail-hero {
+	padding-top: 55px;
+	padding-bottom: var(--space-xxl);
+
+	&__title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__tagline {
+		font-size: 1.5rem;
+		font-weight: 500;
+		color: var(--color-text-accent-primary);
+		margin-bottom: var(--space-xl);
+	}
+
+	&__meta-items {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xl);
+		margin-bottom: var(--space-xl);
+
+		@include breakpoint-down(md) {
+			flex-direction: column;
+			gap: var(--space-md);
+		}
+	}
+
+	&__meta-item {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__meta-label {
+		font-size: 0.875rem;
+		color: var(--color-text-tertiary);
+		margin-bottom: var(--space-xs);
+	}
+
+	&__meta-value {
+		font-weight: 600;
+		color: var(--color-text-primary);
+	}
+
+	&__actions {
+		display: flex;
+		gap: var(--space-md);
+		flex-wrap: wrap;
+
+		.project-detail-hero__action-button {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+		}
+	}
+}

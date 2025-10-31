@@ -12,6 +12,10 @@
 		transform: translateY(-1px);
 		box-shadow: 0 4px 16px rgba(0, 102, 255, 0.4);
 	}
+
+	&:active {
+		transform: translateY(0);
+	}
 }
 
 .btn-secondary {
@@ -30,6 +34,21 @@
 	&:hover {
 		background: rgba(0, 102, 255, 0.05);
 		transform: translateY(-1px);
+	}
+}
+
+.btn-text {
+	background: none;
+	border: none;
+	color: var(--color-text-accent-primary);
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+	transition: color 0.2s ease;
+
+	&:hover {
+		color: var(--color-text-primary);
 	}
 }
 
