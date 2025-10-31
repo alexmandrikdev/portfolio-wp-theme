@@ -2,6 +2,7 @@
 @import "../../scss/shared/mixins";
 @import "easymde/dist/easymde.min.css";
 
+/* stylelint-disable selector-class-pattern */
 .EasyMDEContainer {
 
 	.CodeMirror {
@@ -424,6 +425,7 @@
 	}
 	/* stylelint-enable no-descending-specificity */
 }
+/* stylelint-enable selector-class-pattern */
 
 .btn-primary,
 .btn-secondary {
