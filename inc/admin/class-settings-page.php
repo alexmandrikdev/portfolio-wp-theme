@@ -78,10 +78,12 @@ class Settings_Page {
 			'portfolio-settings-script',
 			'portfolioSettings',
 			array(
-				'api'      => array(
+				'api'       => array(
 					'path' => 'portfolio/v1/settings',
 				),
-				'settings' => $settings,
+				'settings'  => $settings,
+				'languages' => Settings_Helper::get_polylang_languages(),
+				'pages'     => Settings_Helper::get_all_pages_by_language(),
 			)
 		);
 	}
