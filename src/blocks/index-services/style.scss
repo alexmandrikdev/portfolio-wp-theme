@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins" ;
 
 .services {
 
@@ -23,7 +22,7 @@
 		color: var(--color-text-secondary);
 		margin-bottom: 0;
 
-		@include breakpoint-up("md") {
+		@include mixins.breakpoint-up("md") {
 			margin-bottom: 0;
 		}
 	}
@@ -33,14 +32,14 @@
 		grid-template-columns: 1fr;
 		gap: var(--space-xl);
 
-		@include breakpoint-up("md") {
+		@include mixins.breakpoint-up("md") {
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 
 	&__item {
 
-		@include breakpoint-down("md") {
+		@include mixins.breakpoint-down("md") {
 
 			&:not(:last-child) {
 				padding-bottom: var(--space-lg);

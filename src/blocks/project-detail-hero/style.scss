@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins" ;
 
 .project-detail-hero {
 	padding-top: 55px;
@@ -22,7 +21,7 @@
 		gap: var(--space-xl);
 		margin-bottom: var(--space-xl);
 
-		@include breakpoint-down(md) {
+		@include mixins.breakpoint-down(md) {
 			flex-direction: column;
 			gap: var(--space-md);
 		}

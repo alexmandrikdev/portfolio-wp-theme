@@ -1,3 +1,5 @@
+@use "../../scss/shared/mixins";
+
 :root {
 	// Color variables
 	--color-background-primary: #fff;
@@ -23,7 +25,7 @@
 	--element-spacing: 80px;
 	--container-gutter: 24px;
 
-	@include breakpoint-up("xl") {
+	@include mixins.breakpoint-up("xl") {
 		--container-gutter: 48px;
 	}
 

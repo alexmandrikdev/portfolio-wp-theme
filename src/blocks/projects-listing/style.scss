@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins";
 
 .projects-section {
 	padding-top: 0;
@@ -359,7 +358,7 @@
 		grid-template-columns: 1fr;
 		gap: var(--space-xl);
 
-		@include breakpoint-only("md") {
+		@include mixins.breakpoint-only("md") {
 			grid-template-columns: repeat(4, 1fr);
 
 			> * {
@@ -367,7 +366,7 @@
 			}
 		}
 
-		@include breakpoint-up("lg") {
+		@include mixins.breakpoint-up("lg") {
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}
@@ -434,7 +433,7 @@
 	}
 }
 
-@include breakpoint-down("sm") {
+@include mixins.breakpoint-down("sm") {
 
 	.projects-section {
 

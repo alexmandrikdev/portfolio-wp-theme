@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins";
 
 .cta-section {
 	background: var(--color-accent-primary);
@@ -14,7 +13,7 @@
 		color: #fff;
 		margin-bottom: var(--space-md);
 
-		@include breakpoint-up("md") {
+		@include mixins.breakpoint-up("md") {
 			font-size: 2.5rem;
 		}
 

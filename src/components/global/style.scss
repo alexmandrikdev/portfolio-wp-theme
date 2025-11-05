@@ -1,9 +1,7 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
-@import "normalize";
-@import "components";
-@import "variables";
-@import "base";
-@import "typography";
-@import "animations";
-@import "accessibility";
+@use "normalize";
+@use "components";
+@use "variables";
+@use "base";
+@use "typography";
+@use "animations";
+@use "accessibility";
