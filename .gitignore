@@ -30,3 +30,4 @@ vendor/
 .env
 
 .vscode
+.roo/mcp.json
