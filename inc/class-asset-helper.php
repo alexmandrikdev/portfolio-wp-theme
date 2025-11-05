@@ -42,7 +42,7 @@ class Asset_Helper {
 			$js_path = "build/components/{$component_name}/index.js";
 
 			if ( file_exists( get_theme_file_path( $js_path ) ) ) {
-				wp_enqueue_script(
+				wp_enqueue_script_module(
 					$handle . '-script',
 					get_parent_theme_file_uri( $js_path ),
 					$asset['dependencies'] ?? array(),
