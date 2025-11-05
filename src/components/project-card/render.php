@@ -2,6 +2,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use AMPortfolioTheme\Helpers\Media_Display;
 ?>
 
 <a href="<?php echo esc_url( $data->permalink ); ?>" 
@@ -17,13 +19,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	?>
 >
 	<div class="project-card__image">
-		<?php if ( ! empty( $data->thumbnail['url'] ) ) : ?>
-			<img
-				src="<?php echo esc_url( $data->thumbnail['url'] ); ?>"
-				alt="<?php echo esc_attr( $data->thumbnail['alt'] ); ?>"
-				class="project-card__img"
-			/>
-		<?php endif; ?>
+		<?php
+		if ( $data->thumbnail ) {
+			Media_Display::display_media_item(
+				$data->thumbnail,
+				array(
+					'class' => 'project-card__img',
+					'size'  => 'medium',
+					'sizes' => $attributes['img_sizes'],
+				)
+			);
+		}
+		?>
 		<div class="project-card__overlay">
 			<span class="btn-primary">View Project</span>
 		</div>

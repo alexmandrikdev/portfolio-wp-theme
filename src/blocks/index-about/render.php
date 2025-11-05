@@ -1,17 +1,26 @@
+<?php
+
+use AMPortfolioTheme\Helpers\Media_Data_Loader;
+use AMPortfolioTheme\Helpers\Media_Display;
+?>
+
 <section id="about" class="about container">
 	<div class="about__image scroll-fade">
 		<div class="about__profile-pic">
-			<?php if ( ! empty( $attributes['profile_image'] ) ) : ?>
-				<?php
-				$image_url = wp_get_attachment_image_url( $attributes['profile_image'], 'medium' );
-				$image_alt = get_post_meta( $attributes['profile_image'], '_wp_attachment_image_alt', true );
-				?>
-				<img 
-					src="<?php echo esc_url( $image_url ); ?>" 
-					alt="<?php echo esc_attr( $image_alt ? $image_alt : $attributes['title'] ); ?>" 
-					class="about__profile-pic-img"
-				/>
-			<?php endif; ?>
+			<?php
+			if ( ! empty( $attributes['profile_image'] ) ) {
+				$media_data = Media_Data_Loader::load_media_data_single( $attributes['profile_image'] );
+
+				Media_Display::display_media_item(
+					$media_data,
+					array(
+						'class' => 'about__profile-pic-img',
+						'size'  => 'medium',
+						'sizes' => '300px',
+					)
+				);
+			}
+			?>
 		</div>
 	</div>
 	

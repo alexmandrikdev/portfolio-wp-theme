@@ -7,6 +7,8 @@
 
 namespace AMPortfolioTheme\Components;
 
+use AMPortfolioTheme\Helpers\Media_Data_Loader;
+
 defined( 'ABSPATH' ) || exit;
 
 class Project_Card_Data_Loader {
@@ -28,10 +30,7 @@ class Project_Card_Data_Loader {
 				$post_data->post_title,
 				$post_data->post_excerpt,
 				get_permalink( $post_id ),
-				isset( $thumbnails_data[ $post_id ] ) ? $thumbnails_data[ $post_id ] : array(
-					'url' => '',
-					'alt' => '',
-				),
+				isset( $thumbnails_data[ $post_id ] ) ? $thumbnails_data[ $post_id ] : null,
 				isset( $technologies_data[ $post_id ] ) ? $technologies_data[ $post_id ] : array(),
 				isset( $types_data[ $post_id ] ) ? $types_data[ $post_id ] : array()
 			);
@@ -65,11 +64,9 @@ class Project_Card_Data_Loader {
 	private static function load_projects_thumbnails_data( array $post_ids = array() ): array {
 		global $wpdb;
 
-		$base_query = "SELECT p.ID as post_id, pm.meta_value as thumbnail_id, 
-		                      att_meta.meta_value as alt_text
+		$base_query = "SELECT p.ID as post_id, pm.meta_value as thumbnail_id
 		               FROM {$wpdb->posts} p
 		               LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_thumbnail_id'
-		               LEFT JOIN {$wpdb->postmeta} att_meta ON pm.meta_value = att_meta.post_id AND att_meta.meta_key = '_wp_attachment_image_alt'
 		               WHERE p.post_type = 'project' AND p.post_status = 'publish'";
 
 		if ( ! empty( $post_ids ) ) {
@@ -82,23 +79,33 @@ class Project_Card_Data_Loader {
 
 		$thumbnails = $wpdb->get_results( $query );
 
-		$result = array();
-		foreach ( $thumbnails as $thumb ) {
-			$thumbnail_url = '';
-			if ( $thumb->thumbnail_id ) {
-				$thumbnail_url = wp_get_attachment_image_url( $thumb->thumbnail_id, 'medium' );
-			}
+		$thumbnail_ids      = array();
+		$post_thumbnail_map = array();
 
-			$result[ $thumb->post_id ] = array(
-				'url' => $thumbnail_url ? $thumbnail_url : '',
-				'alt' => $thumb->alt_text ? $thumb->alt_text : '',
-			);
+		foreach ( $thumbnails as $thumb ) {
+			if ( $thumb->thumbnail_id ) {
+				$thumbnail_id                          = intval( $thumb->thumbnail_id );
+				$thumbnail_ids[]                       = $thumbnail_id;
+				$post_thumbnail_map[ $thumb->post_id ] = $thumbnail_id;
+			}
+		}
+
+		$media_data = array();
+		if ( ! empty( $thumbnail_ids ) ) {
+			$media_data = Media_Data_Loader::load_media_data_bulk( $thumbnail_ids );
+		}
+
+		$result = array();
+		foreach ( $post_thumbnail_map as $post_id => $thumbnail_id ) {
+			if ( isset( $media_data[ $thumbnail_id ] ) ) {
+				$result[ $post_id ] = $media_data[ $thumbnail_id ];
+			}
 		}
 
 		return $result;
 	}
 
-	private static function load_projects_taxonomy_data( array $post_ids = array(), string $taxonomy ): array {
+	private static function load_projects_taxonomy_data( array $post_ids, string $taxonomy ): array {
 		global $wpdb;
 
 		$base_query = "SELECT tr.object_id, t.term_id, t.name
