@@ -88,12 +88,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<div { ...blockProps }>
 				<Card style={ { width: '100%' } }>
 					<CardHeader>
-						<h4>
-							{ __(
-								'Project Details Hero Settings',
-								'am-portfolio-theme'
-							) }
-						</h4>
+						<h4>{ __( 'Hero Section', 'am-portfolio-theme' ) }</h4>
 					</CardHeader>
 					<CardBody>
 						<BaseControl

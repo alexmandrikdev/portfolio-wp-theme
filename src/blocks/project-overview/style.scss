@@ -1,0 +1,50 @@
+@import "../../scss/shared/variables";
+@import "../../scss/shared/mixins";
+
+.project-overview {
+	background: var(--color-background-secondary);
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+
+		@include breakpoint-up(md) {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	&__card {
+		padding: var(--space-xl);
+		background: var(--color-background-primary);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-small);
+	}
+
+	&__header {
+		margin-bottom: var(--space-lg);
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	&__list {
+		list-style-type: none;
+	}
+
+	&__item {
+		position: relative;
+		padding-left: var(--space-lg);
+		margin-bottom: var(--space-md);
+		color: var(--color-text-secondary);
+
+		&::before {
+			content: "•";
+			position: absolute;
+			left: 0;
+			color: var(--color-text-accent-primary);
+			font-weight: 700;
+			font-size: 1.2rem;
+		}
+	}
+}

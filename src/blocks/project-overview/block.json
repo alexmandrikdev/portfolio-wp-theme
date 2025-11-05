@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/project-overview",
+	"title": "Project Detail Overview",
+	"description": "Displays two cards with bulleted lists for project overview.",
+	"category": "widgets",
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"task_card_items": {
+			"type": "array",
+			"default": []
+		},
+		"solution_card_items": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"textdomain": "am-portfolio-theme",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
