@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/project-tech-details",
+	"version": "0.1.0",
+	"title": "Project Technical Details",
+	"category": "widgets",
+	"description": "Displays project technical details including tech stack and key challenges.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "project-tech-details",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"challenges": {
+			"type": "array",
+			"default": []
+		}
+	}
+}

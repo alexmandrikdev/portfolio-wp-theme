@@ -1,0 +1,126 @@
+@use "../../scss/shared/mixins";
+
+.project-tech-details {
+	background: var(--color-background-secondary);
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--element-spacing);
+
+		@include mixins.breakpoint-up("md") {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-xl);
+		}
+	}
+
+	&__tech-items {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-md);
+	}
+
+	&__tech-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-xs);
+		padding: var(--space-md);
+		background: var(--color-background-primary);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-small);
+		min-width: 100px;
+	}
+
+	&__tech-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: auto;
+		height: 32px;
+
+		&-image {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			fill: var(--color-text-accent-primary);
+		}
+	}
+
+	&__tech-name {
+		margin-top: auto;
+		font-size: 0.875rem;
+		font-weight: 500;
+		text-align: center;
+	}
+
+	&__no-tech {
+		color: var(--color-text-secondary);
+		font-style: italic;
+	}
+
+	&__challenges-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+	}
+
+	&__challenge-item {
+		padding: var(--space-lg);
+		background: var(--color-background-primary);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-small);
+	}
+
+	&__challenge-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-md);
+	}
+
+	&__challenge-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: auto;
+		height: 24px;
+
+		&-image {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			fill: var(--color-text-accent-primary);
+		}
+	}
+
+	&__challenge-title {
+		margin: 0;
+	}
+
+	&__challenge-description {
+		margin-bottom: var(--space-md);
+		color: var(--color-text-secondary);
+		line-height: 1.6;
+	}
+
+	&__challenge-solution {
+		padding: var(--space-md);
+		background: var(--color-background-secondary);
+		border-radius: var(--radius-md);
+		color: var(--color-text-secondary);
+		line-height: 1.6;
+
+		&-heading {
+			color: var(--color-text-primary);
+			display: block;
+			margin-bottom: var(--space-xs);
+		}
+	}
+
+	&__no-challenges {
+		color: var(--color-text-secondary);
+		font-style: italic;
+	}
+}
