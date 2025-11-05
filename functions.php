@@ -31,6 +31,10 @@ require get_parent_theme_file_path( 'inc/helpers/class-media-display.php' );
 require get_parent_theme_file_path( 'inc/helpers/class-media-data.php' );
 require get_parent_theme_file_path( 'inc/helpers/class-media-data-loader.php' );
 
+require get_parent_theme_file_path( 'inc/helpers/class-project-permalink-helper.php' );
+
+require get_parent_theme_file_path( 'inc/managers/class-project-permalink-manager.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();
@@ -44,3 +48,5 @@ AMPortfolioTheme\Admin\Settings_Page::init();
 AMPortfolioTheme\Admin\Settings_API::init();
 
 AMPortfolioTheme\Polylang_String_Registration::init();
+
+AMPortfolioTheme\Managers\Project_Permalink_Manager::init();

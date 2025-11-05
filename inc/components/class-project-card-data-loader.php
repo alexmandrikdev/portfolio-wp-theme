@@ -8,6 +8,7 @@
 namespace AMPortfolioTheme\Components;
 
 use AMPortfolioTheme\Helpers\Media_Data_Loader;
+use AMPortfolioTheme\Helpers\Project_Permalink_Helper;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,11 +26,13 @@ class Project_Card_Data_Loader {
 
 		$result = array();
 		foreach ( $posts_data as $post_id => $post_data ) {
+			$language = $post_data->language_code ?? 'default';
+
 			$result[ $post_id ] = new Project_Card_Data(
 				$post_id,
 				$post_data->post_title,
 				$post_data->post_excerpt,
-				get_permalink( $post_id ),
+				Project_Permalink_Helper::get_instance()->get_project_permalink( $post_data->post_name, $language ),
 				isset( $thumbnails_data[ $post_id ] ) ? $thumbnails_data[ $post_id ] : null,
 				isset( $technologies_data[ $post_id ] ) ? $technologies_data[ $post_id ] : array(),
 				isset( $types_data[ $post_id ] ) ? $types_data[ $post_id ] : array()
@@ -42,19 +45,24 @@ class Project_Card_Data_Loader {
 	private static function load_projects_base_data( array $post_ids = array() ): array {
 		global $wpdb;
 
-		$base_query = "SELECT ID, post_title, post_excerpt, post_name 
-		               FROM {$wpdb->posts} 
-		               WHERE post_type = 'project' AND post_status = 'publish'";
+		$base_query = "SELECT p.ID, p.post_title, p.post_excerpt, p.post_name,
+		                      t.slug as language_code
+		               FROM {$wpdb->posts} p
+		               LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+		               LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+		               LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+		               WHERE p.post_type = 'project' AND p.post_status = 'publish'
+		               AND tt.taxonomy = 'language'";
 
 		if ( ! empty( $post_ids ) ) {
 			$post_ids_placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
-			$query                 = $base_query . " AND ID IN ($post_ids_placeholders)";
+			$query                 = $base_query . " AND p.ID IN ($post_ids_placeholders)";
 			$query                 = $wpdb->prepare( $query, $post_ids );
 		} else {
 			$query = $base_query;
 		}
 
-		$query .= ' ORDER BY post_date DESC';
+		$query .= ' ORDER BY p.post_date DESC';
 
 		$results = $wpdb->get_results( $query, OBJECT_K );
 
