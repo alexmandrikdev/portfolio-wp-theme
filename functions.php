@@ -25,6 +25,8 @@ require get_parent_theme_file_path( 'inc/admin/class-settings-page.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
 
+require get_parent_theme_file_path( 'inc/class-polylang-string-registration.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();
@@ -36,3 +38,5 @@ AMPortfolioTheme\AjaxHandlers\Contact_Form_Handler::init();
 
 AMPortfolioTheme\Admin\Settings_Page::init();
 AMPortfolioTheme\Admin\Settings_API::init();
+
+AMPortfolioTheme\Polylang_String_Registration::init();
