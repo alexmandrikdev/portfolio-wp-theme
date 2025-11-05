@@ -1,0 +1,39 @@
+.wp-block-portfolio-project-tech-details {
+
+	.challenges-list {
+		margin-bottom: 16px;
+	}
+
+	.challenge-item {
+		position: relative;
+		padding: 12px;
+		border-radius: 4px;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			background-color: #f6f7f7;
+		}
+	}
+
+	.challenge-item-separator {
+		margin: 8px 0;
+		border: none;
+		border-top: 1px dashed #ddd;
+	}
+
+	.components-flex {
+
+		.components-base-control {
+			margin-bottom: 0;
+		}
+	}
+
+	.components-button {
+		margin-top: 8px;
+
+		&.is-tertiary:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	}
+}
