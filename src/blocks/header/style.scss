@@ -21,7 +21,6 @@
 	z-index: 1000;
 
 	@include mixins.breakpoint-up("lg") {
-		padding: 24px var(--container-gutter);
 		background: var(--color-background);
 		backdrop-filter: blur(20px);
 		border-bottom: 1px solid var(--color-border-divider);
@@ -34,6 +33,10 @@
 		max-width: var(--container-max-width);
 		margin-left: auto;
 		margin-right: auto;
+
+		@include mixins.breakpoint-up("lg") {
+			padding: 24px var(--container-gutter);
+		}
 	}
 
 	&__inner {
