@@ -52,15 +52,19 @@ class Project_Card_Data_Loader {
 		               LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
 		               LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
 		               WHERE p.post_type = 'project' AND p.post_status = 'publish'
-		               AND tt.taxonomy = 'language'";
+		               AND tt.taxonomy = 'language' AND t.slug = %s";
+
+		$parameters = array( pll_current_language() );
 
 		if ( ! empty( $post_ids ) ) {
 			$post_ids_placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
 			$query                 = $base_query . " AND p.ID IN ($post_ids_placeholders)";
-			$query                 = $wpdb->prepare( $query, $post_ids );
+			$parameters            = array_merge( $parameters, $post_ids );
 		} else {
 			$query = $base_query;
 		}
+
+		$query = $wpdb->prepare( $query, $parameters );
 
 		$query .= ' ORDER BY p.post_date DESC';
 
@@ -117,11 +121,12 @@ class Project_Card_Data_Loader {
 		global $wpdb;
 
 		$base_query = "SELECT tr.object_id, t.term_id, t.name
-                  FROM {$wpdb->term_relationships} tr
-                  INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-                  INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id";
+	                 FROM {$wpdb->term_relationships} tr
+	                 INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+	                 INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id";
 
-		$where_conditions = array( $wpdb->prepare( 'tt.taxonomy = %s', $taxonomy ) );
+		$where_conditions = array( 'tt.taxonomy = %s' );
+		$parameters       = array( $taxonomy );
 		$order_by         = 'ORDER BY tr.object_id, t.name';
 
 		if ( empty( $post_ids ) ) {
@@ -130,15 +135,16 @@ class Project_Card_Data_Loader {
 			$where_conditions[] = "p.post_status = 'publish'";
 
 			$query = $base_query . ' WHERE ' . implode( ' AND ', $where_conditions ) . ' ' . $order_by;
-			$terms = $wpdb->get_results( $query );
 		} else {
 			$post_ids_placeholders = implode( ',', array_fill( 0, count( $post_ids ), '%d' ) );
 			$where_conditions[]    = "tr.object_id IN ($post_ids_placeholders)";
+			$parameters            = array_merge( $parameters, $post_ids );
 
 			$query = $base_query . ' WHERE ' . implode( ' AND ', $where_conditions ) . ' ' . $order_by;
-			$query = $wpdb->prepare( $query, $post_ids );
-			$terms = $wpdb->get_results( $query );
 		}
+
+		$query = $wpdb->prepare( $query, $parameters );
+		$terms = $wpdb->get_results( $query );
 
 		$result = array();
 		foreach ( $terms as $term ) {
