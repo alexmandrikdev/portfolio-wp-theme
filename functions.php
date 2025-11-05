@@ -27,6 +27,10 @@ require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
 
 require get_parent_theme_file_path( 'inc/class-polylang-string-registration.php' );
 
+require get_parent_theme_file_path( 'inc/helpers/class-media-display.php' );
+require get_parent_theme_file_path( 'inc/helpers/class-media-data.php' );
+require get_parent_theme_file_path( 'inc/helpers/class-media-data-loader.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();

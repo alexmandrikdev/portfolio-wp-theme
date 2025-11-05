@@ -17,7 +17,8 @@ class Project_Card {
 		$this->attributes = wp_parse_args(
 			$attributes,
 			array(
-				'class' => '',
+				'class'     => '',
+				'img_sizes' => '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw',
 			)
 		);
 
