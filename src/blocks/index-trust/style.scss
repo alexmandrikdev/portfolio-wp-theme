@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins";
 
 .trust {
 	background: var(--color-background-secondary);
@@ -10,7 +9,7 @@
 		grid-template-columns: repeat(1, 1fr);
 		gap: var(--space-xl);
 
-		@include breakpoint-up("md") {
+		@include mixins.breakpoint-up("md") {
 			grid-template-columns: repeat(3, 1fr);
 		}
 	}

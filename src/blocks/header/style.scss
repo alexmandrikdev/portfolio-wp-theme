@@ -1,11 +1,10 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins";
 
 :root {
 	--header-height: 80px;
 	--color-background: rgba(255, 255, 255, 0.9);
 
-	@include breakpoint-up("lg") {
+	@include mixins.breakpoint-up("lg") {
 		--header-height: 99px;
 	}
 }
@@ -21,7 +20,7 @@
 	right: 0;
 	z-index: 1000;
 
-	@include breakpoint-up("lg") {
+	@include mixins.breakpoint-up("lg") {
 		padding: 24px var(--container-gutter);
 		background: var(--color-background);
 		backdrop-filter: blur(20px);
@@ -42,7 +41,7 @@
 		align-items: center;
 		justify-content: space-between;
 
-		@include breakpoint-down("lg") {
+		@include mixins.breakpoint-down("lg") {
 			padding: 24px;
 			background: var(--color-background);
 			backdrop-filter: blur(20px);
@@ -61,7 +60,7 @@
 	&__menu-button {
 		font-size: 1.5rem;
 
-		@include breakpoint-up("lg") {
+		@include mixins.breakpoint-up("lg") {
 			display: none;
 		}
 	}
@@ -72,7 +71,7 @@
 		align-items: center;
 		gap: 32px;
 
-		@include breakpoint-down("lg") {
+		@include mixins.breakpoint-down("lg") {
 			position: absolute;
 			top: var(--header-height);
 			left: 0;
@@ -89,7 +88,7 @@
 			}
 		}
 
-		@include breakpoint-up("lg") {
+		@include mixins.breakpoint-up("lg") {
 			flex-direction: row;
 		}
 	}
@@ -101,11 +100,11 @@
 		align-items: center;
 		gap: 16px;
 
-		@include breakpoint-only("lg") {
+		@include mixins.breakpoint-only("lg") {
 			gap: 8px;
 		}
 
-		@include breakpoint-up("lg") {
+		@include mixins.breakpoint-up("lg") {
 			flex-direction: row;
 		}
 	}
@@ -120,7 +119,7 @@
 			background-color: var(--color-hover-overlay);
 		}
 
-		@include breakpoint-only("lg") {
+		@include mixins.breakpoint-only("lg") {
 			padding-left: 8px;
 			padding-right: 8px;
 		}

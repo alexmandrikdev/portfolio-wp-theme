@@ -1,5 +1,4 @@
-@import "../../scss/shared/variables";
-@import "../../scss/shared/mixins";
+@use "../../scss/shared/mixins";
 
 .hero {
 	padding-top: 55px;
@@ -10,7 +9,7 @@
 		grid-template-columns: 1fr;
 		gap: var(--space-xxl);
 
-		@include breakpoint-up("lg") {
+		@include mixins.breakpoint-up("lg") {
 			grid-template-columns: 1fr 1fr;
 		}
 	}

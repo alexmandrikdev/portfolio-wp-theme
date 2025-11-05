@@ -1,5 +1,9 @@
 @use "sass:map";
 @use "sass:list";
+@use './variables';
+
+$breakpoints: variables.$breakpoints !default;
+$breakpoint-interval: variables.$breakpoint-interval !default;
 
 // ============
 // Breakpoint Mixins

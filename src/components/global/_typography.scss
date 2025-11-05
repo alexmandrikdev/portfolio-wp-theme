@@ -1,3 +1,5 @@
+@use "../../scss/shared/mixins";
+
 // Headings
 h1 {
 	font-size: 2.5rem;
@@ -5,7 +7,7 @@ h1 {
 	line-height: 1.1;
 	margin-bottom: var(--space-lg);
 
-	@include breakpoint-up("md") {
+	@include mixins.breakpoint-up("md") {
 		font-size: 3.5rem;
 	}
 }
@@ -16,7 +18,7 @@ h2 {
 	line-height: 1.2;
 	margin-bottom: var(--space-lg);
 
-	@include breakpoint-up("md") {
+	@include mixins.breakpoint-up("md") {
 		font-size: 2.5rem;
 	}
 }
