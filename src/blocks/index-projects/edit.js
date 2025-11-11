@@ -2,9 +2,6 @@ import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
 	FlexBlock,
 	TextControl,
@@ -15,7 +12,7 @@ import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const ProjectItem = ( {
 	item,
@@ -99,86 +96,75 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	return (
-		<BlockContainer>
-			<Card style={ { width: '100%' } }>
-				<CardHeader>
-					<h4>{ __( 'Projects Section', 'portfolio' ) }</h4>
-				</CardHeader>
-				<CardBody>
-					<TextControl
-						label={ __( 'Title', 'portfolio' ) }
-						value={ title }
-						onChange={ handleTitleChange }
-						placeholder={ __( 'My Projects', 'portfolio' ) }
-					/>
+		<BlockCard title={ __( 'Projects Section', 'portfolio' ) }>
+			<TextControl
+				label={ __( 'Title', 'portfolio' ) }
+				value={ title }
+				onChange={ handleTitleChange }
+				placeholder={ __( 'My Projects', 'portfolio' ) }
+			/>
 
-					<BaseControl
-						id="project-items"
-						__nextHasNoMarginBottom
-						label={ __( 'Projects', 'portfolio' ) }
-						help={ __( 'Select up to 3 projects', 'portfolio' ) }
+			<BaseControl
+				id="project-items"
+				__nextHasNoMarginBottom
+				label={ __( 'Projects', 'portfolio' ) }
+				help={ __( 'Select up to 3 projects', 'portfolio' ) }
+			>
+				{ projectItems.length > 0 && (
+					<div className="project-items-list">
+						{ projectItems.map( ( item, index ) => (
+							<ProjectItem
+								key={ index }
+								item={ item }
+								index={ index }
+								projectItems={ projectItems }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
+								availablePosts={ availablePosts }
+							/>
+						) ) }
+					</div>
+				) }
+
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultItem ) }
+					disabled={
+						projectItems.length >= 3 || availablePosts.length === 0
+					}
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Project', 'portfolio' ) }
+				</Button>
+
+				{ projectItems.length >= 3 && (
+					<p
+						style={ {
+							color: '#cc1818',
+							fontSize: '12px',
+							marginTop: '8px',
+						} }
 					>
-						{ projectItems.length > 0 && (
-							<div className="project-items-list">
-								{ projectItems.map( ( item, index ) => (
-									<ProjectItem
-										key={ index }
-										item={ item }
-										index={ index }
-										projectItems={ projectItems }
-										onUpdate={ updateItem }
-										onRemove={ removeItem }
-										onMove={ moveItem }
-										availablePosts={ availablePosts }
-									/>
-								) ) }
-							</div>
-						) }
+						{ __( 'Maximum 3 projects allowed', 'portfolio' ) }
+					</p>
+				) }
 
-						<Button
-							variant="primary"
-							onClick={ () => addItem( defaultItem ) }
-							disabled={
-								projectItems.length >= 3 ||
-								availablePosts.length === 0
-							}
-							style={ { marginTop: '16px' } }
-						>
-							{ __( 'Add Project', 'portfolio' ) }
-						</Button>
-
-						{ projectItems.length >= 3 && (
-							<p
-								style={ {
-									color: '#cc1818',
-									fontSize: '12px',
-									marginTop: '8px',
-								} }
-							>
-								{ __(
-									'Maximum 3 projects allowed',
-									'portfolio'
-								) }
-							</p>
+				{ availablePosts.length === 0 && (
+					<p
+						style={ {
+							color: '#cc1818',
+							fontSize: '12px',
+							marginTop: '8px',
+						} }
+					>
+						{ __(
+							'No projects available. Please create some project posts first.',
+							'portfolio'
 						) }
-
-						{ availablePosts.length === 0 && (
-							<p
-								style={ {
-									color: '#cc1818',
-									fontSize: '12px',
-									marginTop: '8px',
-								} }
-							>
-								{ __(
-									'No projects available. Please create some project posts first.',
-									'portfolio'
-								) }
-							</p>
-						) }
-					</BaseControl>
-				</CardBody>
-			</Card>
-		</BlockContainer>
+					</p>
+				) }
+			</BaseControl>
+		</BlockCard>
 	);
 }

@@ -2,9 +2,6 @@ import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
 	FlexBlock,
 	TextControl,
@@ -13,7 +10,7 @@ import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const TextInput = ( { label, value, onChange, placeholder } ) => (
 	<FlexBlock>
@@ -84,63 +81,53 @@ export default function Edit( { attributes, setAttributes } ) {
 	const defaultItem = { number: '', label: '' };
 
 	return (
-		<BlockContainer>
-			<Card style={ { width: '100%' } }>
-				<CardHeader>
-					<h4>{ __( 'Trust Items', 'portfolio' ) }</h4>
-				</CardHeader>
-				<CardBody>
-					<BaseControl
-						id="trust-items"
-						__nextHasNoMarginBottom
-						label={ __( 'Trust Items', 'portfolio' ) }
-						help={ __(
-							'Add up to 3 trust items with numbers and labels',
-							'portfolio'
-						) }
+		<BlockCard title={ __( 'Trust Items', 'portfolio' ) }>
+			<BaseControl
+				id="trust-items"
+				__nextHasNoMarginBottom
+				label={ __( 'Trust Items', 'portfolio' ) }
+				help={ __(
+					'Add up to 3 trust items with numbers and labels',
+					'portfolio'
+				) }
+			>
+				{ trustItems.length > 0 && (
+					<div className="trust-items-list">
+						{ trustItems.map( ( item, index ) => (
+							<TrustItem
+								key={ index }
+								item={ item }
+								index={ index }
+								trustItems={ trustItems }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
+							/>
+						) ) }
+					</div>
+				) }
+
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultItem ) }
+					disabled={ trustItems.length >= 3 }
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Trust Item', 'portfolio' ) }
+				</Button>
+
+				{ trustItems.length >= 3 && (
+					<p
+						style={ {
+							color: '#cc1818',
+							fontSize: '12px',
+							marginTop: '8px',
+						} }
 					>
-						{ trustItems.length > 0 && (
-							<div className="trust-items-list">
-								{ trustItems.map( ( item, index ) => (
-									<TrustItem
-										key={ index }
-										item={ item }
-										index={ index }
-										trustItems={ trustItems }
-										onUpdate={ updateItem }
-										onRemove={ removeItem }
-										onMove={ moveItem }
-									/>
-								) ) }
-							</div>
-						) }
-
-						<Button
-							variant="primary"
-							onClick={ () => addItem( defaultItem ) }
-							disabled={ trustItems.length >= 3 }
-							style={ { marginTop: '16px' } }
-						>
-							{ __( 'Add Trust Item', 'portfolio' ) }
-						</Button>
-
-						{ trustItems.length >= 3 && (
-							<p
-								style={ {
-									color: '#cc1818',
-									fontSize: '12px',
-									marginTop: '8px',
-								} }
-							>
-								{ __(
-									'Maximum 3 trust items allowed',
-									'portfolio'
-								) }
-							</p>
-						) }
-					</BaseControl>
-				</CardBody>
-			</Card>
-		</BlockContainer>
+						{ __( 'Maximum 3 trust items allowed', 'portfolio' ) }
+					</p>
+				) }
+			</BaseControl>
+		</BlockCard>
 	);
 }

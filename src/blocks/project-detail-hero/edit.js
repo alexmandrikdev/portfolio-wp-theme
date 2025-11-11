@@ -2,19 +2,15 @@ import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
 	FlexBlock,
 	TextControl,
 } from '@wordpress/components';
-import { useBlockProps } from '@wordpress/block-editor';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const TextInput = ( { label, value, onChange, placeholder } ) => (
 	<FlexBlock>
@@ -81,77 +77,63 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const defaultMetaItem = { label: '', value: '' };
 
-	const blockProps = useBlockProps();
-
 	return (
-		<BlockContainer>
-			<div { ...blockProps }>
-				<Card style={ { width: '100%' } }>
-					<CardHeader>
-						<h4>{ __( 'Hero Section', 'am-portfolio-theme' ) }</h4>
-					</CardHeader>
-					<CardBody>
-						<BaseControl
-							id="project-detail-hero-live-link"
-							label={ __(
-								'Live Project Link URL',
-								'am-portfolio-theme'
-							) }
-							help={ __(
-								'Enter the URL for the live project.',
-								'am-portfolio-theme'
-							) }
-						>
-							<TextControl
-								value={ liveProjectUrl }
-								onChange={ ( value ) =>
-									setAttributes( {
-										live_project_url: value,
-									} )
-								}
-								placeholder={ __(
-									'https://example.com',
-									'am-portfolio-theme'
-								) }
+		<BlockCard title={ __( 'Hero Section', 'am-portfolio-theme' ) }>
+			<BaseControl
+				id="project-detail-hero-live-link"
+				label={ __( 'Live Project Link URL', 'am-portfolio-theme' ) }
+				help={ __(
+					'Enter the URL for the live project.',
+					'am-portfolio-theme'
+				) }
+			>
+				<TextControl
+					value={ liveProjectUrl }
+					onChange={ ( value ) =>
+						setAttributes( {
+							live_project_url: value,
+						} )
+					}
+					placeholder={ __(
+						'https://example.com',
+						'am-portfolio-theme'
+					) }
+				/>
+			</BaseControl>
+
+			<BaseControl
+				id="project-detail-hero-meta-items"
+				__nextHasNoMarginBottom
+				label={ __( 'Meta Items', 'am-portfolio-theme' ) }
+				help={ __(
+					'Add project meta information (e.g., Role, Timeframe, Category).',
+					'am-portfolio-theme'
+				) }
+			>
+				{ metaItems.length > 0 && (
+					<div className="meta-items-list">
+						{ metaItems.map( ( item, index ) => (
+							<MetaItem
+								key={ index }
+								item={ item }
+								index={ index }
+								metaItems={ metaItems }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
 							/>
-						</BaseControl>
+						) ) }
+					</div>
+				) }
 
-						<BaseControl
-							id="project-detail-hero-meta-items"
-							__nextHasNoMarginBottom
-							label={ __( 'Meta Items', 'am-portfolio-theme' ) }
-							help={ __(
-								'Add project meta information (e.g., Role, Timeframe, Category).',
-								'am-portfolio-theme'
-							) }
-						>
-							{ metaItems.length > 0 && (
-								<div className="meta-items-list">
-									{ metaItems.map( ( item, index ) => (
-										<MetaItem
-											key={ index }
-											item={ item }
-											index={ index }
-											metaItems={ metaItems }
-											onUpdate={ updateItem }
-											onRemove={ removeItem }
-											onMove={ moveItem }
-										/>
-									) ) }
-								</div>
-							) }
-
-							<Button
-								variant="primary"
-								onClick={ () => addItem( defaultMetaItem ) }
-								style={ { marginTop: '16px' } }
-							>
-								{ __( 'Add Meta Item', 'am-portfolio-theme' ) }
-							</Button>
-						</BaseControl>
-					</CardBody>
-				</Card>
-			</div>
-		</BlockContainer>
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultMetaItem ) }
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Meta Item', 'am-portfolio-theme' ) }
+				</Button>
+			</BaseControl>
+		</BlockCard>
 	);
 }

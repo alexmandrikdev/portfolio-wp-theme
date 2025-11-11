@@ -9,12 +9,11 @@ import {
 	FlexBlock,
 	TextControl,
 } from '@wordpress/components';
-import { useBlockProps } from '@wordpress/block-editor';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const TextInput = ( { label, value, onChange, placeholder } ) => (
 	<FlexBlock>
@@ -121,36 +120,20 @@ export default function Edit( { attributes, setAttributes } ) {
 		solution_card_items: solutionCardItems = [],
 	} = attributes;
 
-	const blockProps = useBlockProps();
-
 	return (
-		<BlockContainer>
-			<div { ...blockProps }>
-				<Card style={ { width: '100%' } }>
-					<CardHeader>
-						<h4>
-							{ __( 'Overview Section', 'am-portfolio-theme' ) }
-						</h4>
-					</CardHeader>
-					<CardBody>
-						<CardEditor
-							title={ __( 'Task Card', 'am-portfolio-theme' ) }
-							items={ taskCardItems }
-							setAttributes={ setAttributes }
-							attributeName="task_card_items"
-						/>
-						<CardEditor
-							title={ __(
-								'Solution Card',
-								'am-portfolio-theme'
-							) }
-							items={ solutionCardItems }
-							setAttributes={ setAttributes }
-							attributeName="solution_card_items"
-						/>
-					</CardBody>
-				</Card>
-			</div>
-		</BlockContainer>
+		<BlockCard title={ __( 'Overview Section', 'am-portfolio-theme' ) }>
+			<CardEditor
+				title={ __( 'Task Card', 'am-portfolio-theme' ) }
+				items={ taskCardItems }
+				setAttributes={ setAttributes }
+				attributeName="task_card_items"
+			/>
+			<CardEditor
+				title={ __( 'Solution Card', 'am-portfolio-theme' ) }
+				items={ solutionCardItems }
+				setAttributes={ setAttributes }
+				attributeName="solution_card_items"
+			/>
+		</BlockCard>
 	);
 }

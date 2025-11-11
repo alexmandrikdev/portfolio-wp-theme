@@ -2,24 +2,17 @@ import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
 	FlexBlock,
 	TextControl,
 } from '@wordpress/components';
-import {
-	useBlockProps,
-	MediaUpload,
-	MediaUploadCheck,
-} from '@wordpress/block-editor';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const MediaUploadField = ( { label, value, onChange } ) => {
 	const imageUrl = useSelect(
@@ -168,62 +161,46 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const defaultScreenshotItem = { title: '', media_id: '' };
 
-	const blockProps = useBlockProps();
-
 	return (
-		<BlockContainer>
-			<div { ...blockProps }>
-				<Card style={ { width: '100%' } }>
-					<CardHeader>
-						<h4>
-							{ __(
-								'Project Results - Screenshots',
-								'am-portfolio-theme'
-							) }
-						</h4>
-					</CardHeader>
-					<CardBody>
-						<BaseControl
-							id="project-results-screenshots"
-							__nextHasNoMarginBottom
-							label={ __(
-								'Additional Screenshots',
-								'am-portfolio-theme'
-							) }
-							help={ __(
-								'Add additional screenshots for different views or sections of the project. The full page screenshot is managed as the post featured image.',
-								'am-portfolio-theme'
-							) }
-						>
-							{ screenshots.length > 0 && (
-								<div className="screenshots-list">
-									{ screenshots.map( ( item, index ) => (
-										<ScreenshotItem
-											key={ index }
-											item={ item }
-											index={ index }
-											screenshots={ screenshots }
-											onUpdate={ updateItem }
-											onRemove={ removeItem }
-											onMove={ moveItem }
-										/>
-									) ) }
-								</div>
-							) }
+		<BlockCard
+			title={ __(
+				'Project Results - Screenshots',
+				'am-portfolio-theme'
+			) }
+		>
+			<BaseControl
+				id="project-results-screenshots"
+				__nextHasNoMarginBottom
+				label={ __( 'Additional Screenshots', 'am-portfolio-theme' ) }
+				help={ __(
+					'Add additional screenshots for different views or sections of the project. The full page screenshot is managed as the post featured image.',
+					'am-portfolio-theme'
+				) }
+			>
+				{ screenshots.length > 0 && (
+					<div className="screenshots-list">
+						{ screenshots.map( ( item, index ) => (
+							<ScreenshotItem
+								key={ index }
+								item={ item }
+								index={ index }
+								screenshots={ screenshots }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
+							/>
+						) ) }
+					</div>
+				) }
 
-							<Button
-								variant="primary"
-								onClick={ () =>
-									addItem( defaultScreenshotItem )
-								}
-								style={ { marginTop: '16px' } }
-							>
-								{ __( 'Add Screenshot', 'am-portfolio-theme' ) }
-							</Button>
-						</BaseControl>
-					</CardBody>
-				</Card>
-			</div>
-		</BlockContainer>
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultScreenshotItem ) }
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Screenshot', 'am-portfolio-theme' ) }
+				</Button>
+			</BaseControl>
+		</BlockCard>
 	);
 }

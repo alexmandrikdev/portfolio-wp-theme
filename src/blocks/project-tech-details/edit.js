@@ -2,25 +2,18 @@ import { __ } from '@wordpress/i18n';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	Flex,
 	FlexBlock,
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
-import {
-	useBlockProps,
-	MediaUpload,
-	MediaUploadCheck,
-} from '@wordpress/block-editor';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const MediaUploadField = ( { label, value, onChange } ) => {
 	const imageUrl = useSelect(
@@ -212,62 +205,46 @@ export default function Edit( { attributes, setAttributes } ) {
 		solution: '',
 	};
 
-	const blockProps = useBlockProps();
-
 	return (
-		<BlockContainer>
-			<div { ...blockProps }>
-				<Card style={ { width: '100%' } }>
-					<CardHeader>
-						<h4>
-							{ __(
-								'Project Technical Details',
-								'am-portfolio-theme'
-							) }
-						</h4>
-					</CardHeader>
-					<CardBody>
-						<BaseControl
-							id="project-tech-details-challenges"
-							__nextHasNoMarginBottom
-							label={ __(
-								'Key Challenges & Solutions',
-								'am-portfolio-theme'
-							) }
-							help={ __(
-								'Add key challenges encountered during the project and their solutions.',
-								'am-portfolio-theme'
-							) }
-						>
-							{ challenges.length > 0 && (
-								<div className="challenges-list">
-									{ challenges.map( ( item, index ) => (
-										<ChallengeItem
-											key={ index }
-											item={ item }
-											index={ index }
-											challenges={ challenges }
-											onUpdate={ updateItem }
-											onRemove={ removeItem }
-											onMove={ moveItem }
-										/>
-									) ) }
-								</div>
-							) }
+		<BlockCard
+			title={ __( 'Project Technical Details', 'am-portfolio-theme' ) }
+		>
+			<BaseControl
+				id="project-tech-details-challenges"
+				__nextHasNoMarginBottom
+				label={ __(
+					'Key Challenges & Solutions',
+					'am-portfolio-theme'
+				) }
+				help={ __(
+					'Add key challenges encountered during the project and their solutions.',
+					'am-portfolio-theme'
+				) }
+			>
+				{ challenges.length > 0 && (
+					<div className="challenges-list">
+						{ challenges.map( ( item, index ) => (
+							<ChallengeItem
+								key={ index }
+								item={ item }
+								index={ index }
+								challenges={ challenges }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
+							/>
+						) ) }
+					</div>
+				) }
 
-							<Button
-								variant="primary"
-								onClick={ () =>
-									addItem( defaultChallengeItem )
-								}
-								style={ { marginTop: '16px' } }
-							>
-								{ __( 'Add Challenge', 'am-portfolio-theme' ) }
-							</Button>
-						</BaseControl>
-					</CardBody>
-				</Card>
-			</div>
-		</BlockContainer>
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultChallengeItem ) }
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Challenge', 'am-portfolio-theme' ) }
+				</Button>
+			</BaseControl>
+		</BlockCard>
 	);
 }
