@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/contact-hero",
+	"version": "0.1.0",
+	"title": "Contact Hero",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		},
+		"cta_text": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "contact-hero",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
