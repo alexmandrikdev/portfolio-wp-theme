@@ -1,6 +1,9 @@
 # Project Coding Rules (Non-Obvious Only)
 
--   **Block scaffolding command:** `./node_modules/.bin/wp-create-block [slug] --variant dynamic --no-plugin --target-dir ./src/blocks/[slug] --namespace portfolio --title [title]`. After creation, **remove the "icon" value from the generated `block.json` file**.
+-   **Block scaffolding command:** `./node_modules/.bin/wp-create-block [slug] --variant dynamic --no-plugin --target-dir ./src/blocks/[slug] --namespace portfolio --title [title]`. After creation:
+    -   **Remove the "icon" and "description" values from the generated `block.json` file**
+    -   **Remove the default styles (including the selector) from the generated `style.scss` file**
+    -   **Remove the default styles (excluding the selector) from the generated `editor.scss` file**
 -   Gutenberg block attribute names must use `snake_case`.
 -   For array-type Gutenberg block attributes, define `type: "array"` and `default: []` in `block.json`. The structure of individual items within the array is managed by the `edit.js` component, typically with a repeater. Do not use `items` or `properties` keys directly within the `block.json` attribute definition for array elements.
 -   Gutenberg blocks in `src/blocks` are **automatically registered** by [`inc/class-theme-init.php`](inc/class-theme-init.php). No manual registration is needed.
