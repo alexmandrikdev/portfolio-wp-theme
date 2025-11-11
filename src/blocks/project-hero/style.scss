@@ -1,6 +1,6 @@
 @use "../../scss/shared/mixins" ;
 
-.project-detail-hero {
+.project-hero {
 	padding-top: 55px;
 	padding-bottom: var(--space-xxl);
 
@@ -47,11 +47,11 @@
 		display: flex;
 		gap: var(--space-md);
 		flex-wrap: wrap;
+	}
 
-		.project-detail-hero__action-button {
-			display: flex;
-			align-items: center;
-			gap: 4px;
-		}
+	&__action-button {
+		display: flex;
+		align-items: center;
+		gap: 4px;
 	}
 }

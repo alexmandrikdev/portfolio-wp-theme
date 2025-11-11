@@ -23,5 +23,6 @@ class Polylang_String_Registration {
 		pll_register_string( 'Project Tech Details - Tech Stack Title', 'Tech Stack', self::STRING_GROUP );
 		pll_register_string( 'Project Tech Details - Challenges Title', 'Key Challenges & Solutions', self::STRING_GROUP );
 		pll_register_string( 'Project Tech Details - Solution Title', 'Solution:', self::STRING_GROUP );
+		pll_register_string( 'Project Testimonial - Section Title', 'Client Feedback', self::STRING_GROUP );
 	}
 }
