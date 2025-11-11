@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/services-packages",
+	"version": "0.1.0",
+	"title": "Services Packages",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "services-packages",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"package_cards": {
+			"type": "array",
+			"default": []
+		}
+	}
+}
