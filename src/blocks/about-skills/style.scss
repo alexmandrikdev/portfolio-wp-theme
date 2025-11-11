@@ -1,0 +1,54 @@
+@use "../../scss/shared/mixins";
+
+.about-skills {
+	background: var(--color-background-secondary);
+
+	&__heading {
+		text-align: center;
+		margin-bottom: var(--space-xxl);
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+
+		@include mixins.breakpoint-up("md") {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	&__category {
+		text-align: center;
+	}
+
+	&__icon {
+		width: 60px;
+		height: 60px;
+		background: var(--color-background-primary);
+		border-radius: var(--radius-lg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto var(--space-md);
+		fill: var(--color-text-accent-primary);
+		font-size: 1.5rem;
+		box-shadow: var(--shadow-small);
+		overflow: hidden;
+	}
+
+	&__title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__list {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	&__list-item {
+		margin-bottom: var(--space-xs);
+		color: var(--color-text-secondary);
+	}
+}

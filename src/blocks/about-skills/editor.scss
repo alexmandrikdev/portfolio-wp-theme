@@ -1,0 +1,51 @@
+.wp-block-portfolio-about-skills {
+
+	.skill-categories-list {
+		margin-bottom: 16px;
+	}
+
+	.skill-category-item {
+
+		.components-card__header {
+			background-color: #f8f9f9;
+			border-bottom: 1px solid #e0e0e0;
+		}
+	}
+
+	.skills-list {
+		margin-bottom: 16px;
+	}
+
+	.skill-item {
+		position: relative;
+		padding: 12px;
+		border-radius: 4px;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			background-color: #f6f7f7;
+		}
+	}
+
+	.skill-item-separator {
+		margin: 8px 0;
+		border: none;
+		border-top: 1px dashed #ddd;
+	}
+
+	.components-flex {
+
+		.components-base-control {
+			margin-bottom: 0;
+		}
+	}
+
+	.components-button {
+		margin-top: 8px;
+
+		&.is-tertiary:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	}
+}
