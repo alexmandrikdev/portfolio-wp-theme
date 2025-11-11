@@ -1,0 +1,16 @@
+.services-hero {
+	padding-top: 55px;
+	padding-bottom: var(--space-xxl);
+	text-align: center;
+
+	&__title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__subtitle {
+		max-width: 700px;
+		margin: 0 auto;
+		font-size: 1.125rem;
+		color: var(--color-text-secondary);
+	}
+}

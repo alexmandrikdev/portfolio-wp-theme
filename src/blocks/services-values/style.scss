@@ -1,0 +1,59 @@
+@use "../../scss/shared/mixins";
+
+.services-values {
+	background-color: var(--color-background-secondary);
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+
+		@include mixins.breakpoint-up("md") {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include mixins.breakpoint-up("lg") {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	&__card {
+		padding: var(--space-xl);
+		background: var(--color-background-primary);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-small);
+        
+        @include mixins.breakpoint-down("sm") {
+			padding: var(--space-lg);
+        }
+	}
+
+	&__icon {
+		width: 60px;
+		height: 60px;
+		background: var(--color-accent-primary);
+		border-radius: var(--radius-md);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: var(--space-lg);
+		color: var(--color-background-primary);
+		font-size: 1.5rem;
+
+		&-image {
+            fill: #fff;
+			width: 24px;
+			height: 24px;
+			object-fit: contain;
+		}
+	}
+
+	&__card-title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__card-description {
+		color: var(--color-text-secondary);
+        margin-bottom: 0;
+	}
+}
