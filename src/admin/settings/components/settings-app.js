@@ -4,6 +4,7 @@ import { TabPanel, Notice } from '@wordpress/components';
 import { useSettingsAPI } from '../hooks/use-settings-api';
 import { RecaptchaSettings } from './recaptcha-settings';
 import { GeneralSettings } from './general-settings';
+import { ContactSettings } from './contact-settings';
 
 export function SettingsApp() {
 	const [ , setActiveTab ] = useState( 'general' );
@@ -20,6 +21,11 @@ export function SettingsApp() {
 			title: __( 'reCAPTCHA', 'portfolio' ),
 			className: 'tab-recaptcha',
 		},
+		{
+			name: 'contact',
+			title: __( 'Contact', 'portfolio' ),
+			className: 'tab-contact',
+		},
 	];
 
 	const renderTabContent = ( tabName ) => {
@@ -34,6 +40,13 @@ export function SettingsApp() {
 			case 'recaptcha':
 				return (
 					<RecaptchaSettings
+						settings={ settings }
+						onSave={ saveSettings }
+					/>
+				);
+			case 'contact':
+				return (
+					<ContactSettings
 						settings={ settings }
 						onSave={ saveSettings }
 					/>

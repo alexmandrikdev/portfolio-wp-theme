@@ -1,0 +1,20 @@
+.contact-hero {
+	padding-top: 55px;
+	padding-bottom: var(--space-xxl);
+	text-align: center;
+
+	&__title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__description {
+		max-width: 700px;
+		margin: 0 auto var(--space-xl);
+		font-size: 1.125rem;
+	}
+
+	.btn-primary {
+		font-size: 1.25rem;
+		padding: 20px 40px;
+	}
+}

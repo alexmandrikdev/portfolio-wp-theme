@@ -11,6 +11,9 @@ class Settings_Helper {
 			'recaptcha_site_key'        => '',
 			'recaptcha_secret_key'      => '',
 			'projects_listing_page_ids' => array(),
+			'contact_email'             => '',
+			'github_url'                => '',
+			'linkedin_url'              => '',
 			// Add more default settings here as needed.
 		);
 	}
@@ -43,6 +46,24 @@ class Settings_Helper {
 				'additionalProperties' => array(
 					'type' => 'integer',
 				),
+			),
+			'contact_email'             => array(
+				'description'       => __( 'Contact email address for form submissions and alternative contact methods.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_email',
+			),
+			'github_url'                => array(
+				'description'       => __( 'GitHub profile URL for social media links.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
+			),
+			'linkedin_url'              => array(
+				'description'       => __( 'LinkedIn profile URL for social media links.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
 			),
 			// Add more fields schema here as needed.
 		);
