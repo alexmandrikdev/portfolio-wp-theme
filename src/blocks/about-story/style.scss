@@ -1,0 +1,21 @@
+.about-story {
+	background: var(--color-background-secondary);
+
+	.container {
+		max-width: calc(800px + var(--container-gutter) * 2);
+		text-align: center;
+	}
+
+	&__heading {
+		margin-bottom: var(--space-xl);
+	}
+
+	&__text {
+		font-size: 1.125rem;
+		line-height: 1.7;
+
+		p {
+			margin-bottom: var(--space-md);
+		}
+	}
+}
