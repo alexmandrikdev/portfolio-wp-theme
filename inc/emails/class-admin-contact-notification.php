@@ -101,7 +101,8 @@ class Admin_Contact_Notification {
 	}
 
 	private static function send_immediately( $submission_data, $submission_id ) {
-		$to = get_option( 'admin_email' );
+		$settings = get_option( 'portfolio_theme_settings', array() );
+		$to       = $settings['contact_email'] ?? get_option( 'admin_email' );
 
 		if ( ! $to ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
