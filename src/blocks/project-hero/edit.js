@@ -80,7 +80,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<BlockCard title={ __( 'Hero Section', 'am-portfolio-theme' ) }>
 			<BaseControl
-				id="project-detail-hero-live-link"
+				id="project-hero-live-link"
 				label={ __( 'Live Project Link URL', 'am-portfolio-theme' ) }
 				help={ __(
 					'Enter the URL for the live project.',
@@ -102,7 +102,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			</BaseControl>
 
 			<BaseControl
-				id="project-detail-hero-meta-items"
+				id="project-hero-meta-items"
 				__nextHasNoMarginBottom
 				label={ __( 'Meta Items', 'am-portfolio-theme' ) }
 				help={ __(
