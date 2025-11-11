@@ -14,7 +14,7 @@ import './editor.scss';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 const ServiceItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -105,79 +105,67 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	return (
-		<BlockContainer>
-			<Card style={ { width: '100%' } }>
-				<CardHeader>
-					<h4>{ __( 'Services Section', 'portfolio' ) }</h4>
-				</CardHeader>
-				<CardBody>
-					<Flex direction="column" gap={ 4 }>
-						<TextControl
-							label={ __( 'Section Title', 'portfolio' ) }
-							value={ title }
-							onChange={ ( value ) =>
-								setAttributes( { title: value } )
-							}
-							placeholder={ __(
-								'e.g., Our Services',
-								'portfolio'
-							) }
-						/>
+		<BlockCard title={ __( 'Services Section', 'portfolio' ) }>
+			<Flex direction="column" gap={ 4 }>
+				<TextControl
+					label={ __( 'Section Title', 'portfolio' ) }
+					value={ title }
+					onChange={ ( value ) => setAttributes( { title: value } ) }
+					placeholder={ __( 'e.g., Our Services', 'portfolio' ) }
+				/>
 
-						<BaseControl
-							id="service-items"
-							__nextHasNoMarginBottom
-							label={ __( 'Service Items', 'portfolio' ) }
-							help={ __(
-								'Add up to 3 service items with icons, titles and descriptions',
-								'portfolio'
-							) }
+				<BaseControl
+					id="service-items"
+					__nextHasNoMarginBottom
+					label={ __( 'Service Items', 'portfolio' ) }
+					help={ __(
+						'Add up to 3 service items with icons, titles and descriptions',
+						'portfolio'
+					) }
+				>
+					{ items.length > 0 && (
+						<div className="service-items-list">
+							{ items.map( ( item, index ) => (
+								<ServiceItem
+									key={ index }
+									item={ item }
+									index={ index }
+									items={ items }
+									onUpdate={ updateItem }
+									onRemove={ removeItem }
+									onMove={ moveItem }
+								/>
+							) ) }
+						</div>
+					) }
+
+					<Button
+						variant="primary"
+						onClick={ () => {
+							addItem( defaultItem );
+						} }
+						disabled={ items.length >= 3 }
+						style={ { marginTop: '16px' } }
+					>
+						{ __( 'Add Service Item', 'portfolio' ) }
+					</Button>
+
+					{ items.length >= 3 && (
+						<p
+							style={ {
+								color: '#cc1818',
+								fontSize: '12px',
+								marginTop: '8px',
+							} }
 						>
-							{ items.length > 0 && (
-								<div className="service-items-list">
-									{ items.map( ( item, index ) => (
-										<ServiceItem
-											key={ index }
-											item={ item }
-											index={ index }
-											items={ items }
-											onUpdate={ updateItem }
-											onRemove={ removeItem }
-											onMove={ moveItem }
-										/>
-									) ) }
-								</div>
+							{ __(
+								'Maximum 3 service items allowed',
+								'portfolio'
 							) }
-
-							<Button
-								variant="primary"
-								onClick={ () => {
-									addItem( defaultItem );
-								} }
-								disabled={ items.length >= 3 }
-								style={ { marginTop: '16px' } }
-							>
-								{ __( 'Add Service Item', 'portfolio' ) }
-							</Button>
-
-							{ items.length >= 3 && (
-								<p
-									style={ {
-										color: '#cc1818',
-										fontSize: '12px',
-										marginTop: '8px',
-									} }
-								>
-									{ __(
-										'Maximum 3 service items allowed',
-										'portfolio'
-									) }
-								</p>
-							) }
-						</BaseControl>
-					</Flex>
-				</CardBody>
-			</Card>
-		</BlockContainer>
+						</p>
+					) }
+				</BaseControl>
+			</Flex>
+		</BlockCard>
 	);
 }

@@ -3,9 +3,6 @@ import { trash as trashIcon } from '@wordpress/icons';
 import {
 	BaseControl,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 	ComboboxControl,
 	Flex,
 	FlexBlock,
@@ -13,7 +10,7 @@ import {
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
-import BlockContainer from '../../js/shared/edit/components/block-container';
+import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { menu_items: menuItems = [] } = attributes;
@@ -52,48 +49,39 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	return (
-		<BlockContainer>
-			<Card style={ { width: '100%' } }>
-				<CardHeader>
-					<h4>{ __( 'Header', 'portfolio' ) }</h4>
-				</CardHeader>
-				<CardBody>
-					<BaseControl
-						__nextHasNoMarginBottom
-						label={ __( 'Menu Items', 'portfolio' ) }
-						id="header-menu-items"
-					>
-						{ menuItems.map( ( item, index ) => (
-							<Flex align="center" key={ index }>
-								<FlexBlock>
-									<ComboboxControl
-										key={ index }
-										value={ item }
-										onChange={ ( value ) => {
-											updateMenuItem( index, value );
-										} }
-										options={ menuItemOptions }
-									/>
-								</FlexBlock>
-								<FlexItem>
-									<Button
-										size="small"
-										isDestructive
-										icon={ trashIcon }
-										onClick={ () =>
-											removeMenuItem( index )
-										}
-									></Button>
-								</FlexItem>
-							</Flex>
-						) ) }
+		<BlockCard title={ __( 'Header', 'portfolio' ) }>
+			<BaseControl
+				__nextHasNoMarginBottom
+				label={ __( 'Menu Items', 'portfolio' ) }
+				id="header-menu-items"
+			>
+				{ menuItems.map( ( item, index ) => (
+					<Flex align="center" key={ index }>
+						<FlexBlock>
+							<ComboboxControl
+								key={ index }
+								value={ item }
+								onChange={ ( value ) => {
+									updateMenuItem( index, value );
+								} }
+								options={ menuItemOptions }
+							/>
+						</FlexBlock>
+						<FlexItem>
+							<Button
+								size="small"
+								isDestructive
+								icon={ trashIcon }
+								onClick={ () => removeMenuItem( index ) }
+							></Button>
+						</FlexItem>
+					</Flex>
+				) ) }
 
-						<Button variant="primary" onClick={ addMenuItem }>
-							Add menu item
-						</Button>
-					</BaseControl>
-				</CardBody>
-			</Card>
-		</BlockContainer>
+				<Button variant="primary" onClick={ addMenuItem }>
+					Add menu item
+				</Button>
+			</BaseControl>
+		</BlockCard>
 	);
 }
