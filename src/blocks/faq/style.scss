@@ -1,0 +1,127 @@
+@use "../../scss/shared/mixins";
+
+.faq {
+    background-color: var(--color-background-secondary);
+
+	&__title {
+		text-align: center;
+	}
+
+	&__grid {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	&__item {
+		margin-bottom: var(--space-lg);
+		border: 1px solid var(--color-border-divider);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		background-color: var(--color-background-primary);
+		transition: box-shadow 0.2s ease;
+
+		&:hover {
+			box-shadow: var(--shadow-small);
+		}
+
+		&--active {
+			box-shadow: var(--shadow-medium);
+		}
+	}
+
+	&__question {
+		width: 100%;
+		padding: var(--space-lg);
+		background-color: var(--color-background-primary);
+		font-weight: 600;
+		cursor: pointer;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		transition: background-color 0.2s ease;
+		border: none;
+		color: var(--color-text-primary);
+		font-family: inherit;
+		font-size: 1rem;
+		text-align: left;
+
+		&:hover {
+			background-color: var(--color-hover-overlay);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--color-accent-primary);
+			outline-offset: 2px;
+		}
+	}
+
+	&__question-text {
+		flex: 1;
+		margin-right: var(--space-md);
+	}
+
+	&__toggle {
+		flex-shrink: 0;
+		transition: transform 0.3s ease;
+		color: var(--color-text-secondary);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&--active {
+			transform: rotate(180deg);
+			color: var(--color-text-accent-primary);
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	&__answer {
+		padding: 0 var(--space-lg);
+		max-height: 0;
+		overflow: hidden;
+		transition: 
+			max-height 0.3s ease,
+			padding 0.3s ease;
+		color: var(--color-text-secondary);
+		background-color: var(--color-background-secondary);
+
+		&--active {
+			padding: var(--space-lg);
+			max-height: 500px;
+		}
+	}
+
+	&__answer-content {
+		line-height: 1.6;
+
+		p {
+			margin-bottom: var(--space-sm);
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		a {
+			color: var(--color-accent-primary);
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		strong {
+			font-weight: 600;
+			color: var(--color-text-primary);
+		}
+
+		em {
+			font-style: italic;
+		}
+	}
+}
