@@ -1,0 +1,50 @@
+@use "../../scss/shared/mixins";
+
+.about-hobbies {
+	padding-bottom: var(--space-xxl);
+
+	&__heading {
+		text-align: center;
+		margin-bottom: var(--space-xxl);
+	}
+
+	&__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-xl);
+
+		@include mixins.breakpoint-up("md") {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	&__card {
+		padding: var(--space-xl);
+		background: var(--color-background-secondary);
+		border-radius: var(--radius-lg);
+		text-align: center;
+	}
+
+	&__icon {
+		width: 80px;
+		height: 80px;
+		background: var(--color-accent-primary);
+		border-radius: var(--radius-full);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto var(--space-lg);
+		fill: #fff;
+		font-size: 2rem;
+		overflow: hidden;
+	}
+
+	&__title {
+		margin-bottom: var(--space-md);
+	}
+
+	&__description {
+		color: var(--color-text-secondary);
+		line-height: 1.6;
+	}
+}
