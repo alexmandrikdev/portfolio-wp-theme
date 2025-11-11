@@ -1,0 +1,21 @@
+.contact-alternative-contact {
+	text-align: center;
+	padding: var(--space-xl) 0;
+	background: var(--color-background-secondary);
+
+	&__text {
+		color: var(--color-text-secondary);
+		margin: 0;
+		font-size: 1.125rem;
+	}
+
+	&__email-link {
+		color: var(--color-text-accent-primary);
+		font-weight: 600;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: var(--color-text-primary);
+		}
+	}
+}
