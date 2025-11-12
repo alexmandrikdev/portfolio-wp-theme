@@ -22,7 +22,7 @@ class Contact_Form_Handler {
 		if ( ! wp_verify_nonce( $nonce, 'am_contact_form_nonce' ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Security verification failed.', 'am-portfolio-theme' ),
+					'message' => pll__( 'Security verification failed.' ),
 				),
 				403
 			);
@@ -32,7 +32,7 @@ class Contact_Form_Handler {
 		if ( ! empty( $recaptcha_errors ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Security verification failed.', 'am-portfolio-theme' ),
+					'message' => pll__( 'Security verification failed.' ),
 					'errors'  => $recaptcha_errors,
 				),
 				403
@@ -45,20 +45,30 @@ class Contact_Form_Handler {
 		foreach ( $required_fields as $field ) {
 			if ( empty( $_POST[ $field ] ) ) {
 				/* translators: %s: field name */
-				$errors[ $field ] = sprintf( __( '%s field is required.', 'am-portfolio-theme' ), ucfirst( $field ) );
+				switch ( $field ) {
+					case 'name':
+						$errors[ $field ] = pll__( 'Full name is required' );
+						break;
+					case 'email':
+						$errors[ $field ] = pll__( 'Please enter a valid email address' );
+						break;
+					case 'message':
+						$errors[ $field ] = pll__( 'Message is required' );
+						break;
+				}
 			}
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Will be sanitized with sanitize_email
 		$email = isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '';
 		if ( ! empty( $email ) && ! is_email( $email ) ) {
-			$errors['email'] = __( 'Please provide a valid email address.', 'am-portfolio-theme' );
+			$errors['email'] = pll__( 'Please enter a valid email address' );
 		}
 
 		if ( ! empty( $errors ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Please correct the following errors:', 'am-portfolio-theme' ),
+					'message' => pll__( 'Please review and correct the highlighted fields' ),
 					'errors'  => $errors,
 				),
 				400
@@ -98,7 +108,6 @@ class Contact_Form_Handler {
 
 			wp_send_json_success(
 				array(
-					'message' => __( 'Thank you for your message! We will get back to you soon.', 'am-portfolio-theme' ),
 					'post_id' => $post_id,
 				)
 			);
@@ -106,7 +115,7 @@ class Contact_Form_Handler {
 		} catch ( \Exception $e ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Sorry, there was an error submitting your form. Please try again.', 'am-portfolio-theme' ),
+					'message' => pll__( 'Sorry, there was an error submitting your form. Please try again.' ),
 					'debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? $e->getMessage() : '',
 				),
 				500
@@ -128,7 +137,7 @@ class Contact_Form_Handler {
 		$recaptcha_token = isset( $_POST['recaptcha_token'] ) ? sanitize_text_field( wp_unslash( $_POST['recaptcha_token'] ) ) : '';
 
 		if ( empty( $recaptcha_token ) ) {
-			$errors['recaptcha'] = __( 'reCAPTCHA token is missing.', 'am-portfolio-theme' );
+			$errors['recaptcha'] = pll__( 'Failed to verify reCAPTCHA. Please try again.' );
 			return $errors;
 		}
 
@@ -144,7 +153,7 @@ class Contact_Form_Handler {
 		$verification_response = wp_remote_post( $verification_url, $verification_data );
 
 		if ( is_wp_error( $verification_response ) ) {
-			$errors['recaptcha'] = __( 'Failed to verify reCAPTCHA. Please try again.', 'am-portfolio-theme' );
+			$errors['recaptcha'] = pll__( 'Failed to verify reCAPTCHA. Please try again.' );
 			return $errors;
 		}
 
@@ -152,13 +161,13 @@ class Contact_Form_Handler {
 		$verification_result = json_decode( $verification_body, true );
 
 		if ( ! $verification_result['success'] ) {
-			$errors['recaptcha'] = __( 'reCAPTCHA verification failed. Please try again.', 'am-portfolio-theme' );
+			$errors['recaptcha'] = pll__( 'Failed to verify reCAPTCHA. Please try again.' );
 			return $errors;
 		}
 
 		$score_threshold = apply_filters( 'am_portfolio_recaptcha_score_threshold', 0.5 );
 		if ( isset( $verification_result['score'] ) && $verification_result['score'] < $score_threshold ) {
-			$errors['recaptcha'] = __( 'reCAPTCHA verification failed. Please try again.', 'am-portfolio-theme' );
+			$errors['recaptcha'] = pll__( 'Failed to verify reCAPTCHA. Please try again.' );
 			return $errors;
 		}
 

@@ -10,6 +10,64 @@
 		"html": false,
 		"interactivity": true
 	},
+	"attributes": {
+		"modal_title": {
+			"type": "string",
+			"default": "Let's Start a Conversation"
+		},
+		"modal_description": {
+			"type": "string",
+			"default": "Have a project in mind or want to discuss opportunities? Fill out the form below and I'll get back to you within 24 hours."
+		},
+		"subject_placeholder": {
+			"type": "string",
+			"default": "e.g., Website Redesign Project"
+		},
+		"name_placeholder": {
+			"type": "string",
+			"default": "Your full name"
+		},
+		"email_placeholder": {
+			"type": "string",
+			"default": "name@company.com"
+		},
+		"message_placeholder": {
+			"type": "string",
+			"default": "Tell me about your project goals, timeline, and any specific requirements..."
+		},
+		"cancel_button_text": {
+			"type": "string",
+			"default": "Cancel"
+		},
+		"submit_button_ready_text": {
+			"type": "string",
+			"default": "Send Message"
+		},
+		"submit_button_sending_text": {
+			"type": "string",
+			"default": "Sending..."
+		},
+		"success_title": {
+			"type": "string",
+			"default": "Message Sent Successfully!"
+		},
+		"success_body_large": {
+			"type": "string",
+			"default": "Thank you for reaching out. I've received your message and will review it carefully."
+		},
+		"success_body_small": {
+			"type": "string",
+			"default": "I typically respond within 24 hours. A confirmation has been sent to"
+		},
+		"success_button_text": {
+			"type": "string",
+			"default": "Got It"
+		},
+		"network_error_message": {
+			"type": "string",
+			"default": "Network error occurred. Please try again."
+		}
+	},
 	"textdomain": "contact-form-modal",
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",

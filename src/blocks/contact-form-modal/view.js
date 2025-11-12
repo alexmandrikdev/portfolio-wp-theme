@@ -24,7 +24,9 @@ const { state, actions } = store( 'contactFormModal', {
 			message: '',
 		},
 		get submitButtonText() {
-			return state.isSubmitting ? 'Sending...' : 'Send Message';
+			return state.isSubmitting
+				? state.submitButtonSendingText
+				: state.submitButtonReadyText;
 		},
 	},
 	actions: {
@@ -78,26 +80,27 @@ const { state, actions } = store( 'contactFormModal', {
 
 			// Subject is optional, others are required
 			if ( ! value.trim() && fieldName !== 'subject' ) {
-				let fieldNameLabel;
 				switch ( fieldName ) {
 					case 'name':
-						fieldNameLabel = 'Full name';
+						error = state.nameRequiredError;
 						break;
 					case 'email':
-						fieldNameLabel = 'Email address';
+						error = state.emailRequiredError;
+						break;
+					case 'message':
+						error = state.messageRequiredError;
 						break;
 					default:
-						fieldNameLabel =
+						error = `${
 							fieldName.charAt( 0 ).toUpperCase() +
-							fieldName.slice( 1 );
+							fieldName.slice( 1 )
+						} is required`;
 						break;
 				}
-
-				error = `${ fieldNameLabel } is required`;
 			} else if ( fieldName === 'email' && value.trim() ) {
 				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 				if ( ! emailRegex.test( value ) ) {
-					error = 'Please enter a valid email address';
+					error = state.emailRequiredError;
 				}
 			}
 
@@ -190,8 +193,7 @@ const { state, actions } = store( 'contactFormModal', {
 						state.hasErrors = true;
 					}
 					state.errorMessage =
-						result.data?.message ||
-						'An error occurred while sending your message';
+						result.data?.message || state.validationGenericError;
 
 					// Scroll to first error
 					setTimeout( () => {
@@ -220,9 +222,7 @@ const { state, actions } = store( 'contactFormModal', {
 				console.error( 'Form submission error:', error );
 				state.hasErrors = true;
 
-				state.errorMessage =
-					error.message ||
-					'Network error occurred. Please try again.';
+				state.errorMessage = error.message || state.networkErrorMessage;
 			} finally {
 				state.isSubmitting = false;
 			}
