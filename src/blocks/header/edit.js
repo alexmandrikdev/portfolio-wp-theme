@@ -7,13 +7,14 @@ import {
 	Flex,
 	FlexBlock,
 	FlexItem,
+	TextControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { menu_items: menuItems = [] } = attributes;
+	const { menu_items: menuItems = [], cta_text: ctaText } = attributes;
 
 	const pages =
 		useSelect( ( select ) => {
@@ -50,6 +51,15 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Header', 'portfolio' ) }>
+			<TextControl
+				label={ __( 'CTA Text', 'portfolio' ) }
+				value={ ctaText }
+				onChange={ ( value ) => setAttributes( { cta_text: value } ) }
+				help={ __(
+					'Text displayed in the call-to-action button',
+					'portfolio'
+				) }
+			/>
 			<BaseControl
 				__nextHasNoMarginBottom
 				label={ __( 'Menu Items', 'portfolio' ) }

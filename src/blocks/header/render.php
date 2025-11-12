@@ -1,5 +1,6 @@
 <?php
 	$menu_item_ids = $attributes['menu_items'] ?? array();
+	$cta_text      = $attributes['cta_text'] ?? 'Get a Free Project Estimate';
 ?>
 
 <div 
@@ -67,9 +68,9 @@
 			</div>
 
 			<div class="wp-block-portfolio-header__actions">
-				<button 	
-					data-wp-on--click="actions.openContactFormModal" 
-					class="btn-primary">Get a Free Project Estimate</button>
+				<button
+					data-wp-on--click="actions.openContactFormModal"
+					class="btn-primary"><?php echo esc_html( $cta_text ); ?></button>
 
 				<div class="wp-block-portfolio-header__languages">
 					<?php foreach ( pll_the_languages( array( 'raw' => 1 ) ) as $code => $details ) : ?>
