@@ -33,8 +33,11 @@ This file provides guidance to agents when working with code in this repository.
 -   **Repeater Field Reference:** For repeater fields in Gutenberg blocks, use the `useListManagement` hook pattern from [`src/blocks/project-overview/edit.js`](src/blocks/project-overview/edit.js:65) which provides add, remove, and move functionality for list items.
 -   **RichText Field Reference:** For RichText fields in Gutenberg blocks, use the RichText component pattern from [`src/blocks/services-packages/edit.js`](src/blocks/services-packages/edit.js:255) which demonstrates proper styling, allowed formats, and implementation for rich text editing in block attributes.
 -   **Interactivity API Reference:** When using the Interactivity API in a Gutenberg block, update the block.json file as follows:
+
     -   Add `"interactivity": true` to the `"supports"` property
     -   Change `"viewScript"` to `"viewScriptModule"`
+
+-   **Edit.js File Structure:** When implementing a new `edit.js` file, check existing edit.js files for structure patterns and follow the established conventions from similar blocks.
 
 ## Performance Optimization
 
