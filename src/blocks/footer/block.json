@@ -11,6 +11,53 @@
 	},
 	"textdomain": "footer",
 	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"render": "file:./render.php"
+	"render": "file:./render.php",
+	"attributes": {
+		"personal_name": {
+			"type": "string",
+			"default": ""
+		},
+		"personal_tagline": {
+			"type": "string",
+			"default": ""
+		},
+		"personal_description": {
+			"type": "string",
+			"default": ""
+		},
+		"quick_links_title": {
+			"type": "string",
+			"default": ""
+		},
+		"quick_links": {
+			"type": "array",
+			"default": []
+		},
+		"social_media_title": {
+			"type": "string",
+			"default": ""
+		},
+		"contact_title": {
+			"type": "string",
+			"default": ""
+		},
+		"contact_text": {
+			"type": "string",
+			"default": ""
+		},
+		"contact_cta_text": {
+			"type": "string",
+			"default": ""
+		},
+		"copyright_text": {
+			"type": "string",
+			"default": ""
+		},
+		"footer_note": {
+			"type": "string",
+			"default": ""
+		}
+	}
 }
