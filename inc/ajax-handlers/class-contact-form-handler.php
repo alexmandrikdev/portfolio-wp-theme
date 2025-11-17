@@ -76,11 +76,17 @@ class Contact_Form_Handler {
 		}
 
 		$submission_data = array(
-			'name'    => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
-			'email'   => sanitize_email( wp_unslash( $email ) ),
-			'subject' => isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '',
-			'message' => isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '',
+			'name'     => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+			'email'    => sanitize_email( wp_unslash( $email ) ),
+			'subject'  => isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '',
+			'message'  => isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '',
+			'timezone' => isset( $_POST['timezone'] ) ? $this->sanitize_timezone( sanitize_text_field( wp_unslash( $_POST['timezone'] ) ) ) : '',
 		);
+
+		$current_language = '';
+		if ( function_exists( 'pll_current_language' ) ) {
+			$current_language = pll_current_language();
+		}
 
 		$post_data = array(
 			'post_title'  => $this->generate_submission_title( $submission_data ),
@@ -91,8 +97,10 @@ class Contact_Form_Handler {
 				'_contact_submission_name'       => $submission_data['name'],
 				'_contact_submission_email'      => $submission_data['email'],
 				'_contact_submission_message'    => $submission_data['message'],
+				'_contact_submission_timezone'   => $submission_data['timezone'],
 				'_contact_submission_ip'         => $this->get_client_ip(),
 				'_contact_submission_user_agent' => $this->get_user_agent(),
+				'_contant_submission_language'   => $current_language,
 			),
 		);
 
@@ -103,8 +111,8 @@ class Contact_Form_Handler {
 				throw new \Exception( $post_id->get_error_message() );
 			}
 
-			Admin_Contact_Notification::schedule( $submission_data, $post_id );
-			Sender_Confirmation_Email::schedule( $submission_data, $post_id );
+			Admin_Contact_Notification::schedule( $post_id );
+			Sender_Confirmation_Email::schedule( $post_id );
 
 			wp_send_json_success(
 				array(
@@ -217,5 +225,25 @@ class Contact_Form_Handler {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Will be sanitized with sanitize_text_field
 		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : '';
 		return sanitize_text_field( $user_agent );
+	}
+
+	/**
+	 * Sanitize and validate timezone string.
+	 *
+	 * @param string $timezone Timezone string to validate.
+	 * @return string Valid timezone string or empty string if invalid.
+	 */
+	private function sanitize_timezone( $timezone ) {
+		if ( empty( $timezone ) ) {
+			return '';
+		}
+
+		// Check if it's a valid timezone identifier.
+		if ( in_array( $timezone, timezone_identifiers_list(), true ) ) {
+			return $timezone;
+		}
+
+		// If not a valid timezone identifier, return empty string.
+		return '';
 	}
 }

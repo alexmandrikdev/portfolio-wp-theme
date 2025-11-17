@@ -166,6 +166,11 @@ const { state, actions } = store( 'contactFormModal', {
 					formData.append( 'recaptcha_token', recaptchaToken );
 				}
 
+				// Detect and add user timezone
+				const timezone =
+					Intl.DateTimeFormat().resolvedOptions().timeZone;
+				formData.append( 'timezone', timezone );
+
 				// Add all form fields
 				Object.entries( state.formData ).forEach(
 					( [ key, value ] ) => {
