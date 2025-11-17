@@ -3,7 +3,18 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php echo esc_html( __( 'Thank You for Your Message', 'am-portfolio-theme' ) ); ?></title>
+	<title><?php echo esc_html( pll_translate_string( 'Thank You for Reaching Out', $data['language'] ) ); ?></title>
+	
+	<?php
+	$allowed_email_html = array(
+		'strong' => array(),
+		'em'     => array(),
+		'b'      => array(),
+		'i'      => array(),
+		'u'      => array(),
+		'br'     => array(),
+	);
+	?>
 	
 	<?php get_template_part( 'templates/emails/partials/styles' ); ?>
 	
@@ -152,7 +163,7 @@
 <body>
 	<div class="email-container">
 		<div class="email-header">
-			<h1><?php echo esc_html( __( 'Thank You for Reaching Out', 'am-portfolio-theme' ) ); ?></h1>
+			<h1><?php echo esc_html( pll_translate_string( 'Thank You for Reaching Out', $data['language'] ) ); ?></h1>
 		</div>
 
 		<div class="email-body">
@@ -161,55 +172,76 @@
 			</div>
 
 			<div class="thank-you-message">
-				<h2><?php echo esc_html( __( 'Your Message Has Been Received', 'am-portfolio-theme' ) ); ?></h2>
+				<h2><?php echo esc_html( pll_translate_string( 'Your Message Has Been Received', $data['language'] ) ); ?></h2>
 				<p>
-					<?php echo esc_html( __( "I've received your contact form submission and will review it carefully. Here's a copy of the information you provided:", 'am-portfolio-theme' ) ); ?>
+					<?php echo wp_kses( pll_translate_string( 'I\'ve received your contact form submission and will review it carefully.', $data['language'] ), $allowed_email_html ); ?>
+				</p>
+
+				<p>
+					<?php
+					echo esc_html( pll_translate_string( 'Here\'s a summary of the information you provided:', $data['language'] ) );
+					?>
 				</p>
 			</div>
 
 			<div class="timestamp">
 				<?php
-				printf(
-					/* translators: 1: date, 2: time */
-					esc_html__( 'Submitted on %1$s at %2$s', 'am-portfolio-theme' ),
-					esc_html( $data['date'] ),
-					esc_html( $data['time'] )
+				$timestamp_string = pll_translate_string( 'Submitted on [date] at [time]', $data['language'] );
+				$timestamp_string = str_replace(
+					array( '[date]', '[time]' ),
+					array( $data['date'], $data['time'] ),
+					$timestamp_string
 				);
+				echo esc_html( $timestamp_string );
 				?>
 			</div>
 
 			<?php
-				set_query_var( 'email_data', $data );
+				$email_data = array_merge(
+					$data,
+					array(
+						'show_language' => false,
+						'show_timezone' => false,
+					)
+				);
+				set_query_var( 'email_data', $email_data );
 				get_template_part( 'templates/emails/partials/submission-details' );
-			?>
+				?>
 
 			<div class="next-steps">
-				<h3><?php echo esc_html( __( 'What Happens Next?', 'am-portfolio-theme' ) ); ?></h3>
+				<h3><?php echo esc_html( pll_translate_string( 'What Happens Next?', $data['language'] ) ); ?></h3>
 				<ul>
-					<li><?php echo esc_html( __( "I'll review your project requirements within 24 hours", 'am-portfolio-theme' ) ); ?></li>
+					<li><?php echo wp_kses( pll_translate_string( 'I\'ll review your project requirements within 24 hours', $data['language'] ), $allowed_email_html ); ?></li>
 					<li>
-						<?php echo esc_html( __( "You'll receive a personalized response with initial thoughts and questions", 'am-portfolio-theme' ) ); ?>
+						<?php echo wp_kses( pll_translate_string( 'You\'ll receive a personalized response with initial thoughts and questions', $data['language'] ), $allowed_email_html ); ?>
 					</li>
 					<li>
-						<?php echo esc_html( __( 'We may schedule a call to discuss your project in more detail', 'am-portfolio-theme' ) ); ?>
+						<?php echo wp_kses( pll_translate_string( 'We may schedule a call to discuss your project in more detail', $data['language'] ), $allowed_email_html ); ?>
 					</li>
 					<li>
-						<?php echo esc_html( __( "I'll provide a project proposal if we decide to move forward", 'am-portfolio-theme' ) ); ?>
+						<?php echo wp_kses( pll_translate_string( 'I\'ll provide a project proposal if we decide to move forward', $data['language'] ), $allowed_email_html ); ?>
 					</li>
 				</ul>
 			</div>
 
 			<div class="contact-info">
 				<p>
-					<?php echo esc_html( __( 'If you have any additional questions, feel free to reply directly to this email.', 'am-portfolio-theme' ) ); ?>
+					<?php
+					echo wp_kses(
+						pll_translate_string( 'I\'m excited to learn more about your project and explore how we can bring your vision to life with high-performance web solutions.', $data['language'] ),
+						$allowed_email_html
+					);
+					?>
 				</p>
 				<p>
-					<?php echo esc_html( __( 'Best regards,', 'am-portfolio-theme' ) ); ?><br />
-					<strong><?php echo esc_html( $data['your_name'] ); ?></strong>
+					<?php echo wp_kses( pll_translate_string( 'If you have any additional questions, feel free to reply directly to this email.', $data['language'] ), $allowed_email_html ); ?>
+				</p>
+				<p>
+					<?php echo wp_kses( str_replace( '[name]', $data['your_name'], pll_translate_string( 'Best regards,', $data['language'] ) ), $allowed_email_html ); ?><br />
 				</p>
 				<p>
 					<a href="<?php echo esc_url( $data['portfolio_url'] ); ?>" class="portfolio-link">
-						<?php echo esc_html( __( 'View My Portfolio', 'am-portfolio-theme' ) ); ?>
+						<?php echo esc_html( pll_translate_string( 'View My Portfolio', $data['language'] ) ); ?>
 					</a>
 				</p>
 			</div>
@@ -217,10 +249,7 @@
 
 		<div class="email-footer">
 			<p>
-				<?php echo esc_html( __( 'This is an automated confirmation of your contact form submission.', 'am-portfolio-theme' ) ); ?>
-			</p>
-			<p>
-				<?php echo esc_html( __( 'Please do not reply to this email if you need to make changes to your submission.', 'am-portfolio-theme' ) ); ?>
+				<?php echo wp_kses( pll_translate_string( 'This is an automated confirmation of your contact form submission.', $data['language'] ), $allowed_email_html ); ?>
 			</p>
 		</div>
 	</div>
