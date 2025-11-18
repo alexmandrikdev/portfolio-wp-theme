@@ -6,6 +6,52 @@
 	"title": "Projects Page Project Listing Section",
 	"category": "widgets",
 	"example": {},
+	"attributes": {
+		"filter_toggle_text": {
+			"type": "string",
+			"default": "Filters"
+		},
+		"filter_title": {
+			"type": "string",
+			"default": "Filter projects"
+		},
+		"project_type_title": {
+			"type": "string",
+			"default": "Project Type"
+		},
+		"project_type_description": {
+			"type": "string",
+			"default": "Select one project type"
+		},
+		"all_types_label": {
+			"type": "string",
+			"default": "All Types"
+		},
+		"technologies_title": {
+			"type": "string",
+			"default": "Technologies"
+		},
+		"clear_all_label": {
+			"type": "string",
+			"default": "Clear all"
+		},
+		"technologies_description": {
+			"type": "string",
+			"default": "Select multiple technologies"
+		},
+		"apply_filters_label": {
+			"type": "string",
+			"default": "Apply Filters"
+		},
+		"no_results_title": {
+			"type": "string",
+			"default": "No projects found"
+		},
+		"no_results_description": {
+			"type": "string",
+			"default": "We couldn't find any projects matching your current filters. Try adjusting your selection or [reset button: reset all filters] to see all projects."
+		}
+	},
 	"supports": {
 		"html": false,
 		"interactivity": true
