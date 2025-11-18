@@ -64,9 +64,16 @@
 			</div>
 
 			<?php
-				set_query_var( 'email_data', $data );
+				$email_data = array_merge(
+					$data,
+					array(
+						'show_language' => true,
+						'show_timezone' => true,
+					)
+				);
+				set_query_var( 'email_data', $email_data );
 				get_template_part( 'templates/emails/partials/submission-details' );
-			?>
+				?>
 
 			<?php if ( ! empty( $data['admin_url'] ) ) : ?>
 				<div style="text-align: center; margin-top: 32px">

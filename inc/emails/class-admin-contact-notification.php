@@ -32,7 +32,9 @@ class Admin_Contact_Notification {
 			'message'       => $this->submission_data['message'] ? Markdown_Helper::parse( $this->submission_data['message'] ) : '',
 			'date'          => date_i18n( get_option( 'date_format' ), $current_timestamp ),
 			'time'          => date_i18n( get_option( 'time_format' ), $current_timestamp ),
+			'timezone'      => $this->submission_data['timezone'] ?? '',
 			'admin_url'     => $this->get_admin_submission_url(),
+			'language'      => $this->submission_data['language'] ?? '',
 		);
 	}
 
@@ -65,18 +67,16 @@ class Admin_Contact_Notification {
 		return $notification->render();
 	}
 
-	public static function schedule( $submission_data, $submission_id ) {
+	public static function schedule( $submission_id ) {
 		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
-			return self::send_immediately( $submission_data, $submission_id );
+			return self::send_immediately( $submission_id );
 		}
 
 		$args = array(
-			'submission_data' => $submission_data,
-			'submission_id'   => $submission_id,
-			'email_type'      => 'admin_notification',
+			'submission_id' => $submission_id,
 		);
 
-		$args = apply_filters( 'am_portfolio_admin_notification_schedule_args', $args, $submission_data, $submission_id );
+		$args = apply_filters( 'am_portfolio_admin_notification_schedule_args', $args, $submission_id );
 
 		as_enqueue_async_action(
 			self::SCHEDULED_ACTION_HOOK,
@@ -88,19 +88,40 @@ class Admin_Contact_Notification {
 	}
 
 	public static function handle_scheduled_send( $args ) {
-		$submission_data = $args['submission_data'] ?? array();
-		$submission_id   = $args['submission_id'] ?? 0;
+		$submission_id = $args['submission_id'] ?? 0;
 
-		if ( empty( $submission_data ) || ! $submission_id ) {
+		if ( ! $submission_id ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Admin_Contact_Notification: Invalid scheduling data' );
+			error_log( 'Admin_Contact_Notification: Invalid submission ID' );
 			return false;
 		}
 
-		return self::send_immediately( $submission_data, $submission_id );
+		return self::send_immediately( $submission_id );
 	}
 
-	private static function send_immediately( $submission_data, $submission_id ) {
+	private static function get_submission_data( $submission_id ) {
+		$language = get_post_meta( $submission_id, '_contant_submission_language', true );
+
+		$submission_data = array(
+			'name'     => get_post_meta( $submission_id, '_contact_submission_name', true ),
+			'email'    => get_post_meta( $submission_id, '_contact_submission_email', true ),
+			'subject'  => get_post_meta( $submission_id, '_contact_submission_subject', true ),
+			'message'  => get_post_meta( $submission_id, '_contact_submission_message', true ),
+			'timezone' => get_post_meta( $submission_id, '_contact_submission_timezone', true ),
+			'language' => $language ? $language : pll_default_language(),
+		);
+
+		return $submission_data;
+	}
+
+	private static function send_immediately( $submission_id ) {
+		$submission_data = self::get_submission_data( $submission_id );
+		if ( empty( $submission_data ) ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( 'Admin_Contact_Notification: Could not load submission data for ID: ' . $submission_id );
+			return false;
+		}
+
 		$settings = get_option( 'portfolio_theme_settings', array() );
 		$to       = $settings['contact_email'] ?? get_option( 'admin_email' );
 
@@ -122,7 +143,7 @@ class Admin_Contact_Notification {
 			$site_name = get_bloginfo( 'name' );
 			$headers   = array(
 				'Content-Type: text/html; charset=UTF-8',
-				'From: ' . $site_name . ' <' . $to . '>',
+				'From: ' . $site_name . ' <portfolio@alexmandrik.dev>',
 				'Reply-To: ' . $submission_data['name'] . ' <' . $submission_data['email'] . '>',
 			);
 

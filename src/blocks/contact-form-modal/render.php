@@ -5,8 +5,16 @@ $recaptcha_site_key = $settings['recaptcha_site_key'] ?? '';
 wp_interactivity_state(
 	'contactFormModal',
 	array(
-		'nonce'   => wp_create_nonce( 'am_contact_form_nonce' ),
-		'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+		'nonce'                   => wp_create_nonce( 'am_contact_form_nonce' ),
+		'ajaxUrl'                 => admin_url( 'admin-ajax.php' ),
+		'submitButtonText'        => esc_html( $attributes['submit_button_ready_text'] ?? 'Send Message' ),
+		'submitButtonReadyText'   => esc_html( $attributes['submit_button_ready_text'] ?? 'Send Message' ),
+		'submitButtonSendingText' => esc_html( $attributes['submit_button_sending_text'] ?? 'Sending...' ),
+		'nameRequiredError'       => pll__( 'Full name is required' ),
+		'emailRequiredError'      => pll__( 'Please enter a valid email address' ),
+		'messageRequiredError'    => pll__( 'Message is required' ),
+		'validationGenericError'  => pll__( 'Sorry, there was an error submitting your form. Please try again.' ),
+		'networkErrorMessage'     => esc_html( $attributes['network_error_message'] ?? 'Network error occurred. Please try again.' ),
 	)
 );
 ?>
@@ -29,15 +37,15 @@ wp_interactivity_state(
 			id="contactForm"
 		>
 			<div class="modal__header">
-				<h2>Let's Start a Conversation</h2>
+				<h2><?php echo esc_html( $attributes['modal_title'] ?? "Let's Start a Conversation" ); ?></h2>
 				<p>
-					Have a project in mind or want to discuss opportunities? Fill out the form below and I'll get back to you within 24 hours.
+					<?php echo esc_html( $attributes['modal_description'] ?? "Have a project in mind or want to discuss opportunities? Fill out the form below and I'll get back to you within 24 hours." ); ?>
 				</p>
 			</div>
 
 			<form class="form">
 				<div class="form__group">
-					<label class="form__label" for="subject">Subject</label>
+					<label class="form__label" for="subject"><?php pll_e( 'Subject' ); ?></label>
 					<input
 						type="text"
 						class="form__input"
@@ -47,7 +55,7 @@ wp_interactivity_state(
 						data-wp-on--input="actions.updateFormField"
 						data-wp-on--change="actions.updateFormField"
 						data-wp-class--form__input--invalid="state.fieldErrors.subject"
-						placeholder="e.g., Website Redesign Project"
+						placeholder="<?php echo esc_attr( $attributes['subject_placeholder'] ?? 'e.g., Website Redesign Project' ); ?>"
 					/>
 					<div 
 						class="form__field-error" 
@@ -59,7 +67,7 @@ wp_interactivity_state(
 
 				<div class="form__row">
 					<div class="form__group">
-						<label class="form__label" for="name">Full Name</label>
+						<label class="form__label" for="name"><?php pll_e( 'Full Name' ); ?></label>
 						<input
 							type="text"
 							class="form__input"
@@ -69,7 +77,7 @@ wp_interactivity_state(
 							data-wp-on--input="actions.updateFormField"
 							data-wp-on--change="actions.updateFormField"
 							data-wp-class--form__input--invalid="state.fieldErrors.name"
-							placeholder="Your full name"
+							placeholder="<?php echo esc_attr( $attributes['name_placeholder'] ?? 'Your full name' ); ?>"
 						/>
 						<div 
 							class="form__field-error" 
@@ -80,7 +88,7 @@ wp_interactivity_state(
 					</div>
 
 					<div class="form__group">
-						<label class="form__label" for="email">Email</label>
+						<label class="form__label" for="email"><?php pll_e( 'Email' ); ?></label>
 						<input
 							type="email"
 							class="form__input"
@@ -90,7 +98,7 @@ wp_interactivity_state(
 							data-wp-on--input="actions.updateFormField"
 							data-wp-on--change="actions.updateFormField"
 							data-wp-class--form__input--invalid="state.fieldErrors.email"
-							placeholder="name@company.com"
+							placeholder="<?php echo esc_attr( $attributes['email_placeholder'] ?? 'name@company.com' ); ?>"
 						/>
 						<div 
 							class="form__field-error" 
@@ -102,7 +110,7 @@ wp_interactivity_state(
 				</div>
 
 				<div class="form__group">
-					<label class="form__label" for="message">Message</label>
+					<label class="form__label" for="message"><?php pll_e( 'Message' ); ?></label>
 					<textarea
 						class="form__textarea"
 						id="message"
@@ -111,7 +119,7 @@ wp_interactivity_state(
 						data-wp-on--input="actions.updateFormField"
 						data-wp-on--change="actions.updateFormField"
 						data-wp-class--form__textarea--invalid="state.fieldErrors.message"
-						placeholder="Tell me about your project goals, timeline, and any specific requirements..."
+						placeholder="<?php echo esc_attr( $attributes['message_placeholder'] ?? 'Tell me about your project goals, timeline, and any specific requirements...' ); ?>"
 						rows="4"
 					></textarea>
 					<div 
@@ -137,7 +145,7 @@ wp_interactivity_state(
 					data-wp-on--click="actions.closeModal"
 					data-wp-bind--disabled="state.isSubmitting"
 				>
-					Cancel
+					<?php echo esc_html( $attributes['cancel_button_text'] ?? 'Cancel' ); ?>
 				</button>
 				<button 
 					class="btn-primary <?php echo ! empty( $recaptcha_site_key ) ? 'g-recaptcha' : ''; ?>" 
@@ -162,19 +170,22 @@ wp_interactivity_state(
 		>
 			<div class="success-message">
 				<div class="success-message__icon">✓</div>
-				<h2>Message Sent Successfully!</h2>
+				<h2><?php echo esc_html( $attributes['success_title'] ?? 'Message Sent Successfully!' ); ?></h2>
 				<p class="success-message__body-large">
-					Thank you for reaching out. I've received your message and will review it carefully.
+					<?php echo esc_html( $attributes['success_body_large'] ?? "Thank you for reaching out. I've received your message and will review it carefully." ); ?>
 				</p>
 				<p>
-					I typically respond within 24 hours. A confirmation has been sent to
-					<span data-wp-text="state.formData.email"></span>.
+					<?php
+					$success_body_small = $attributes['success_body_small'] ?? 'I typically respond within 24 hours. A confirmation has been sent to [email].';
+					$success_body_small = str_replace( '[email]', '<span data-wp-text="state.formData.email"></span>', esc_html( $success_body_small ) );
+					echo wp_kses_post( $success_body_small );
+					?>
 				</p>
-				<button 
-					class="btn-primary" 
+				<button
+					class="btn-primary"
 					data-wp-on--click="actions.closeModal"
 				>
-					Got It
+					<?php echo esc_html( $attributes['success_button_text'] ?? 'Got It' ); ?>
 				</button>
 			</div>
 		</div>

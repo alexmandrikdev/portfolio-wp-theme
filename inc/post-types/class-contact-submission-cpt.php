@@ -62,11 +62,12 @@ class Contact_Submission_CPT {
 
 	public function set_custom_columns( $columns ) {
 		unset( $columns['date'] );
-		$columns['title']   = __( 'Title', 'am-portfolio-theme' );
-		$columns['subject'] = __( 'Subject', 'am-portfolio-theme' );
-		$columns['name']    = __( 'From', 'am-portfolio-theme' );
-		$columns['email']   = __( 'Email', 'am-portfolio-theme' );
-		$columns['date']    = __( 'Date', 'am-portfolio-theme' );
+		$columns['title']    = __( 'Title', 'am-portfolio-theme' );
+		$columns['subject']  = __( 'Subject', 'am-portfolio-theme' );
+		$columns['name']     = __( 'From', 'am-portfolio-theme' );
+		$columns['email']    = __( 'Email', 'am-portfolio-theme' );
+		$columns['language'] = __( 'Language', 'am-portfolio-theme' );
+		$columns['date']     = __( 'Date', 'am-portfolio-theme' );
 		return $columns;
 	}
 
@@ -80,6 +81,14 @@ class Contact_Submission_CPT {
 				break;
 			case 'email':
 				echo esc_html( get_post_meta( $post_id, '_contact_submission_email', true ) );
+				break;
+			case 'language':
+				$language = get_post_meta( $post_id, '_contant_submission_language', true );
+				if ( ! empty( $language ) ) {
+					echo esc_html( $language );
+				} else {
+					echo '<span aria-hidden="true">—</span><span class="screen-reader-text">' . esc_html__( 'Not specified', 'am-portfolio-theme' ) . '</span>';
+				}
 				break;
 		}
 	}
@@ -96,10 +105,14 @@ class Contact_Submission_CPT {
 	}
 
 	public function display_contact_submission_meta_box( $post ) {
-		$name    = get_post_meta( $post->ID, '_contact_submission_name', true );
-		$email   = get_post_meta( $post->ID, '_contact_submission_email', true );
-		$subject = get_post_meta( $post->ID, '_contact_submission_subject', true );
-		$message = get_post_meta( $post->ID, '_contact_submission_message', true );
+		$name       = get_post_meta( $post->ID, '_contact_submission_name', true );
+		$email      = get_post_meta( $post->ID, '_contact_submission_email', true );
+		$subject    = get_post_meta( $post->ID, '_contact_submission_subject', true );
+		$message    = get_post_meta( $post->ID, '_contact_submission_message', true );
+		$timezone   = get_post_meta( $post->ID, '_contact_submission_timezone', true );
+		$language   = get_post_meta( $post->ID, '_contant_submission_language', true );
+		$ip_address = get_post_meta( $post->ID, '_contact_submission_ip', true );
+		$user_agent = get_post_meta( $post->ID, '_contact_submission_user_agent', true );
 
 		$rendered_message = Markdown_Helper::parse( $message );
 
@@ -149,6 +162,54 @@ class Contact_Submission_CPT {
 			<div class="field message">
 				<label for="contact_submission_message"><?php esc_html_e( 'Message', 'am-portfolio-theme' ); ?></label>
 				<div class="value"><?php echo wp_kses_post( $rendered_message ); ?></div>
+			</div>
+
+			<div class="field timezone">
+				<label for="contact_submission_timezone"><?php esc_html_e( 'Timezone', 'am-portfolio-theme' ); ?></label>
+				<div class="value">
+					<?php if ( ! empty( $timezone ) ) : ?>
+						<?php echo esc_html( $timezone ); ?>
+					<?php else : ?>
+						<span aria-hidden="true">—</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'Not specified', 'am-portfolio-theme' ); ?></span>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<div class="field language">
+				<label for="contact_submission_language"><?php esc_html_e( 'Language', 'am-portfolio-theme' ); ?></label>
+				<div class="value">
+					<?php if ( ! empty( $language ) ) : ?>
+						<?php echo esc_html( $language ); ?>
+					<?php else : ?>
+						<span aria-hidden="true">—</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'Not specified', 'am-portfolio-theme' ); ?></span>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<div class="field ip-address">
+				<label for="contact_submission_ip"><?php esc_html_e( 'IP Address', 'am-portfolio-theme' ); ?></label>
+				<div class="value">
+					<?php if ( ! empty( $ip_address ) ) : ?>
+						<?php echo esc_html( $ip_address ); ?>
+					<?php else : ?>
+						<span aria-hidden="true">—</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'Not recorded', 'am-portfolio-theme' ); ?></span>
+					<?php endif; ?>
+				</div>
+			</div>
+
+			<div class="field user-agent">
+				<label for="contact_submission_user_agent"><?php esc_html_e( 'User Agent', 'am-portfolio-theme' ); ?></label>
+				<div class="value">
+					<?php if ( ! empty( $user_agent ) ) : ?>
+						<code><?php echo esc_html( $user_agent ); ?></code>
+					<?php else : ?>
+						<span aria-hidden="true">—</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'Not recorded', 'am-portfolio-theme' ); ?></span>
+					<?php endif; ?>
+				</div>
 			</div>
 		</div>
 		<?php
