@@ -10,14 +10,7 @@ use AMPortfolioTheme\Components\Project_Card_Data_Loader;
 		</h2>
 
 		<?php
-		$post_ids = array_map(
-			function ( $item ) {
-				return $item['post_id'];
-			},
-			$attributes['post_ids']
-		);
-
-		$projects_data = Project_Card_Data_Loader::load_project_cards_data( $post_ids );
+		$projects_data = Project_Card_Data_Loader::load_project_cards_data( limit: 3 );
 
 		$post_count = count( $projects_data );
 		$grid_class = 'projects-section__grid' . ( 0 !== $post_count % 2 ? ' projects-section__grid--odd' : '' );

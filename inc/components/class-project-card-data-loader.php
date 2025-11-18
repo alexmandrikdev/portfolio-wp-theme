@@ -14,8 +14,12 @@ defined( 'ABSPATH' ) || exit;
 
 class Project_Card_Data_Loader {
 
-	public static function load_project_cards_data( array $post_ids = array(), bool $load_types = false ): array {
-		$posts_data        = self::load_projects_base_data( $post_ids );
+	public static function load_project_cards_data(
+		array $post_ids = array(),
+		bool $load_types = false,
+		int $limit = 0
+	): array {
+		$posts_data        = self::load_projects_base_data( $post_ids, $limit );
 		$thumbnails_data   = self::load_projects_thumbnails_data( $post_ids );
 		$technologies_data = self::load_projects_technologies_data( $post_ids );
 
@@ -42,7 +46,10 @@ class Project_Card_Data_Loader {
 		return $result;
 	}
 
-	private static function load_projects_base_data( array $post_ids = array() ): array {
+	private static function load_projects_base_data(
+		array $post_ids = array(),
+		int $limit = 0
+	): array {
 		global $wpdb;
 
 		$base_query = "SELECT p.ID, p.post_title, p.post_excerpt, p.post_name,
@@ -66,7 +73,11 @@ class Project_Card_Data_Loader {
 
 		$query = $wpdb->prepare( $query, $parameters );
 
-		$query .= ' ORDER BY p.post_date DESC';
+		$query .= ' ORDER BY p.menu_order';
+
+		if ( $limit > 0 ) {
+			$query .= " LIMIT {$limit}";
+		}
 
 		$results = $wpdb->get_results( $query, OBJECT_K );
 

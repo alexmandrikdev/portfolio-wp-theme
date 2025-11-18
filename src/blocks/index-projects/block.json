@@ -13,10 +13,6 @@
 		"title": {
 			"type": "string",
 			"default": ""
-		},
-		"post_ids": {
-			"type": "array",
-			"default": []
 		}
 	},
 	"textdomain": "index-projects",
