@@ -26,6 +26,10 @@
         fill: var(--color-accent-primary);
 		font-size: 2rem;
 	}
+
+	&__highlighted-content {
+		margin-bottom: var(--space-md);
+	}
 	
 	&__highlighted-content, &__design-content {
 		color: var(--color-text-secondary);

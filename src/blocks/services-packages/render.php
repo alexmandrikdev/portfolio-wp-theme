@@ -36,14 +36,16 @@ if ( ! empty( $media_ids ) ) {
 			<div class="services-packages__grid">
 				<?php foreach ( $package_cards as $index => $package ) : ?>
 					<?php
-					$is_featured       = $package['is_featured'] ?? false;
-					$icon_id           = $package['icon'] ?? 0;
-					$package_title     = $package['title'] ?? '';
-					$description       = $package['description'] ?? '';
-					$highlighted_value = $package['highlighted_value'] ?? '';
-					$design_approach   = $package['design_approach'] ?? '';
-					$features          = $package['features'] ?? array();
-					$button_text       = $package['button_text'] ?? '';
+					$is_featured             = $package['is_featured'] ?? false;
+					$icon_id                 = $package['icon'] ?? 0;
+					$package_title           = $package['title'] ?? '';
+					$description             = $package['description'] ?? '';
+					$highlighted_value       = $package['highlighted_value'] ?? '';
+					$highlighted_value_title = $package['highlighted_value_title'] ?? '';
+					$design_approach         = $package['design_approach'] ?? '';
+					$design_approach_title   = $package['design_approach_title'] ?? '';
+					$features                = $package['features'] ?? array();
+					$button_text             = $package['button_text'] ?? '';
 
 					$icon_data = $icon_id && isset( $media_data[ $icon_id ] ) ? $media_data[ $icon_id ] : null;
 
@@ -84,7 +86,9 @@ if ( ! empty( $media_ids ) ) {
 						
 						<?php if ( ! empty( $highlighted_value ) ) : ?>
 							<div class="services-packages__highlighted-value">
-								<h4 class="services-packages__highlighted-title"><?php esc_html_e( 'Highlighted Value', 'am-portfolio-theme' ); ?></h4>
+								<h4 class="services-packages__highlighted-title">
+									<?php echo ! empty( $highlighted_value_title ) ? esc_html( $highlighted_value_title ) : esc_html__( 'Highlighted Value', 'am-portfolio-theme' ); ?>
+								</h4>
 								<div class="services-packages__highlighted-content">
 									<?php echo wp_kses_post( $highlighted_value ); ?>
 								</div>
@@ -93,7 +97,9 @@ if ( ! empty( $media_ids ) ) {
 						
 						<?php if ( ! empty( $design_approach ) ) : ?>
 							<div class="services-packages__design-approach">
-								<h4 class="services-packages__design-title"><?php esc_html_e( 'Design Approach', 'am-portfolio-theme' ); ?></h4>
+								<h4 class="services-packages__design-title">
+									<?php echo ! empty( $design_approach_title ) ? esc_html( $design_approach_title ) : esc_html__( 'Design Approach', 'am-portfolio-theme' ); ?>
+								</h4>
 								<div class="services-packages__design-content">
 									<?php echo wp_kses_post( $design_approach ); ?>
 								</div>
