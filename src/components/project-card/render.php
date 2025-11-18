@@ -32,7 +32,7 @@ use AMPortfolioTheme\Helpers\Media_Display;
 		}
 		?>
 		<div class="project-card__overlay">
-			<span class="btn-primary">View Project</span>
+			<span class="btn-primary"><?php pll_esc_html_e( 'View Project Details' ); ?></span>
 		</div>
 	</div>
 	<div class="project-card__content">
@@ -59,6 +59,6 @@ use AMPortfolioTheme\Helpers\Media_Display;
 			</div>
 		<?php endif; ?>
 	  
-		<span class="btn-secondary">View Project</span>
+		<span class="btn-secondary"><?php pll_esc_html_e( 'View Project Details' ); ?></span>
 	</div>
 </a>
