@@ -15,6 +15,10 @@
 	"attributes": {
 		"menu_items": {
 			"type": "array"
+		},
+		"cta_text": {
+			"type": "string",
+			"default": "Get a Free Project Estimate"
 		}
 	},
 	"textdomain": "header",
