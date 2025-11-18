@@ -261,11 +261,29 @@ const PackageCardEditor = ( {
 						) }
 					/>
 
+					<TextInput
+						label={ __(
+							'Highlighted Value Title',
+							'am-portfolio-theme'
+						) }
+						value={ packageData.highlighted_value_title || '' }
+						onChange={ ( value ) =>
+							updatePackageField(
+								'highlighted_value_title',
+								value
+							)
+						}
+						placeholder={ __(
+							'Highlighted Value',
+							'am-portfolio-theme'
+						) }
+					/>
+
 					<BaseControl
 						id={ `package-${ index }-highlighted-value` }
 						__nextHasNoMarginBottom
 						label={ __(
-							'Highlighted Value',
+							'Highlighted Value Content',
 							'am-portfolio-theme'
 						) }
 					>
@@ -293,10 +311,28 @@ const PackageCardEditor = ( {
 						/>
 					</BaseControl>
 
+					<TextInput
+						label={ __(
+							'Design Approach Title',
+							'am-portfolio-theme'
+						) }
+						value={ packageData.design_approach_title || '' }
+						onChange={ ( value ) =>
+							updatePackageField( 'design_approach_title', value )
+						}
+						placeholder={ __(
+							'Design Approach',
+							'am-portfolio-theme'
+						) }
+					/>
+
 					<BaseControl
 						id={ `package-${ index }-design-approach` }
 						__nextHasNoMarginBottom
-						label={ __( 'Design Approach', 'am-portfolio-theme' ) }
+						label={ __(
+							'Design Approach Content',
+							'am-portfolio-theme'
+						) }
 					>
 						<RichText
 							style={ {
@@ -462,7 +498,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		title: '',
 		description: '',
 		highlighted_value: '',
+		highlighted_value_title: '',
 		design_approach: '',
+		design_approach_title: '',
 		features: [],
 		button_text: '',
 		featured_label: __( 'Most Popular', 'am-portfolio-theme' ),
