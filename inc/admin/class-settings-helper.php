@@ -14,6 +14,7 @@ class Settings_Helper {
 			'contact_email'             => '',
 			'github_url'                => '',
 			'linkedin_url'              => '',
+			'google_analytics_id'       => '',
 			// Add more default settings here as needed.
 		);
 	}
@@ -64,6 +65,12 @@ class Settings_Helper {
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => 'esc_url_raw',
+			),
+			'google_analytics_id'       => array(
+				'description'       => __( 'Google Analytics tracking ID for website analytics.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
 			),
 			// Add more fields schema here as needed.
 		);

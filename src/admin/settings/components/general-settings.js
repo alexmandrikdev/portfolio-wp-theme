@@ -2,6 +2,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	SelectControl,
+	TextControl,
 	Button,
 	Spinner,
 	Notice,
@@ -76,6 +77,21 @@ export function GeneralSettings( { settings, onSave } ) {
 			<Card style={ { marginTop: '1rem' } }>
 				<CardBody>
 					<div className="portfolio-settings-fields">
+						<TextControl
+							label={ __( 'Google Analytics ID', 'portfolio' ) }
+							value={ localSettings.google_analytics_id || '' }
+							onChange={ ( value ) =>
+								setLocalSettings( ( prev ) => ( {
+									...prev,
+									google_analytics_id: value,
+								} ) )
+							}
+							help={ __(
+								'Enter your Google Analytics tracking ID (e.g., G-XXXXXXXXXX or UA-XXXXXXXX-X)',
+								'portfolio'
+							) }
+							placeholder="G-XXXXXXXXXX"
+						/>
 						{ languages.map( ( lang ) => (
 							<SelectControl
 								key={ lang.code }
