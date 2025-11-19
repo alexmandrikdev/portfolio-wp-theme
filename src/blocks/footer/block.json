@@ -58,6 +58,10 @@
 		"footer_note": {
 			"type": "string",
 			"default": ""
+		},
+		"cookie_preferences_text": {
+			"type": "string",
+			"default": "Cookie Preferences"
 		}
 	}
 }

@@ -196,5 +196,19 @@ const { state, actions } = store( 'cookieConsent', {
 				window.gtag( 'consent', 'update', consentState );
 			}
 		},
+
+		open() {
+			if ( state.isAnimating ) {
+				return;
+			}
+
+			state.isAnimating = true;
+			state.isVisible = true;
+			state.showCustomize = false;
+
+			setTimeout( () => {
+				state.isAnimating = false;
+			}, 300 );
+		},
 	},
 } );
