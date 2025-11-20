@@ -18,6 +18,8 @@ class Polylang_String_Registration {
 
 		pll_register_string( 'Project Card - Button Text', 'View Project Details', self::STRING_GROUP );
 
+		pll_register_string( 'Project Hero - Back to Portfolio', 'Back to Portfolio', self::STRING_GROUP );
+		pll_register_string( 'Project Hero - View Live Project', 'View Live Project', self::STRING_GROUP );
 		pll_register_string( 'Project Overview - The Solution Title', 'The Solution', self::STRING_GROUP );
 		pll_register_string( 'Project Overview - The Brief Title', 'The Brief', self::STRING_GROUP );
 		pll_register_string( 'Project Results - Section Title', 'The Results', self::STRING_GROUP );
