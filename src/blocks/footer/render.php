@@ -1,15 +1,16 @@
 <?php
-$personal_name        = $attributes['personal_name'] ?? '';
-$personal_tagline     = $attributes['personal_tagline'] ?? '';
-$personal_description = $attributes['personal_description'] ?? '';
-$quick_links_title    = $attributes['quick_links_title'] ?? '';
-$quick_links          = $attributes['quick_links'] ?? array();
-$social_media_title   = $attributes['social_media_title'] ?? '';
-$contact_title        = $attributes['contact_title'] ?? '';
-$contact_text         = $attributes['contact_text'] ?? '';
-$contact_cta_text     = $attributes['contact_cta_text'] ?? '';
-$copyright_text       = $attributes['copyright_text'] ?? '';
-$footer_note          = $attributes['footer_note'] ?? '';
+$personal_name           = $attributes['personal_name'] ?? '';
+$personal_tagline        = $attributes['personal_tagline'] ?? '';
+$personal_description    = $attributes['personal_description'] ?? '';
+$quick_links_title       = $attributes['quick_links_title'] ?? '';
+$quick_links             = $attributes['quick_links'] ?? array();
+$social_media_title      = $attributes['social_media_title'] ?? '';
+$contact_title           = $attributes['contact_title'] ?? '';
+$contact_text            = $attributes['contact_text'] ?? '';
+$contact_cta_text        = $attributes['contact_cta_text'] ?? '';
+$copyright_text          = $attributes['copyright_text'] ?? '';
+$footer_note             = $attributes['footer_note'] ?? '';
+$cookie_preferences_text = $attributes['cookie_preferences_text'] ?? '';
 
 // Replace [year] placeholder with current year.
 $copyright_text = str_replace( '[year]', gmdate( 'Y' ), $copyright_text );
@@ -142,15 +143,30 @@ if ( $linkedin_url ) {
 		<!-- Bottom Section -->
 		<div class="footer__bottom">
 			<div class="container">
-				<?php if ( ! empty( $copyright_text ) ) : ?>
-					<div class="footer__copyright">
-						<?php echo wp_kses_post( $copyright_text ); ?>
-					</div>
-				<?php endif; ?>
-				
-				<?php if ( ! empty( $footer_note ) ) : ?>
-					<div class="footer__note">
-						<?php echo wp_kses_post( $footer_note ); ?>
+				<div class="footer__bottom-left">
+					<?php if ( ! empty( $copyright_text ) ) : ?>
+						<div class="footer__copyright">
+							<?php echo wp_kses_post( $copyright_text ); ?>
+						</div>
+					<?php endif; ?>
+					
+					<?php if ( ! empty( $footer_note ) ) : ?>
+						<div class="footer__note">
+							<?php echo wp_kses_post( $footer_note ); ?>
+						</div>
+					<?php endif; ?>
+				</div>
+
+				<?php if ( ! empty( $cookie_preferences_text ) ) : ?>
+					<div class="footer__cookie-preferences">
+						<button
+							class="footer__cookie-preferences-link"
+							data-wp-interactive="cookieConsent"
+							data-wp-on--click="actions.open"
+							type="button"
+						>
+							<?php echo esc_html( $cookie_preferences_text ); ?>
+						</button>
 					</div>
 				<?php endif; ?>
 			</div>

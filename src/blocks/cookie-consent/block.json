@@ -1,0 +1,76 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "portfolio/cookie-consent",
+	"version": "0.1.0",
+	"title": "Cookie Consent",
+	"category": "widgets",
+	"example": {},
+	"supports": {
+		"html": false,
+		"interactivity": true
+	},
+	"attributes": {
+		"consent_message": {
+			"type": "string",
+			"default": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies."
+		},
+		"necessary_description": {
+			"type": "string",
+			"default": "These cookies are essential for core website functionality. They enable contact form spam protection, theme preference storage, and remember your privacy choices."
+		},
+		"analytics_description": {
+			"type": "string",
+			"default": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously."
+		},
+		"accept_button_text": {
+			"type": "string",
+			"default": "Accept All"
+		},
+		"reject_button_text": {
+			"type": "string",
+			"default": "Reject All"
+		},
+		"customize_button_text": {
+			"type": "string",
+			"default": "Customize"
+		},
+		"save_button_text": {
+			"type": "string",
+			"default": "Save Preferences"
+		},
+		"privacy_policy_page_id": {
+			"type": "number",
+			"default": 0
+		},
+		"privacy_policy_text": {
+			"type": "string",
+			"default": "Privacy Policy"
+		},
+		"cookie_preferences_text": {
+			"type": "string",
+			"default": "Cookie Preferences"
+		},
+		"necessary_cookies_text": {
+			"type": "string",
+			"default": "Necessary Cookies"
+		},
+		"analytics_cookies_text": {
+			"type": "string",
+			"default": "Analytics Cookies"
+		},
+		"close_preferences_text": {
+			"type": "string",
+			"default": "Close preferences"
+		},
+		"expiry_days": {
+			"type": "number",
+			"default": 365
+		}
+	},
+	"textdomain": "cookie-consent",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScriptModule": "file:./view.js"
+}

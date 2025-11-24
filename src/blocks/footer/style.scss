@@ -138,9 +138,15 @@
 			@include mixins.breakpoint-up("md") {
 				flex-direction: row;
 				justify-content: space-between;
-				align-items: center;
+				align-items: flex-end;
 			}
 		}
+	}
+
+	&__bottom-left {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
 	}
 
 	&__copyright {
@@ -155,5 +161,24 @@
 		line-height: 1.5;
 		color: var(--color-text-tertiary);
 		margin: 0;
+	}
+
+	&__cookie-preferences {
+		display: flex;
+	}
+
+	&__cookie-preferences-link {
+		font-size: 0.75rem;
+		line-height: 1.5;
+		color: var(--color-text-tertiary);
+		background: none;
+		border: none;
+		padding: 0;
+		text-decoration: underline;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: var(--color-text-accent-primary);
+		}
 	}
 }

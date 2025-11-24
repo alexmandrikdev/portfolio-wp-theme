@@ -39,6 +39,7 @@ class Theme_Init {
 
 		$settings           = get_option( 'portfolio_theme_settings', array() );
 		$recaptcha_site_key = $settings['recaptcha_site_key'] ?? '';
+		$ga_id              = $settings['google_analytics_id'] ?? '';
 
 		if ( ! empty( $recaptcha_site_key ) ) {
 			wp_enqueue_script(
@@ -47,6 +48,43 @@ class Theme_Init {
 				array(),
 				'1.0.0',
 				true
+			);
+		}
+
+		if ( ! empty( $ga_id ) ) {
+
+			wp_enqueue_script(
+				'google-analytics-gtag',
+				'https://www.googletagmanager.com/gtag/js?id=' . $ga_id,
+				array(),
+				'1.0.0',
+				false
+			);
+
+			wp_add_inline_script(
+				'google-analytics-gtag',
+				"
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('consent', 'default', {
+					'ad_storage': 'denied',
+					'ad_user_data': 'denied',
+					'ad_personalization': 'denied',
+					'analytics_storage': 'denied'
+				});
+				",
+				'before'
+			);
+
+			wp_add_inline_script(
+				'google-analytics-gtag',
+				"
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', '" . esc_js( $ga_id ) . "');
+				",
+				'after'
 			);
 		}
 	}

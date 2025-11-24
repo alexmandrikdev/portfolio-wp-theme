@@ -116,6 +116,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		contact_cta_text: contactCtaText = '',
 		copyright_text: copyrightText = '',
 		footer_note: footerNote = '',
+		cookie_preferences_text: cookiePreferencesText = '',
 	} = attributes;
 
 	const {
@@ -380,6 +381,27 @@ export default function Edit( { attributes, setAttributes } ) {
 							}
 							placeholder={ __(
 								'Additional footer information or notes…',
+								'am-portfolio-theme'
+							) }
+						/>
+
+						<TextInput
+							label={ __(
+								'Cookie Preferences Link Text',
+								'am-portfolio-theme'
+							) }
+							value={ cookiePreferencesText }
+							onChange={ ( value ) =>
+								setAttributes( {
+									cookie_preferences_text: value,
+								} )
+							}
+							placeholder={ __(
+								'e.g., Cookie Preferences',
+								'am-portfolio-theme'
+							) }
+							help={ __(
+								'Text for the link that opens the cookie consent banner.',
 								'am-portfolio-theme'
 							) }
 						/>
