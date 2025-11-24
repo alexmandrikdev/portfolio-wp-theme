@@ -49,6 +49,7 @@ const MediaUploadField = ( { label, value, onChange } ) => {
 											) }
 											style={ {
 												maxWidth: '150px',
+												maxHeight: '100px',
 												height: 'auto',
 												display: 'block',
 												marginBottom: '8px',
@@ -122,20 +123,31 @@ const ScreenshotItem = ( {
 				/>
 
 				<TextInput
-					label={ __( 'Title', 'am-portfolio-theme' ) }
+					label={ __( 'Page/Section Title', 'am-portfolio-theme' ) }
 					value={ item.title || '' }
 					onChange={ ( value ) => onUpdate( index, 'title', value ) }
-					placeholder={ __(
-						'e.g., Mobile View',
-						'am-portfolio-theme'
-					) }
+					placeholder={ __( 'e.g., Homepage', 'am-portfolio-theme' ) }
 				/>
 
 				<MediaUploadField
-					label={ __( 'Screenshot', 'am-portfolio-theme' ) }
-					value={ item.media_id || '' }
+					label={ __(
+						'Desktop Screenshot (1568×1017)',
+						'am-portfolio-theme'
+					) }
+					value={ item.desktop_screenshot_id || '' }
 					onChange={ ( value ) =>
-						onUpdate( index, 'media_id', value )
+						onUpdate( index, 'desktop_screenshot_id', value )
+					}
+				/>
+
+				<MediaUploadField
+					label={ __(
+						'Mobile Screenshot (440×866)',
+						'am-portfolio-theme'
+					) }
+					value={ item.mobile_screenshot_id || '' }
+					onChange={ ( value ) =>
+						onUpdate( index, 'mobile_screenshot_id', value )
 					}
 				/>
 
@@ -159,7 +171,11 @@ export default function Edit( { attributes, setAttributes } ) {
 		'screenshots'
 	);
 
-	const defaultScreenshotItem = { title: '', media_id: '' };
+	const defaultScreenshotItem = {
+		title: '',
+		desktop_screenshot_id: '',
+		mobile_screenshot_id: '',
+	};
 
 	return (
 		<BlockCard
@@ -173,7 +189,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				__nextHasNoMarginBottom
 				label={ __( 'Additional Screenshots', 'am-portfolio-theme' ) }
 				help={ __(
-					'Add additional screenshots for different views or sections of the project. The full page screenshot is managed as the post featured image.',
+					'Add paired desktop and mobile screenshots for different pages or sections of the project.',
 					'am-portfolio-theme'
 				) }
 			>
