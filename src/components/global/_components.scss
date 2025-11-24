@@ -59,3 +59,10 @@
 	padding-left: var(--container-gutter);
 	padding-right: var(--container-gutter);
 }
+
+.wp-block-group {
+
+	&:not(:last-child) {
+		margin-bottom: var(--space-xxl);
+	}
+}

@@ -5,6 +5,10 @@
 		"layout": {
 			"contentSize": "1280px"
 		},
+		"spacing": {
+			"padding": true,
+			"units": [ "px", "em", "rem", "%" ]
+		},
 		"typography": {
 			"fontFamilies": [
 				{
@@ -16,13 +20,13 @@
 							"fontFamily": "Inter",
 							"fontStyle": "normal",
 							"fontWeight": "100 900",
-							"src": ["file:./assets/fonts/inter.ttf"]
+							"src": [ "file:./assets/fonts/inter.ttf" ]
 						},
 						{
 							"fontFamily": "Inter",
 							"fontStyle": "italic",
 							"fontWeight": "100 900",
-							"src": ["file:./assets/fonts/inter-italic.ttf"]
+							"src": [ "file:./assets/fonts/inter-italic.ttf" ]
 						}
 					]
 				}
