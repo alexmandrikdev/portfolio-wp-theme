@@ -125,6 +125,55 @@ export function GeneralSettings( { settings, onSave } ) {
 				</CardBody>
 			</Card>
 
+			<Card style={ { marginTop: '1rem' } }>
+				<CardBody>
+					<div className="portfolio-settings-fields">
+						<h3>
+							{ __( 'Featured Image Requirements', 'portfolio' ) }
+						</h3>
+						<div className="portfolio-image-requirements">
+							<p className="description">
+								{ __(
+									'Recommended specifications for project featured images:',
+									'portfolio'
+								) }
+							</p>
+							<ul
+								style={ {
+									marginLeft: '1.5rem',
+									marginTop: '0.5rem',
+								} }
+							>
+								<li>
+									<strong>
+										{ __( 'Size:', 'portfolio' ) }
+									</strong>{ ' ' }
+									{ __( '1568×882 pixels', 'portfolio' ) }
+								</li>
+								<li>
+									<strong>
+										{ __( 'Aspect Ratio:', 'portfolio' ) }
+									</strong>{ ' ' }
+									{ __( '16:9 (landscape)', 'portfolio' ) }
+								</li>
+							</ul>
+							<p
+								className="description"
+								style={ {
+									marginTop: '1rem',
+									fontStyle: 'italic',
+								} }
+							>
+								{ __(
+									'These specifications ensure optimal display across all devices and layouts.',
+									'portfolio'
+								) }
+							</p>
+						</div>
+					</div>
+				</CardBody>
+			</Card>
+
 			<div
 				className="portfolio-settings-actions"
 				style={ { marginTop: '1rem' } }
