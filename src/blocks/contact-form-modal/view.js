@@ -3,6 +3,12 @@ import EasyMDE from 'easymde';
 
 let easyMDEInstance = null;
 
+const trackGAEvent = ( eventName, parameters = {} ) => {
+	if ( typeof window.gtag === 'function' ) {
+		window.gtag( 'event', eventName, parameters );
+	}
+};
+
 const { state, actions } = store( 'contactFormModal', {
 	state: {
 		isOpen: false,
@@ -30,15 +36,20 @@ const { state, actions } = store( 'contactFormModal', {
 		},
 	},
 	actions: {
-		toggleModal: () => {
-			state.isOpen = ! state.isOpen;
-		},
 		openModal: () => {
 			state.isOpen = true;
+
+			trackGAEvent( 'contact_modal_opened', {
+				interaction_type: 'direct_open',
+			} );
 		},
 		closeModal: () => {
 			state.isOpen = false;
 			actions.cleanupEasyMDE();
+
+			trackGAEvent( 'contact_modal_closed', {
+				form_submitted: state.isSuccess,
+			} );
 
 			setTimeout( () => {
 				actions.resetForm();
@@ -220,8 +231,18 @@ const { state, actions } = store( 'contactFormModal', {
 					throw new Error( result.data?.message || 'Request failed' );
 				}
 
-				// Success case
 				state.isSuccess = true;
+
+				const filledFields = Object.values( state.formData ).filter(
+					( value ) => value.trim() !== ''
+				).length;
+				trackGAEvent( 'contact_form_submitted', {
+					form_fields_filled: filledFields,
+					has_subject: state.formData.subject.trim() !== '',
+					has_name: state.formData.name.trim() !== '',
+					has_email: state.formData.email.trim() !== '',
+					has_message: state.formData.message.trim() !== '',
+				} );
 			} catch ( error ) {
 				// eslint-disable-next-line no-console
 				console.error( 'Form submission error:', error );
