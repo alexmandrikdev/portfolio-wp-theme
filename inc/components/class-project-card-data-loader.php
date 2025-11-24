@@ -136,9 +136,19 @@ class Project_Card_Data_Loader {
 	                 INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
 	                 INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id";
 
+		if ( 'project_technology' === $taxonomy ) {
+			$base_query .= " LEFT JOIN {$wpdb->termmeta} tm ON t.term_id = tm.term_id AND tm.meta_key = 'technology_order'";
+		}
+
 		$where_conditions = array( 'tt.taxonomy = %s' );
 		$parameters       = array( $taxonomy );
-		$order_by         = 'ORDER BY tr.object_id, t.name';
+
+		// For project_technology taxonomy, order by term_order then name, otherwise just by name.
+		if ( 'project_technology' === $taxonomy ) {
+			$order_by = 'ORDER BY tr.object_id, CAST(COALESCE(tm.meta_value, 0) AS UNSIGNED), t.name';
+		} else {
+			$order_by = 'ORDER BY tr.object_id, t.name';
+		}
 
 		if ( empty( $post_ids ) ) {
 			$base_query        .= " INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID";

@@ -15,6 +15,18 @@ if ( $technologies && ! is_wp_error( $technologies ) ) {
 	usort(
 		$technologies,
 		function ( $a, $b ) {
+			$a_order = get_term_meta( $a->term_id, 'technology_order', true );
+			$b_order = get_term_meta( $b->term_id, 'technology_order', true );
+
+			$a_order = $a_order ? intval( $a_order ) : 0;
+			$b_order = $b_order ? intval( $b_order ) : 0;
+
+			// First compare by order.
+			if ( $a_order !== $b_order ) {
+				return $a_order - $b_order;
+			}
+
+			// If order is the same, compare by name.
 			return strcmp( $a->name, $b->name );
 		}
 	);
