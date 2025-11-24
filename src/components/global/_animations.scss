@@ -12,7 +12,7 @@
 
 		// Staggered animation delays for children using loop
 		@for $i from 2 through 6 {
-			&:nth-child(#{$i}) {
+			&:nth-child(#{$i}):not(.scroll-fade--no-delay) {
 				transition-delay: #{($i - 1) * 0.1s};
 			}
 		}
