@@ -26,12 +26,10 @@
 			border-radius: 8px;
 			display: inline-block;
 			font-weight: 600;
-			transition: background-color 0.3s ease, transform 0.2s ease;
 		}
 
 		.cta-button:hover {
 			background-color: #0052cc;
-			transform: translateY(-1px);
 		}
 
 		@media (prefers-color-scheme: dark) {
