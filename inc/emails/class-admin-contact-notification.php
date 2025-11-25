@@ -140,14 +140,10 @@ class Admin_Contact_Notification {
 		try {
 			$message = self::get( $submission_data, $submission_id );
 
-			$site_name = get_bloginfo( 'name' );
-			$headers   = array(
+			$headers = array(
 				'Content-Type: text/html; charset=UTF-8',
-				'From: ' . $site_name . ' <portfolio@alexmandrik.dev>',
-				'Reply-To: ' . $submission_data['name'] . ' <' . $submission_data['email'] . '>',
+				'X-Mailer: WordPress/' . get_bloginfo( 'version' ),
 			);
-
-			$headers[] = 'X-Mailer: WordPress/' . get_bloginfo( 'version' );
 
 			$result = wp_mail( $to, $subject, $message, $headers );
 
