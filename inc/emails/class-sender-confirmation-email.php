@@ -151,11 +151,8 @@ class Sender_Confirmation_Email {
 			$from      = $settings['contact_email'] ?? get_option( 'admin_email' );
 			$headers   = array(
 				'Content-Type: text/html; charset=UTF-8',
-				'From: ' . $site_name . ' <' . $from . '>',
-				'Reply-To: ' . $site_name . ' <' . $from . '>',
+				'X-Mailer: WordPress/' . get_bloginfo( 'version' ),
 			);
-
-			$headers[] = 'X-Mailer: WordPress/' . get_bloginfo( 'version' );
 
 			$result = wp_mail( $to, $subject, $message, $headers );
 
