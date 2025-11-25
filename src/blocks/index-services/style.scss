@@ -59,5 +59,13 @@
 		margin-bottom: var(--space-md);
 		color: #fff;
 		font-size: 1.25rem;
+		overflow: hidden;
+
+		&-image {
+			width: 24px;
+			height: 24px;
+			object-fit: contain;
+			fill: #fff;
+		}
 	}
 }

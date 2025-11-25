@@ -10,11 +10,78 @@ import {
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
+
+const MediaUploadField = ( { label, value, onChange } ) => {
+	const imageUrl = useSelect(
+		( select ) => {
+			if ( ! value ) {
+				return '';
+			}
+			const image = select( 'core' ).getMedia( value );
+			return image?.source_url || '';
+		},
+		[ value ]
+	);
+
+	return (
+		<FlexItem>
+			<BaseControl
+				id={ `media-upload-${ value || 'new' }` }
+				label={ label }
+			>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={ ( media ) => onChange( media.id ) }
+						allowedTypes={ [ 'image' ] }
+						value={ value }
+						render={ ( { open } ) => (
+							<div>
+								{ value ? (
+									<div>
+										<img
+											src={ imageUrl }
+											alt=""
+											style={ {
+												display: 'block',
+												marginBottom: '8px',
+												width: '60px',
+												height: '60px',
+												objectFit: 'contain',
+											} }
+										/>
+										<Button
+											variant="secondary"
+											onClick={ open }
+										>
+											{ __(
+												'Change Image',
+												'portfolio'
+											) }
+										</Button>
+									</div>
+								) : (
+									<Button
+										variant="secondary"
+										onClick={ open }
+									>
+										{ __( 'Select Image', 'portfolio' ) }
+									</Button>
+								) }
+							</div>
+						) }
+					/>
+				</MediaUploadCheck>
+			</BaseControl>
+		</FlexItem>
+	);
+};
 
 const ServiceItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -49,14 +116,12 @@ const ServiceItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 3 }>
-						<TextControl
-							label={ __( 'Icon Class', 'portfolio' ) }
+						<MediaUploadField
+							label={ __( 'Service Icon', 'portfolio' ) }
 							value={ item.icon }
 							onChange={ ( value ) =>
 								onUpdate( index, 'icon', value )
 							}
-							placeholder={ __( 'e.g., 💻', 'portfolio' ) }
-							help={ __( 'Add an emoji', 'portfolio' ) }
 						/>
 
 						<TextControl
@@ -99,7 +164,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	);
 
 	const defaultItem = {
-		icon: '',
+		icon: 0,
 		title: '',
 		text: '',
 	};
