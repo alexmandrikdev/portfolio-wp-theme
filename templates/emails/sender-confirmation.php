@@ -30,9 +30,9 @@
 			width: 60px;
 			height: 60px;
 			border-radius: 50%;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
+			display: inline-block;
+			text-align: center;
+			line-height: 60px;
 			font-size: 28px;
 			font-weight: bold;
 		}
@@ -47,13 +47,11 @@
 			font-weight: 600;
 			margin-bottom: 12px;
 			color: #000;
-			transition: color 0.3s ease;
 		}
 
 		.thank-you-message p {
 			color: #5a5a5a;
 			font-size: 16px;
-			transition: color 0.3s ease;
 		}
 
 		.details-header {
@@ -61,7 +59,6 @@
 			color: #5a5a5a;
 			font-size: 16px;
 			margin-bottom: 16px;
-			transition: color 0.3s ease;
 		}
 
 		.next-steps {
@@ -70,14 +67,12 @@
 			padding: 20px;
 			margin-bottom: 24px;
 			border-left: 4px solid #06f;
-			transition: background-color 0.3s ease;
 		}
 
 		.next-steps h3 {
 			font-weight: 600;
 			margin-bottom: 12px;
 			color: #000;
-			transition: color 0.3s ease;
 		}
 
 		.next-steps ul {
@@ -87,7 +82,6 @@
 		.next-steps li {
 			margin-bottom: 8px;
 			color: #5a5a5a;
-			transition: color 0.3s ease;
 		}
 
 		.contact-info {
@@ -95,20 +89,17 @@
 			margin-top: 32px;
 			padding-top: 24px;
 			border-top: 1px solid #e5e5e5;
-			transition: border-color 0.3s ease;
 		}
 
 		.contact-info p {
 			color: #5a5a5a;
 			margin-bottom: 8px;
-			transition: color 0.3s ease;
 		}
 
 		.portfolio-link {
 			color: #06f;
 			text-decoration: none;
 			font-weight: 600;
-			transition: color 0.3s ease;
 		}
 
 		/* Dark theme specific styles */

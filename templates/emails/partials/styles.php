@@ -19,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		background-color: #f8f9fa;
 		margin: 0;
 		padding: 20px 0;
-		transition: background-color 0.3s ease, color 0.3s ease;
 	}
 
 	.email-container {
@@ -29,7 +28,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		border-radius: 8px;
 		overflow: hidden;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-		transition: background-color 0.3s ease, box-shadow 0.3s ease;
 	}
 
 	.email-header {
@@ -37,7 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		color: #fff;
 		padding: 24px;
 		text-align: center;
-		transition: background-color 0.3s ease;
 	}
 
 	.email-header h1 {
@@ -48,7 +45,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	.email-body {
 		padding: 32px 24px;
-		transition: background-color 0.3s ease;
 	}
 
 	.submission-details {
@@ -56,7 +52,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		border-radius: 8px;
 		padding: 20px;
 		margin-bottom: 24px;
-		transition: background-color 0.3s ease;
 	}
 
 	.field-group {
@@ -69,7 +64,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		font-size: 14px;
 		margin-bottom: 6px;
 		display: block;
-		transition: color 0.3s ease;
 	}
 
 	.field-value {
@@ -78,8 +72,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		padding: 12px;
 		border-radius: 4px;
 		border: 1px solid #e5e5e5;
-		transition: background-color 0.3s ease, color 0.3s ease,
-			border-color 0.3s ease;
 	}
 
 	.message-content {
@@ -211,8 +203,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		text-align: center;
 		color: #8a8a8a;
 		font-size: 14px;
-		transition: background-color 0.3s ease, border-color 0.3s ease,
-			color 0.3s ease;
 	}
 
 	.timestamp {
@@ -220,7 +210,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		font-size: 14px;
 		text-align: center;
 		margin-bottom: 24px;
-		transition: color 0.3s ease;
 	}
 
 	/* Dark theme styles */
