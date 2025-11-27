@@ -47,23 +47,24 @@ jobs:
 
             - name: Create compressed release asset
               run: |
-                  mkdir -p portfolio-theme-build
-
-                  cp -r assets/ portfolio-theme-build/
-                  cp -r build/ portfolio-theme-build/
-                  cp -r inc/ portfolio-theme-build/
-                  cp -r patterns/ portfolio-theme-build/
-                  cp -r templates/ portfolio-theme-build/
-                  cp -r vendor/ portfolio-theme-build/
-                  cp -r node_modules/ portfolio-theme-build/
-                  cp functions.php portfolio-theme-build/
-                  cp screenshot.png portfolio-theme-build/
-                  cp style.css portfolio-theme-build/
-                  cp theme.json portfolio-theme-build/
-                  cp wpml-config.xml portfolio-theme-build/
-
                   VERSION=${GITHUB_REF#refs/tags/}
-                  zip -r portfolio-$VERSION.zip portfolio-theme-build/
+
+                  mkdir -p portfolio-$VERSION
+
+                  cp -r assets/ portfolio-$VERSION/
+                  cp -r build/ portfolio-$VERSION/
+                  cp -r inc/ portfolio-$VERSION/
+                  cp -r patterns/ portfolio-$VERSION/
+                  cp -r templates/ portfolio-$VERSION/
+                  cp -r vendor/ portfolio-$VERSION/
+                  cp -r node_modules/ portfolio-$VERSION/
+                  cp functions.php portfolio-$VERSION/
+                  cp screenshot.png portfolio-$VERSION/
+                  cp style.css portfolio-$VERSION/
+                  cp theme.json portfolio-$VERSION/
+                  cp wpml-config.xml portfolio-$VERSION/
+
+                  zip -r portfolio-$VERSION.zip portfolio-$VERSION/*
                   echo "Compressed release asset created: portfolio-theme-$VERSION.zip"
 
             - name: Upload release asset
@@ -87,7 +88,8 @@ jobs:
                   username: ${{ secrets.SERVER_USERNAME }}
                   key: ${{ secrets.SERVER_KEY }}
                   script: |
+                      VERSION=${GITHUB_REF#refs/tags/}
                       cd /tmp/portfolio-themes
                       CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
-                      docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp alpine:3.22.2 sh -c "apk add --no-cache unzip && unzip /tmp/portfolio-*.zip -d /var/www/html/wp-content/themes/"
-                      rm /tmp/portfolio-themes/portfolio-*.zip
+                      docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp alpine:3.22.2 sh -c "apk add --no-cache unzip && unzip /tmp/portfolio-$VERSION.zip -d /var/www/html/wp-content/themes/portfolio-$VERSION"
+                      rm /tmp/portfolio-themes/portfolio-$VERSION.zip
