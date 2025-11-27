@@ -5,6 +5,7 @@ on:
         branches: [main]
     pull_request:
         types: [opened, synchronize]
+    # TODO: remove workflow_dispatch
     workflow_dispatch:
 
 jobs:
