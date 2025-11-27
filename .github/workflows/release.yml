@@ -37,30 +37,29 @@ jobs:
 
             - name: Replace version placeholders
               run: |
-                  VERSION=${GITHUB_REF#refs/tags/}
+                  VERSION=${GITHUB_REF#refs/tags/v}
                   echo "Replacing version placeholders with: $VERSION"
-                  sed -i "s/\\$\\{\\{VERSION\\}\\}/$VERSION/g" style.css
+                  # Use a simpler approach with sed and proper escaping
+                  sed -i "s/\${{VERSION}}/$VERSION/g" style.css
                   echo "Version replacement completed"
 
             - name: Create compressed release asset
               run: |
-                  # Create a clean build directory
                   mkdir -p portfolio-theme-build
 
-                  # Copy all necessary files excluding development artifacts
                   cp -r assets/ portfolio-theme-build/
                   cp -r build/ portfolio-theme-build/
                   cp -r inc/ portfolio-theme-build/
                   cp -r patterns/ portfolio-theme-build/
-                  cp -r src/ portfolio-theme-build/
                   cp -r templates/ portfolio-theme-build/
                   cp -r vendor/ portfolio-theme-build/
                   cp -r node_modules/ portfolio-theme-build/
                   cp functions.php portfolio-theme-build/
                   cp screenshot.png portfolio-theme-build/
                   cp style.css portfolio-theme-build/
+                  cp theme.json portfolio-theme-build/
+                  cp wpml-config.xml portfolio-theme-build/
 
-                  # Create compressed archive
                   VERSION=${GITHUB_REF#refs/tags/}
                   zip -r portfolio-theme-$VERSION.zip portfolio-theme-build/
                   echo "Compressed release asset created: portfolio-theme-$VERSION.zip"
