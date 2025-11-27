@@ -26,8 +26,8 @@ jobs:
                   php-version: '8.4'
                   extensions: mbstring, xml, curl, json, intl
 
-            - name: Install Node.js dependencies (production only)
-              run: npm ci --omit=dev
+            - name: Install Node.js dependencies
+              run: npm ci
 
             - name: Install Composer dependencies (production only)
               run: composer install --no-dev --no-interaction --prefer-dist
