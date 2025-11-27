@@ -98,4 +98,4 @@ jobs:
                         echo \"Unzipping \$ZIP_FILE to \$TARGET_DIR\" &&
                         unzip /tmp/portfolio-themes/\$ZIP_FILE -d /var/www/html/wp-content/themes/\$TARGET_DIR &&
                         echo \"Theme copied to /var/www/html/wp-content/themes/\$TARGET_DIR\" &&
-                        rm -rf /tmp/portfolio-themes/\$ZIP_FILE\"
+                        rm -rf /tmp/portfolio-themes/\$ZIP_FILE"
