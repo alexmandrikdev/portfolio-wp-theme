@@ -69,4 +69,4 @@ jobs:
             - name: Upload release asset
               uses: softprops/action-gh-release@v2
               with:
-                  files: portfolio-theme-*.zip
+                  files: portfolio-*.zip
