@@ -1,0 +1,72 @@
+name: Release Build
+
+on:
+    push:
+        tags:
+            - 'v*.*.*'
+
+jobs:
+    build-release:
+        name: Build Release Artifact
+        runs-on: ubuntu-24.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+                  cache: 'npm'
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: mbstring, xml, curl, json, intl
+
+            - name: Install Node.js dependencies (production only)
+              run: npm ci --omit=dev
+
+            - name: Install Composer dependencies (production only)
+              run: composer install --no-dev --no-interaction --prefer-dist
+
+            - name: Build theme for production
+              run: npm run build
+
+            - name: Replace version placeholders
+              run: |
+                  VERSION=${GITHUB_REF#refs/tags/}
+                  echo "Replacing version placeholders with: $VERSION"
+                  sed -i "s/\\$\\{\\{VERSION\\}\\}/$VERSION/g" style.css
+                  echo "Version replacement completed"
+
+            - name: Create compressed release asset
+              run: |
+                  # Create a clean build directory
+                  mkdir -p portfolio-theme-build
+
+                  # Copy all necessary files excluding development artifacts
+                  cp -r assets/ portfolio-theme-build/
+                  cp -r build/ portfolio-theme-build/
+                  cp -r inc/ portfolio-theme-build/
+                  cp -r patterns/ portfolio-theme-build/
+                  cp -r src/ portfolio-theme-build/
+                  cp -r templates/ portfolio-theme-build/
+                  cp -r vendor/ portfolio-theme-build/
+                  cp -r node_modules/ portfolio-theme-build/
+                  cp functions.php portfolio-theme-build/
+                  cp screenshot.png portfolio-theme-build/
+                  cp style.css portfolio-theme-build/
+
+                  # Create compressed archive
+                  VERSION=${GITHUB_REF#refs/tags/}
+                  zip -r portfolio-theme-$VERSION.zip portfolio-theme-build/
+                  echo "Compressed release asset created: portfolio-theme-$VERSION.zip"
+
+            - name: Upload release asset
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: portfolio-theme-*.zip
+                  token: ${{ secrets.GITHUB_TOKEN }}
