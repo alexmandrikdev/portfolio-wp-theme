@@ -64,13 +64,13 @@ jobs:
                   cp theme.json portfolio-$VERSION/
                   cp wpml-config.xml portfolio-$VERSION/
 
-                  zip -r portfolio-$VERSION.zip portfolio-$VERSION/*
-                  echo "Compressed release asset created: portfolio-theme-$VERSION.zip"
+                  tar -czf portfolio-$VERSION.tar.gz portfolio-$VERSION/
+                  echo "Compressed release asset created: portfolio-theme-$VERSION.tar.gz"
 
             - name: Upload release asset
               uses: softprops/action-gh-release@v2
               with:
-                  files: portfolio-*.zip
+                  files: portfolio-*.tar.gz
 
             - name: Copy release asset to server
               uses: appleboy/scp-action@v1
@@ -78,7 +78,7 @@ jobs:
                   host: ${{ secrets.SERVER_HOST }}
                   username: ${{ secrets.SERVER_USERNAME }}
                   key: ${{ secrets.SERVER_KEY }}
-                  source: 'portfolio-*.zip'
+                  source: 'portfolio-*.tar.gz'
                   target: '/tmp/portfolio-themes'
 
             - name: Copy theme to theme directory
@@ -90,7 +90,6 @@ jobs:
                   script: |
                       CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
                       docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp/portfolio-themes alpine:3.22.2 sh -c "
-                        apk add --no-cache unzip && 
                         cd /tmp/portfolio-themes &&
-                        unzip /tmp/portfolio-themes/portfolio-*.zip -d /var/www/html/wp-content/themes/ &&
-                        rm -rf /tmp/portfolio-themes/portfolio-*.zip"
+                        tar -xzf /tmp/portfolio-themes/portfolio-*.tar.gz -C /var/www/html/wp-content/themes/ &&
+                        rm -rf /tmp/portfolio-themes/portfolio-*.tar.gz"
