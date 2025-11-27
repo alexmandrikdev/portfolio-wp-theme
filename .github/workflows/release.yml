@@ -7,7 +7,7 @@ on:
 
 jobs:
     build-release:
-        name: Build Release Artifact
+        name: Build Release Asset
         runs-on: ubuntu-24.04
 
         steps:
@@ -67,4 +67,3 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                   files: portfolio-theme-*.zip
-                  token: ${{ secrets.GITHUB_TOKEN }}
