@@ -88,8 +88,14 @@ jobs:
                   username: ${{ secrets.SERVER_USERNAME }}
                   key: ${{ secrets.SERVER_KEY }}
                   script: |
-                      VERSION=${GITHUB_REF#refs/tags/}
                       cd /tmp/portfolio-themes
                       CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
-                      docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp alpine:3.22.2 sh -c "apk add --no-cache unzip && unzip /tmp/portfolio-$VERSION.zip -d /var/www/html/wp-content/themes/portfolio-$VERSION"
-                      rm /tmp/portfolio-themes/portfolio-$VERSION.zip
+                      docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp alpine:3.22.2 sh -c "
+                        apk add --no-cache unzip && 
+                        cd /tmp/portfolio-themes &&
+                        ZIP_FILE=\$(ls portfolio-*.zip | head -n1) &&
+                        TARGET_DIR=\$(echo \"\$ZIP_FILE\" | sed 's/\.zip//') &&
+                        echo \"Unzipping \$ZIP_FILE to \$TARGET_DIR\" &&
+                        unzip /tmp/portfolio-themes/\$ZIP_FILE -d /var/www/html/wp-content/themes/\$TARGET_DIR &&
+                        echo \"Theme copied to /var/www/html/wp-content/themes/\$TARGET_DIR\ &&
+                        rm -rf /tmp/portfolio-themes/\$ZIP_FILE\"
