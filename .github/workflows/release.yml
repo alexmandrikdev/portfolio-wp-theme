@@ -63,7 +63,7 @@ jobs:
                   cp wpml-config.xml portfolio-theme-build/
 
                   VERSION=${GITHUB_REF#refs/tags/}
-                  zip -r portfolio-theme-$VERSION.zip portfolio-theme-build/
+                  zip -r portfolio-$VERSION.zip portfolio-theme-build/
                   echo "Compressed release asset created: portfolio-theme-$VERSION.zip"
 
             - name: Upload release asset
