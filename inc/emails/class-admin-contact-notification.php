@@ -68,21 +68,21 @@ class Admin_Contact_Notification {
 	}
 
 	public static function schedule( $submission_id ) {
-		if ( ! function_exists( 'as_enqueue_async_action' ) ) {
-			return self::send_immediately( $submission_id );
-		}
-
 		$args = array(
 			'submission_id' => $submission_id,
 		);
 
 		$args = apply_filters( 'am_portfolio_admin_notification_schedule_args', $args, $submission_id );
 
-		as_enqueue_async_action(
+		$scheduled = wp_schedule_single_event(
+			time(),
 			self::SCHEDULED_ACTION_HOOK,
-			array( $args ),
-			'am_portfolio_contact_emails'
+			array( $args )
 		);
+
+		if ( false === $scheduled ) {
+			return self::send_immediately( $submission_id );
+		}
 
 		return true;
 	}

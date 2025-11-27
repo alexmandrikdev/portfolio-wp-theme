@@ -30,6 +30,10 @@ class Polylang_String_Registration {
 		pll_register_string( 'Project Tech Details - Solution Title', 'Solution:', self::STRING_GROUP );
 		pll_register_string( 'Project Testimonial - Section Title', 'Client Feedback', self::STRING_GROUP );
 
+		pll_register_string( 'Error 404 - Title', 'Error 404 - Title', self::STRING_GROUP );
+		pll_register_string( 'Error 404 - Message', 'Error 404 - Message', self::STRING_GROUP, true );
+		pll_register_string( 'Error 404 - Home Button', 'Error 404 - Home Button', self::STRING_GROUP );
+
 		pll_register_string( 'Contact Form - Name Required Error', 'Full name is required', self::STRING_GROUP );
 		pll_register_string( 'Contact Form - Email Required Error', 'Please enter a valid email address', self::STRING_GROUP );
 		pll_register_string( 'Contact Form - Message Required Error', 'Message is required', self::STRING_GROUP );

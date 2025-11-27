@@ -27,6 +27,7 @@ class Markdown_Helper {
 
 		} catch ( Exception $e ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( 'Markdown parsing error: ' . $e->getMessage() );
 			}
 
