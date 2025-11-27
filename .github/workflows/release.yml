@@ -39,8 +39,7 @@ jobs:
               run: |
                   VERSION=${GITHUB_REF#refs/tags/v}
                   echo "Replacing version placeholders with: $VERSION"
-                  # Use a simpler approach with sed and proper escaping
-                  sed -i "s/\${{VERSION}}/$VERSION/g" style.css
+                  sed -i "s/__VERSION__/$VERSION/g" style.css
                   echo "Version replacement completed"
 
             - name: Create compressed release asset
