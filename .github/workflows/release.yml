@@ -88,6 +88,6 @@ jobs:
                   key: ${{ secrets.SERVER_KEY }}
                   script: |
                       cd /tmp/portfolio-themes
-                      CONTAINER_NAME=docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1
+                      CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
                       docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp alpine:3.22.2 sh -c "apk add --no-cache unzip && unzip /tmp/portfolio-themes/portfolio-*.zip -d /var/www/html/wp-content/themes/"
                       rm /tmp/portfolio-themes/portfolio-*.zip
