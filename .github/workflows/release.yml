@@ -92,9 +92,5 @@ jobs:
                       docker run --rm --volumes-from $CONTAINER_NAME -v /tmp/portfolio-themes:/tmp/portfolio-themes alpine:3.22.2 sh -c "
                         apk add --no-cache unzip && 
                         cd /tmp/portfolio-themes &&
-                        ZIP_FILE=\$(ls portfolio-*.zip | head -n1) &&
-                        TARGET_DIR=\$(echo \"\$ZIP_FILE\" | sed 's/\.zip//') &&
-                        echo \"Unzipping \$ZIP_FILE to \$TARGET_DIR\" &&
-                        unzip /tmp/portfolio-themes/\$ZIP_FILE -d /var/www/html/wp-content/themes/\$TARGET_DIR &&
-                        echo \"Theme copied to /var/www/html/wp-content/themes/\$TARGET_DIR\" &&
-                        rm -rf /tmp/portfolio-themes/\$ZIP_FILE"
+                        unzip /tmp/portfolio-themes/portfolio-*.zip -d /var/www/html/wp-content/themes/ &&
+                        rm -rf /tmp/portfolio-themes/portfolio-*.zip"
