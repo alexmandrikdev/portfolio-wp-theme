@@ -1,0 +1,54 @@
+name: CI - Lint and Build Verification
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        types: [opened, synchronize]
+
+jobs:
+    lint-and-build:
+        name: Lint and Build Verification
+        runs-on: ubuntu-24.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+                  cache: 'npm'
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: mbstring, xml, curl, json, intl
+
+            - name: Install Node.js dependencies
+              run: npm ci
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --prefer-dist
+
+            - name: Run PHP linter
+              run: composer lint
+
+            - name: Run JavaScript linter
+              run: npm run lint:js
+
+            - name: Run CSS linter
+              run: npm run lint:css
+
+            - name: Build theme (verification)
+              run: npm run build
+
+            - name: Verify build output
+              run: |
+                  if [ ! -d "build" ]; then
+                    echo "Build directory not found - build failed"
+                    exit 1
+                  fi
+                  echo "Build verification successful"
