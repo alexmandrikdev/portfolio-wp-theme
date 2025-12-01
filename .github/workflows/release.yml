@@ -1,0 +1,100 @@
+name: Release Build
+
+on:
+    push:
+        tags:
+            - 'v*.*.*'
+
+permissions:
+    contents: write
+
+jobs:
+    build-release:
+        name: Build Release Asset
+        runs-on: ubuntu-24.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: '24'
+                  cache: 'npm'
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: mbstring, xml, curl, json, intl
+
+            - name: Install Node.js dependencies
+              run: npm ci
+
+            - name: Install Composer dependencies (production only)
+              run: composer install --no-dev --no-interaction --prefer-dist
+
+            - name: Build theme for production
+              run: npm run build
+
+            - name: Replace version placeholders
+              run: |
+                  VERSION=${GITHUB_REF#refs/tags/v}
+                  echo "Replacing version placeholders with: $VERSION"
+                  sed -i "s/__VERSION__/$VERSION/g" style.css
+                  echo "Version replacement completed"
+
+            - name: Create compressed release asset
+              run: |
+                  VERSION=${GITHUB_REF#refs/tags/}
+                  VERSION=${VERSION//./-}
+
+                  mkdir -p portfolio-$VERSION
+
+                  cp -r assets/ portfolio-$VERSION/
+                  cp -r build/ portfolio-$VERSION/
+                  cp -r inc/ portfolio-$VERSION/
+                  cp -r patterns/ portfolio-$VERSION/
+                  cp -r templates/ portfolio-$VERSION/
+                  cp -r vendor/ portfolio-$VERSION/
+                  cp -r node_modules/ portfolio-$VERSION/
+                  cp functions.php portfolio-$VERSION/
+                  cp screenshot.png portfolio-$VERSION/
+                  cp style.css portfolio-$VERSION/
+                  cp theme.json portfolio-$VERSION/
+                  cp wpml-config.xml portfolio-$VERSION/
+
+                  tar -czf portfolio-$VERSION.tar.gz portfolio-$VERSION/
+                  echo "Compressed release asset created: portfolio-$VERSION.tar.gz"
+
+            - name: Upload release asset
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: portfolio-*.tar.gz
+
+            - name: Copy release asset to server
+              uses: appleboy/scp-action@v1
+              with:
+                  host: ${{ secrets.SERVER_HOST }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  key: ${{ secrets.SERVER_KEY }}
+                  source: 'portfolio-*.tar.gz'
+                  target: '/tmp/portfolio-themes'
+
+            - name: Copy theme to theme directory
+              uses: appleboy/ssh-action@v1
+              with:
+                  host: ${{ secrets.SERVER_HOST }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  key: ${{ secrets.SERVER_KEY }}
+                  script: |
+                      CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
+                      docker run --rm \
+                        --volumes-from $CONTAINER_NAME \
+                        -v /tmp/portfolio-themes:/tmp/portfolio-themes \
+                        alpine:3.22.2 \
+                        sh -c "tar -xzf /tmp/portfolio-themes/portfolio-*.tar.gz -C /var/www/html/wp-content/themes/"
+                      docker exec $CONTAINER_NAME \
+                        sh -c "chown -R www-data:www-data /var/www/html/wp-content/themes/portfolio-*"
+                      rm -rf /tmp/portfolio-themes/portfolio-*.tar.gz
