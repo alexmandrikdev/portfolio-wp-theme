@@ -3,21 +3,11 @@
 .project-tech-details {
 	background: var(--color-background-secondary);
 
-	&__grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--element-spacing);
-
-		@include mixins.breakpoint-up("md") {
-			grid-template-columns: 1fr 1fr;
-			gap: var(--space-xl);
-		}
-	}
-
 	&__tech-items {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-md);
+		margin-bottom: var(--element-spacing);
 	}
 
 	&__tech-item {
@@ -60,9 +50,14 @@
 	}
 
 	&__challenges-list {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr;
 		gap: var(--space-xl);
+
+		@include mixins.breakpoint-up("md") {
+			grid-template-columns: repeat(2, 1fr);
+			padding-bottom: 200px;
+		}
 	}
 
 	&__challenge-item {
@@ -70,6 +65,13 @@
 		background: var(--color-background-primary);
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow-small);
+
+		@include mixins.breakpoint-up("md") {
+
+			&:nth-child(2n) {
+				transform: translateY(200px);
+			}
+		}
 	}
 
 	&__challenge-header {
