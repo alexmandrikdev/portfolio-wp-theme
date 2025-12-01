@@ -29,10 +29,22 @@ class Project_Permalink_Manager {
 		$listing_page_ids = $settings['projects_listing_page_ids'] ?? array();
 
 		$lang_code = function_exists( 'pll_default_language' ) ? pll_default_language() : 'default';
+		// If polylang languages are not initialized yet, pll_default_language() may return false.
+		if ( ! $lang_code || ! is_string( $lang_code ) ) {
+			$lang_code = 'default';
+		}
+
+		// Ensure we have a listing page ID for this language.
+		if ( ! isset( $listing_page_ids[ $lang_code ] ) || ! $listing_page_ids[ $lang_code ] ) {
+			return;
+		}
 
 		$listing_page_id = $listing_page_ids[ $lang_code ];
 
 		$listing_page_slug = get_post_field( 'post_name', $listing_page_id );
+		if ( ! $listing_page_slug ) {
+			return;
+		}
 
 		if ( 'default' === $lang_code || pll_default_language() === $lang_code ) {
 			add_rewrite_rule(
