@@ -55,6 +55,7 @@ jobs:
                   cp -r assets/ portfolio-$VERSION/
                   cp -r build/ portfolio-$VERSION/
                   cp -r inc/ portfolio-$VERSION/
+                  cp -r src/ portfolio-$VERSION/
                   cp -r patterns/ portfolio-$VERSION/
                   cp -r templates/ portfolio-$VERSION/
                   cp -r vendor/ portfolio-$VERSION/
