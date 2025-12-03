@@ -35,7 +35,7 @@ class Project_Card {
 	}
 
 	public function render(): string {
-		$template_path = get_theme_file_path( 'src/components/project-card/render.php' );
+		$template_path = get_theme_file_path( 'build/components/project-card/render.php' );
 
 		if ( ! file_exists( $template_path ) ) {
 			return '<p>Project card template not found.</p>';

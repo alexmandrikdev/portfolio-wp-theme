@@ -1,6 +1,7 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const path = require( 'path' );
 const glob = require( 'glob' );
+const CopyPlugin = require( 'copy-webpack-plugin' );
 
 const getComponentEntries = () => {
 	const entryFiles = glob.sync(
@@ -61,5 +62,16 @@ module.exports = defaultConfig.map( ( config, index ) => {
 
 			return entryPoints;
 		},
+		plugins: [
+			...( config.plugins || [] ),
+			new CopyPlugin( {
+				patterns: [
+					{
+						from: 'src/components/project-card/render.php',
+						to: 'components/project-card/render.php',
+					},
+				],
+			} ),
+		],
 	};
 } );
