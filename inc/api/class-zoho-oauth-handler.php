@@ -28,10 +28,15 @@ class Zoho_OAuth_Handler {
 					'callback'            => array( $this, 'handle_callback' ),
 					'permission_callback' => array( $this, 'permission_check' ),
 					'args'                => array(
-						'code' => array(
+						'code'            => array(
 							'required'          => true,
 							'type'              => 'string',
 							'sanitize_callback' => 'sanitize_text_field',
+						),
+						'accounts-server' => array(
+							'required'          => true,
+							'type'              => 'string',
+							'sanitize_callback' => 'esc_url_raw',
 						),
 					),
 				),
@@ -48,7 +53,8 @@ class Zoho_OAuth_Handler {
 	}
 
 	public function handle_callback( $request ) {
-		$code = $request->get_param( 'code' );
+		$code            = $request->get_param( 'code' );
+		$accounts_server = $request->get_param( 'accounts-server' );
 
 		// Get stored client ID and secret.
 		$settings      = Settings_Helper::get_current_settings();
@@ -66,8 +72,11 @@ class Zoho_OAuth_Handler {
 		// Build redirect URI (must match the one used in authorization request).
 		$redirect_uri = rest_url( self::REST_NAMESPACE . self::REST_ROUTE );
 
+		// Ensure the accounts server URL does not have a trailing slash.
+		$accounts_server = rtrim( $accounts_server, '/' );
+
 		// Prepare token request.
-		$token_url = 'https://accounts.zoho.com/oauth/v2/token';
+		$token_url = $accounts_server . '/oauth/v2/token';
 		$args      = array(
 			'body' => array(
 				'code'          => $code,
@@ -102,13 +111,14 @@ class Zoho_OAuth_Handler {
 			);
 		}
 
-		// Update settings with tokens.
+		// Update settings with tokens and accounts server.
 		$updated_settings = array_merge(
 			$settings,
 			array(
-				'zoho_access_token'  => $data['access_token'],
-				'zoho_refresh_token' => $data['refresh_token'] ?? '',
-				'zoho_token_expires' => time() + (int) ( $data['expires_in'] ?? 3600 ),
+				'zoho_access_token'    => $data['access_token'],
+				'zoho_refresh_token'   => $data['refresh_token'] ?? '',
+				'zoho_token_expires'   => time() + (int) ( $data['expires_in'] ?? 3600 ),
+				'zoho_accounts_server' => $accounts_server,
 			)
 		);
 

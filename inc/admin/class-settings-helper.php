@@ -20,6 +20,7 @@ class Settings_Helper {
 			'zoho_access_token'         => '',
 			'zoho_refresh_token'        => '',
 			'zoho_token_expires'        => 0,
+			'zoho_accounts_server'      => '',
 			// Add more default settings here as needed.
 		);
 	}
@@ -106,6 +107,12 @@ class Settings_Helper {
 				'type'              => 'integer',
 				'required'          => false,
 				'sanitize_callback' => 'absint',
+			),
+			'zoho_accounts_server'      => array(
+				'description'       => __( 'Zoho Accounts Server URL (e.g., https://accounts.zoho.eu).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
 			),
 			// Add more fields schema here as needed.
 		);
