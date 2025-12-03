@@ -57,12 +57,13 @@ class Zoho_OAuth_Handler {
 		return true;
 	}
 
-	public function handle_callback( $request ) {
-		$code            = $request->get_param( 'code' );
-		$accounts_server = $request->get_param( 'accounts-server' );
-		$state           = $request->get_param( 'state' );
-
-		// Validate state parameter.
+	/**
+	 * Validate the OAuth state parameter.
+	 *
+	 * @param string $state The state parameter from the request.
+	 * @return true|\WP_Error True if valid, WP_Error otherwise.
+	 */
+	private function validate_state( $state ) {
 		if ( empty( $state ) ) {
 			return new \WP_Error(
 				'zoho_state_missing',
@@ -84,9 +85,16 @@ class Zoho_OAuth_Handler {
 
 		// Clean up the transient after validation.
 		delete_transient( $transient_key );
+		return true;
+	}
 
-		// Get stored client ID and secret.
-		$settings      = Settings_Helper::get_current_settings();
+	/**
+	 * Get client credentials from settings.
+	 *
+	 * @param array $settings The current settings.
+	 * @return array|\WP_Error Array with client_id and client_secret, or WP_Error.
+	 */
+	private function get_client_credentials( $settings ) {
 		$client_id     = $settings['zoho_client_id'] ?? '';
 		$client_secret = $settings['zoho_client_secret'] ?? '';
 
@@ -98,13 +106,25 @@ class Zoho_OAuth_Handler {
 			);
 		}
 
+		return compact( 'client_id', 'client_secret' );
+	}
+
+	/**
+	 * Request access token from Zoho OAuth server.
+	 *
+	 * @param string $code            Authorization code.
+	 * @param string $accounts_server Zoho accounts server URL.
+	 * @param string $client_id       Client ID.
+	 * @param string $client_secret   Client secret.
+	 * @return array|\WP_Error Token data on success, WP_Error on failure.
+	 */
+	private function request_token( $code, $accounts_server, $client_id, $client_secret ) {
 		// Build redirect URI (must match the one used in authorization request).
 		$redirect_uri = rest_url( self::REST_NAMESPACE . self::REST_ROUTE );
 
 		// Ensure the accounts server URL does not have a trailing slash.
 		$accounts_server = rtrim( $accounts_server, '/' );
 
-		// Prepare token request.
 		$token_url = $accounts_server . '/oauth/v2/token';
 		$args      = array(
 			'body' => array(
@@ -140,30 +160,83 @@ class Zoho_OAuth_Handler {
 			);
 		}
 
-		// Update settings with tokens and accounts server.
+		return $data;
+	}
+
+	/**
+	 * Save tokens to settings.
+	 *
+	 * @param array  $token_data      Token data from Zoho.
+	 * @param string $accounts_server Zoho accounts server URL.
+	 * @param array  $settings        Current settings.
+	 * @return bool|\WP_Error True on success, WP_Error on failure.
+	 */
+	private function save_tokens( $token_data, $accounts_server, $settings ) {
 		$updated_settings = array_merge(
 			$settings,
 			array(
-				'zoho_access_token'    => $data['access_token'],
-				'zoho_refresh_token'   => $data['refresh_token'] ?? '',
-				'zoho_token_expires'   => time() + (int) ( $data['expires_in'] ?? 3600 ),
+				'zoho_access_token'    => $token_data['access_token'],
+				'zoho_refresh_token'   => $token_data['refresh_token'] ?? '',
+				'zoho_token_expires'   => time() + (int) ( $token_data['expires_in'] ?? 3600 ),
 				'zoho_accounts_server' => $accounts_server,
 			)
 		);
 
 		$result = update_option( Settings_Page::OPTION_NAME, $updated_settings );
 
-		if ( $result ) {
-			// Redirect back to settings page with success message.
-			$settings_url = admin_url( 'themes.php?page=' . Settings_Page::PAGE_SLUG . '&tab=zoho-mail&zoho-auth=success' );
-			wp_redirect( $settings_url );
-			exit;
-		} else {
+		if ( ! $result ) {
 			return new \WP_Error(
 				'zoho_token_save_failed',
 				__( 'Failed to save tokens.', 'portfolio' ),
 				array( 'status' => 500 )
 			);
 		}
+
+		return true;
+	}
+
+	/**
+	 * Redirect to settings page with success message.
+	 */
+	private function redirect_to_settings() {
+		$settings_url = admin_url( 'themes.php?page=' . Settings_Page::PAGE_SLUG . '&tab=zoho-mail&zoho-auth=success' );
+		wp_redirect( $settings_url );
+		exit;
+	}
+
+	public function handle_callback( $request ) {
+		$code            = $request->get_param( 'code' );
+		$accounts_server = $request->get_param( 'accounts-server' );
+		$state           = $request->get_param( 'state' );
+
+		// Validate state.
+		$state_validation = $this->validate_state( $state );
+		if ( is_wp_error( $state_validation ) ) {
+			return $state_validation;
+		}
+
+		// Get client credentials.
+		$settings    = Settings_Helper::get_current_settings();
+		$credentials = $this->get_client_credentials( $settings );
+		if ( is_wp_error( $credentials ) ) {
+			return $credentials;
+		}
+		$client_id     = $credentials['client_id'];
+		$client_secret = $credentials['client_secret'];
+
+		// Request token.
+		$token_data = $this->request_token( $code, $accounts_server, $client_id, $client_secret );
+		if ( is_wp_error( $token_data ) ) {
+			return $token_data;
+		}
+
+		// Save tokens.
+		$save_result = $this->save_tokens( $token_data, $accounts_server, $settings );
+		if ( is_wp_error( $save_result ) ) {
+			return $save_result;
+		}
+
+		// Redirect to settings page.
+		$this->redirect_to_settings();
 	}
 }
