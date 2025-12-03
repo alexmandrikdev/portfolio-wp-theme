@@ -46,32 +46,33 @@ jobs:
                   echo "Version replacement completed"
 
             - name: Create compressed release asset
+              id: create_release_asset
               run: |
-                  VERSION=${GITHUB_REF#refs/tags/}
-                  VERSION=${VERSION//./-}
+                  VERSION_TAG=${GITHUB_REF#refs/tags/v}
+                  RELEASE_NAME="portfolio-v${VERSION_TAG}.tar.gz"
 
-                  mkdir -p portfolio-$VERSION
+                  mkdir -p portfolio
 
-                  cp -r assets/ portfolio-$VERSION/
-                  cp -r build/ portfolio-$VERSION/
-                  cp -r inc/ portfolio-$VERSION/
-                  cp -r patterns/ portfolio-$VERSION/
-                  cp -r templates/ portfolio-$VERSION/
-                  cp -r vendor/ portfolio-$VERSION/
-                  cp -r node_modules/ portfolio-$VERSION/
-                  cp functions.php portfolio-$VERSION/
-                  cp screenshot.png portfolio-$VERSION/
-                  cp style.css portfolio-$VERSION/
-                  cp theme.json portfolio-$VERSION/
-                  cp wpml-config.xml portfolio-$VERSION/
+                  cp -r assets/ portfolio/
+                  cp -r build/ portfolio/
+                  cp -r inc/ portfolio/
+                  cp -r patterns/ portfolio/
+                  cp -r templates/ portfolio/
+                  cp -r vendor/ portfolio/
+                  cp functions.php portfolio/
+                  cp screenshot.png portfolio/
+                  cp style.css portfolio/
+                  cp theme.json portfolio/
+                  cp wpml-config.xml portfolio/
 
-                  tar -czf portfolio-$VERSION.tar.gz portfolio-$VERSION/
-                  echo "Compressed release asset created: portfolio-$VERSION.tar.gz"
+                  tar -czf ${RELEASE_NAME} portfolio/
+                  echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+                  echo "Compressed release asset created: ${RELEASE_NAME}"
 
             - name: Upload release asset
               uses: softprops/action-gh-release@v2
               with:
-                  files: portfolio-*.tar.gz
+                  files: ${{ steps.create_release_asset.outputs.release_name }}
 
             - name: Copy release asset to server
               uses: appleboy/scp-action@v1
@@ -79,22 +80,13 @@ jobs:
                   host: ${{ secrets.SERVER_HOST }}
                   username: ${{ secrets.SERVER_USERNAME }}
                   key: ${{ secrets.SERVER_KEY }}
-                  source: 'portfolio-*.tar.gz'
+                  source: '${{ steps.create_release_asset.outputs.release_name }}'
                   target: '/tmp/portfolio-themes'
 
-            - name: Copy theme to theme directory
-              uses: appleboy/ssh-action@v1
+            - name: Deploy theme
+              uses: ./.github/actions/deploy-theme
               with:
-                  host: ${{ secrets.SERVER_HOST }}
-                  username: ${{ secrets.SERVER_USERNAME }}
-                  key: ${{ secrets.SERVER_KEY }}
-                  script: |
-                      CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
-                      docker run --rm \
-                        --volumes-from $CONTAINER_NAME \
-                        -v /tmp/portfolio-themes:/tmp/portfolio-themes \
-                        alpine:3.22.2 \
-                        sh -c "tar -xzf /tmp/portfolio-themes/portfolio-*.tar.gz -C /var/www/html/wp-content/themes/"
-                      docker exec $CONTAINER_NAME \
-                        sh -c "chown -R www-data:www-data /var/www/html/wp-content/themes/portfolio-*"
-                      rm -rf /tmp/portfolio-themes/portfolio-*.tar.gz
+                  release_name: ${{ steps.create_release_asset.outputs.release_name }}
+                  server_host: ${{ secrets.SERVER_HOST }}
+                  server_username: ${{ secrets.SERVER_USERNAME }}
+                  server_key: ${{ secrets.SERVER_KEY }}

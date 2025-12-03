@@ -1,0 +1,71 @@
+name: 'Deploy Theme'
+description: 'Deploy a theme tarball to the WordPress server using atomic deployment'
+
+inputs:
+    release_name:
+        description: 'Name of the release tarball (e.g., portfolio-v1.0.0.tar.gz)'
+        required: true
+    server_host:
+        description: 'SSH host'
+        required: true
+    server_username:
+        description: 'SSH username'
+        required: true
+    server_key:
+        description: 'SSH private key'
+        required: true
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Deploy theme via SSH
+          uses: appleboy/ssh-action@v1
+          with:
+              host: ${{ inputs.server_host }}
+              username: ${{ inputs.server_username }}
+              key: ${{ inputs.server_key }}
+              script: |
+                  RELEASE_NAME="${{ inputs.release_name }}"
+                  THEME_DIR="/var/www/html/wp-content/themes"
+                  CONTAINER_NAME=$(docker ps --filter "name=portfolio_wordpress" --format "{{.Names}}" | head -n1)
+
+                  docker cp /tmp/portfolio-themes/${RELEASE_NAME} ${CONTAINER_NAME}:/tmp/portfolio.tar.gz
+
+                  docker exec ${CONTAINER_NAME} sh -c "
+                    set -e
+                    cd ${THEME_DIR}
+                    
+                    # Extract new version to a temporary directory
+                    mkdir -p portfolio-new
+                    tar -xzf /tmp/portfolio.tar.gz -C portfolio-new --strip-components=1
+                    
+                    # Backup existing theme if it exists
+                    if [ -d \"portfolio\" ]; then
+                        # Remove any previous backup
+                        rm -rf portfolio-old
+                        mv portfolio portfolio-old
+                    fi
+                    
+                    # Activate new theme
+                    if mv portfolio-new portfolio; then
+                        # Success: remove backup
+                        if [ -d \"portfolio-old\" ]; then
+                            rm -rf portfolio-old
+                        fi
+                    else
+                        # Failed: restore backup if exists
+                        if [ -d \"portfolio-old\" ]; then
+                            mv portfolio-old portfolio
+                        fi
+                        echo \"Failed to activate new theme. Restored backup.\"
+                        exit 1
+                    fi
+                    
+                    # Set correct permissions
+                    chown -R www-data:www-data portfolio
+                    
+                    # Clean up the tarball
+                    rm /tmp/portfolio.tar.gz
+                  "
+
+                  rm /tmp/portfolio-themes/${RELEASE_NAME}
