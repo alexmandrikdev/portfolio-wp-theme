@@ -1,0 +1,38 @@
+name: Redeploy Release
+
+on:
+    release:
+        types: [edited]
+
+jobs:
+    redeploy:
+        name: Redeploy Release Asset
+        if: github.event.changes.make_latest.to == 'true'
+        runs-on: ubuntu-24.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v6
+
+            - name: Download release asset
+              uses: robinraju/release-downloader@v1
+              with:
+                  tag: ${{ github.event.release.tag_name }}
+                  fileName: 'portfolio-${{ github.event.release.tag_name }}.tar.gz'
+
+            - name: Copy release asset to server
+              uses: appleboy/scp-action@v1
+              with:
+                  host: ${{ secrets.SERVER_HOST }}
+                  username: ${{ secrets.SERVER_USERNAME }}
+                  key: ${{ secrets.SERVER_KEY }}
+                  source: 'portfolio-${{ github.event.release.tag_name }}.tar.gz'
+                  target: '/tmp/portfolio-themes'
+
+            - name: Deploy theme
+              uses: ./.github/actions/deploy-theme
+              with:
+                  release_name: 'portfolio-${{ github.event.release.tag_name }}.tar.gz'
+                  server_host: ${{ secrets.SERVER_HOST }}
+                  server_username: ${{ secrets.SERVER_USERNAME }}
+                  server_key: ${{ secrets.SERVER_KEY }}
