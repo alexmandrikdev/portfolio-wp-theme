@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@wordpress/create-block": "^4.75.0",
 		"@wordpress/scripts": "^30.25.0",
+		"copy-webpack-plugin": "^13.0.1",
 		"rimraf": "^6.0.1"
 	},
 	"dependencies": {
