@@ -60,11 +60,16 @@ export function ZohoMailSettings( { settings, onSave } ) {
 			window.portfolioSettings?.zoho_redirect_uri ||
 			`${ window.location.origin }/wp-json/portfolio/v1/zoho-auth/callback`;
 		const scope = 'ZohoMail.messages.CREATE';
-		return `https://accounts.zoho.com/oauth/v2/auth?client_id=${ encodeURIComponent(
+		const state = window.portfolioSettings?.zoho_oauth_state || '';
+		let url = `https://accounts.zoho.com/oauth/v2/auth?client_id=${ encodeURIComponent(
 			clientId
 		) }&response_type=code&redirect_uri=${ encodeURIComponent(
 			redirectUri
 		) }&scope=${ encodeURIComponent( scope ) }&access_type=offline`;
+		if ( state ) {
+			url += `&state=${ encodeURIComponent( state ) }`;
+		}
+		return url;
 	};
 
 	return (

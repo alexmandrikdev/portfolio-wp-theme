@@ -38,6 +38,11 @@ class Zoho_OAuth_Handler {
 							'type'              => 'string',
 							'sanitize_callback' => 'esc_url_raw',
 						),
+						'state'           => array(
+							'required'          => true,
+							'type'              => 'string',
+							'sanitize_callback' => 'sanitize_text_field',
+						),
 					),
 				),
 			)
@@ -55,6 +60,30 @@ class Zoho_OAuth_Handler {
 	public function handle_callback( $request ) {
 		$code            = $request->get_param( 'code' );
 		$accounts_server = $request->get_param( 'accounts-server' );
+		$state           = $request->get_param( 'state' );
+
+		// Validate state parameter.
+		if ( empty( $state ) ) {
+			return new \WP_Error(
+				'zoho_state_missing',
+				__( 'State parameter is missing.', 'portfolio' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$transient_key = 'zoho_oauth_state_' . $state;
+		$stored_state  = get_transient( $transient_key );
+
+		if ( false === $stored_state ) {
+			return new \WP_Error(
+				'zoho_state_invalid',
+				__( 'Invalid or expired state parameter.', 'portfolio' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Clean up the transient after validation.
+		delete_transient( $transient_key );
 
 		// Get stored client ID and secret.
 		$settings      = Settings_Helper::get_current_settings();
