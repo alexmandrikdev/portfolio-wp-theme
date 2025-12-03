@@ -47,7 +47,9 @@ class Asset_Helper {
 					get_parent_theme_file_uri( $js_path ),
 					$asset['dependencies'] ?? array(),
 					$asset['version'],
-					$options['js_in_footer']
+					array(
+						'in_footer' => $options['js_in_footer'],
+					)
 				);
 			}
 		}
