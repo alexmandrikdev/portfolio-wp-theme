@@ -64,7 +64,7 @@ export function ZohoMailSettings( { settings, onSave } ) {
 			clientId
 		) }&response_type=code&redirect_uri=${ encodeURIComponent(
 			redirectUri
-		) }&scope=${ encodeURIComponent( scope ) }`;
+		) }&scope=${ encodeURIComponent( scope ) }&access_type=offline`;
 	};
 
 	return (
