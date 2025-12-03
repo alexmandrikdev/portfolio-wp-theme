@@ -190,6 +190,7 @@ export function ZohoMailSettings( { settings, onSave } ) {
 					<Button
 						variant="secondary"
 						href={ getAuthorizationUrl() }
+						target="__blank"
 						style={ { marginLeft: '1rem' } }
 					>
 						{ __( 'Authorize with Zoho', 'portfolio' ) }
