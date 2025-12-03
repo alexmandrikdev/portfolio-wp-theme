@@ -74,16 +74,22 @@ class Settings_Page {
 	private function localize_script() {
 		$settings = $this->get_current_settings();
 
+		// Generate a state token for Zoho OAuth.
+		$state         = wp_generate_password( 32, false );
+		$transient_key = 'zoho_oauth_state_' . $state;
+		set_transient( $transient_key, 'valid', 15 * MINUTE_IN_SECONDS );
+
 		wp_localize_script(
 			'portfolio-settings-script',
 			'portfolioSettings',
 			array(
-				'api'       => array(
+				'api'              => array(
 					'path' => 'portfolio/v1/settings',
 				),
-				'settings'  => $settings,
-				'languages' => Settings_Helper::get_polylang_languages(),
-				'pages'     => Settings_Helper::get_all_pages_by_language(),
+				'settings'         => $settings,
+				'languages'        => Settings_Helper::get_polylang_languages(),
+				'pages'            => Settings_Helper::get_all_pages_by_language(),
+				'zoho_oauth_state' => $state,
 			)
 		);
 	}

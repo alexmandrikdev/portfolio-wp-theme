@@ -5,6 +5,7 @@ import { useSettingsAPI } from '../hooks/use-settings-api';
 import { RecaptchaSettings } from './recaptcha-settings';
 import { GeneralSettings } from './general-settings';
 import { ContactSettings } from './contact-settings';
+import { ZohoMailSettings } from './zoho-mail-settings';
 
 export function SettingsApp() {
 	const [ , setActiveTab ] = useState( 'general' );
@@ -25,6 +26,11 @@ export function SettingsApp() {
 			name: 'contact',
 			title: __( 'Contact', 'portfolio' ),
 			className: 'tab-contact',
+		},
+		{
+			name: 'zoho-mail',
+			title: __( 'Zoho Mail', 'portfolio' ),
+			className: 'tab-zoho-mail',
 		},
 	];
 
@@ -47,6 +53,13 @@ export function SettingsApp() {
 			case 'contact':
 				return (
 					<ContactSettings
+						settings={ settings }
+						onSave={ saveSettings }
+					/>
+				);
+			case 'zoho-mail':
+				return (
+					<ZohoMailSettings
 						settings={ settings }
 						onSave={ saveSettings }
 					/>
