@@ -97,6 +97,26 @@ class Settings_Helper {
 		return $sanitized;
 	}
 
+	/**
+	 * Update settings with new values.
+	 *
+	 * @param array $new_settings New settings to update (can be partial).
+	 * @return array|bool If successful, returns the updated settings array; false on failure.
+	 */
+	public static function update_settings( $new_settings ) {
+		$sanitized_settings = self::sanitize_settings( $new_settings );
+		$current_settings   = self::get_current_settings();
+		$updated_settings   = array_merge( $current_settings, $sanitized_settings );
+
+		$result = update_option( Settings_Page::OPTION_NAME, $updated_settings );
+
+		if ( $result ) {
+			return $updated_settings;
+		}
+
+		return false;
+	}
+
 	public static function sanitize_projects_listing_page_ids( $page_ids ) {
 		$sanitized_page_ids = array();
 		if ( is_array( $page_ids ) ) {

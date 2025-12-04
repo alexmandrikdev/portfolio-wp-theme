@@ -81,27 +81,22 @@ class Settings_API {
 			);
 		}
 
-		$sanitized_settings = Settings_Helper::sanitize_settings( $new_settings );
+		$updated_settings = Settings_Helper::update_settings( $new_settings );
 
-		$current_settings = Settings_Helper::get_current_settings();
-		$updated_settings = array_merge( $current_settings, $sanitized_settings );
-
-		$result = update_option( Settings_Page::OPTION_NAME, $updated_settings );
-
-		if ( $result ) {
-			return rest_ensure_response(
-				array(
-					'success'  => true,
-					'message'  => __( 'Settings saved successfully.', 'portfolio' ),
-					'settings' => $updated_settings,
-				)
-			);
-		} else {
+		if ( false === $updated_settings ) {
 			return new \WP_Error(
 				'rest_save_failed',
 				__( 'Failed to save settings.', 'portfolio' ),
 				array( 'status' => 500 )
 			);
 		}
+
+		return rest_ensure_response(
+			array(
+				'success'  => true,
+				'message'  => __( 'Settings saved successfully.', 'portfolio' ),
+				'settings' => $updated_settings,
+			)
+		);
 	}
 }
