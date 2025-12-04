@@ -59,7 +59,7 @@ export function ZohoMailSettings( { settings, onSave } ) {
 		const redirectUri =
 			window.portfolioSettings?.zoho_redirect_uri ||
 			`${ window.location.origin }/wp-json/portfolio/v1/zoho-auth/callback`;
-		const scope = 'ZohoMail.messages.CREATE';
+		const scope = 'ZohoMail.messages.CREATE,ZohoMail.accounts.READ';
 		const state = window.portfolioSettings?.zoho_oauth_state || '';
 		let url = `https://accounts.zoho.com/oauth/v2/auth?client_id=${ encodeURIComponent(
 			clientId

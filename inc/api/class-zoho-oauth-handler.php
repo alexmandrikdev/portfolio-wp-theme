@@ -178,7 +178,7 @@ class Zoho_OAuth_Handler {
 				'client_id'     => $client_id,
 				'client_secret' => $client_secret,
 				'redirect_uri'  => $redirect_uri,
-				'scope'         => 'ZohoMail.messages.CREATE',
+				'scope'         => 'ZohoMail.messages.CREATE,ZohoMail.accounts.READ',
 			),
 		);
 
