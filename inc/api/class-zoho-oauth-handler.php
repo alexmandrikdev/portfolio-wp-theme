@@ -195,8 +195,11 @@ class Zoho_OAuth_Handler {
 		$data = json_decode( $body, true );
 
 		if ( empty( $data['access_token'] ) ) {
-			// Log error.
-			error_log( 'Zoho OAuth error: ' . $body );
+			log_message(
+				'Zoho OAuth error: ' . $body,
+				'Zoho_OAuth_Handler',
+				'error'
+			);
 			return new \WP_Error(
 				'zoho_token_invalid',
 				__( 'Failed to obtain access token from Zoho.', 'portfolio' ),

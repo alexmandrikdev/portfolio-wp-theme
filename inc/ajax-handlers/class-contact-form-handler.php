@@ -20,6 +20,16 @@ class Contact_Form_Handler {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- wp_verify_nonce handles validation
 		$nonce = isset( $_POST['nonce'] ) ? wp_unslash( $_POST['nonce'] ) : '';
 		if ( ! wp_verify_nonce( $nonce, 'am_contact_form_nonce' ) ) {
+			log_message(
+				sprintf(
+					'[Contact Form] Nonce verification failed. Nonce: %s, IP: %s, User Agent: %s',
+					$nonce ? substr( $nonce, 0, 8 ) . '...' : '(empty)',
+					$this->get_client_ip(),
+					$this->get_user_agent()
+				),
+				'Contact_Form_Handler',
+				'warning'
+			);
 			wp_send_json_error(
 				array(
 					'message' => pll__( 'Security verification failed.' ),
@@ -30,6 +40,15 @@ class Contact_Form_Handler {
 
 		$recaptcha_errors = $this->validate_recaptcha();
 		if ( ! empty( $recaptcha_errors ) ) {
+			log_message(
+				sprintf(
+					'[Contact Form] reCAPTCHA validation failed. Errors: %s, IP: %s',
+					wp_json_encode( $recaptcha_errors ),
+					$this->get_client_ip()
+				),
+				'Contact_Form_Handler',
+				'warning'
+			);
 			wp_send_json_error(
 				array(
 					'message' => pll__( 'Security verification failed.' ),
@@ -66,6 +85,17 @@ class Contact_Form_Handler {
 		}
 
 		if ( ! empty( $errors ) ) {
+			log_message(
+				sprintf(
+					'[Contact Form] Field validation failed. Errors: %s, Submitted data: name=%s, email=%s, subject=%s',
+					wp_json_encode( $errors ),
+					isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '(empty)',
+					isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '(empty)',
+					isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '(empty)'
+				),
+				'Contact_Form_Handler',
+				'warning'
+			);
 			wp_send_json_error(
 				array(
 					'message' => pll__( 'Please review and correct the highlighted fields' ),
@@ -121,6 +151,16 @@ class Contact_Form_Handler {
 			);
 
 		} catch ( \Exception $e ) {
+			log_message(
+				sprintf(
+					'[Contact Form] Exception during submission: %s, IP: %s, User Agent: %s',
+					$e->getMessage(),
+					$this->get_client_ip(),
+					$this->get_user_agent()
+				),
+				'Contact_Form_Handler',
+				'error'
+			);
 			wp_send_json_error(
 				array(
 					'message' => pll__( 'Sorry, there was an error submitting your form. Please try again.' ),

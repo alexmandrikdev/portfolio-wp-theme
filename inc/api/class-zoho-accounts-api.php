@@ -126,8 +126,11 @@ class Zoho_Accounts_API {
 			$response->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
 			return $response;
 		} else {
-			// Log error.
-			error_log( 'Zoho_Accounts_API: API error ' . $status_code . ' - ' . $body );
+			log_message(
+				'API error ' . $status_code . ' - ' . $body,
+				'Zoho_Accounts_API',
+				'error'
+			);
 			return new \WP_Error(
 				'zoho_api_failed',
 				__( 'Failed to fetch accounts from Zoho Mail.', 'portfolio' ),
