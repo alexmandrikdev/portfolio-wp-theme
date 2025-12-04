@@ -5,7 +5,6 @@ $recaptcha_site_key = $settings['recaptcha_site_key'] ?? '';
 wp_interactivity_state(
 	'contactFormModal',
 	array(
-		'nonce'                   => wp_create_nonce( 'am_contact_form_nonce' ),
 		'ajaxUrl'                 => admin_url( 'admin-ajax.php' ),
 		'submitButtonText'        => esc_html( $attributes['submit_button_ready_text'] ?? 'Send Message' ),
 		'submitButtonReadyText'   => esc_html( $attributes['submit_button_ready_text'] ?? 'Send Message' ),

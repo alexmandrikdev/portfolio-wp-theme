@@ -42,6 +42,33 @@ const { state, actions } = store( 'contactFormModal', {
 			trackGAEvent( 'contact_modal_opened', {
 				interaction_type: 'direct_open',
 			} );
+
+			// Fetch a fresh nonce to avoid caching issues
+			actions.fetchNonce();
+		},
+		fetchNonce: async () => {
+			try {
+				const formData = new FormData();
+				formData.append( 'action', 'get_fresh_contact_nonce' );
+				const response = await fetch( state.ajaxUrl, {
+					method: 'POST',
+					body: formData,
+				} );
+				const result = await response.json();
+				if ( result.success ) {
+					state.nonce = result.data.nonce;
+				} else {
+					// eslint-disable-next-line no-console
+					console.error(
+						'Failed to fetch nonce:',
+						result.data?.message
+					);
+					// Keep existing nonce (if any)
+				}
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error( 'Error fetching nonce:', error );
+			}
 		},
 		closeModal: () => {
 			state.isOpen = false;
