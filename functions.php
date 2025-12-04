@@ -25,6 +25,11 @@ require get_parent_theme_file_path( 'inc/admin/class-settings-page.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
 
+require get_parent_theme_file_path( 'inc/api/class-zoho-oauth-handler.php' );
+require get_parent_theme_file_path( 'inc/api/class-zoho-mail-service.php' );
+require get_parent_theme_file_path( 'inc/api/class-zoho-token-manager.php' );
+require get_parent_theme_file_path( 'inc/api/class-zoho-accounts-api.php' );
+
 require get_parent_theme_file_path( 'inc/class-polylang-string-registration.php' );
 
 require get_parent_theme_file_path( 'inc/helpers/class-media-display.php' );
@@ -46,6 +51,9 @@ AMPortfolioTheme\AjaxHandlers\Contact_Form_Handler::init();
 
 AMPortfolioTheme\Admin\Settings_Page::init();
 AMPortfolioTheme\Admin\Settings_API::init();
+
+AMPortfolioTheme\Api\Zoho_OAuth_Handler::init();
+AMPortfolioTheme\Api\Zoho_Accounts_API::init();
 
 AMPortfolioTheme\Polylang_String_Registration::init();
 

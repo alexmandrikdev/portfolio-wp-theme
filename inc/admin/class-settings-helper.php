@@ -15,6 +15,14 @@ class Settings_Helper {
 			'github_url'                => '',
 			'linkedin_url'              => '',
 			'google_analytics_id'       => '',
+			'zoho_client_id'            => '',
+			'zoho_client_secret'        => '',
+			'zoho_access_token'         => '',
+			'zoho_refresh_token'        => '',
+			'zoho_token_expires'        => 0,
+			'zoho_accounts_server'      => '',
+			'zoho_account_id'           => '',
+			'zoho_base_api_url'         => 'https://mail.zoho.com',
 			// Add more default settings here as needed.
 		);
 	}
@@ -71,6 +79,54 @@ class Settings_Helper {
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_client_id'            => array(
+				'description'       => __( 'Zoho Mail OAuth Client ID.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_client_secret'        => array(
+				'description'       => __( 'Zoho Mail OAuth Client Secret.', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_access_token'         => array(
+				'description'       => __( 'Zoho Mail OAuth Access Token (automatically managed).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_refresh_token'        => array(
+				'description'       => __( 'Zoho Mail OAuth Refresh Token (automatically managed).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_token_expires'        => array(
+				'description'       => __( 'Zoho Mail OAuth Token Expiration Timestamp.', 'portfolio' ),
+				'type'              => 'integer',
+				'required'          => false,
+				'sanitize_callback' => 'absint',
+			),
+			'zoho_accounts_server'      => array(
+				'description'       => __( 'Zoho Accounts Server URL (e.g., https://accounts.zoho.eu).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
+			),
+			'zoho_account_id'           => array(
+				'description'       => __( 'Zoho Mail Account ID (found in Zoho Mail settings).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'zoho_base_api_url'         => array(
+				'description'       => __( 'Zoho Mail API base URL (e.g., https://mail.zoho.com).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
 			),
 			// Add more fields schema here as needed.
 		);
