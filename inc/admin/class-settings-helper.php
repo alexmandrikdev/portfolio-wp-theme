@@ -21,6 +21,7 @@ class Settings_Helper {
 			'zoho_refresh_token'        => '',
 			'zoho_token_expires'        => 0,
 			'zoho_accounts_server'      => '',
+			'zoho_base_api_url'         => 'https://mail.zoho.com',
 			// Add more default settings here as needed.
 		);
 	}
@@ -110,6 +111,12 @@ class Settings_Helper {
 			),
 			'zoho_accounts_server'      => array(
 				'description'       => __( 'Zoho Accounts Server URL (e.g., https://accounts.zoho.eu).', 'portfolio' ),
+				'type'              => 'string',
+				'required'          => false,
+				'sanitize_callback' => 'esc_url_raw',
+			),
+			'zoho_base_api_url'         => array(
+				'description'       => __( 'Zoho Mail API base URL (e.g., https://mail.zoho.com).', 'portfolio' ),
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => 'esc_url_raw',

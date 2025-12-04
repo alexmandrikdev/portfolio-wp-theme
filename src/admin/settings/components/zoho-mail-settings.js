@@ -118,6 +118,18 @@ export function ZohoMailSettings( { settings, onSave } ) {
 							type="password"
 							placeholder="XXXXXXXXXXXXXXXX"
 						/>
+						<TextControl
+							label={ __( 'Base API URL', 'portfolio' ) }
+							value={ localSettings.zoho_base_api_url || '' }
+							onChange={ ( value ) =>
+								updateSetting( 'zoho_base_api_url', value )
+							}
+							help={ __(
+								'Zoho Mail API base URL (e.g., https://mail.zoho.com).',
+								'portfolio'
+							) }
+							placeholder="https://mail.zoho.com"
+						/>
 					</div>
 
 					<div className="portfolio-settings-help">
