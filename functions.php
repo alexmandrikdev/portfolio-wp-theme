@@ -13,6 +13,7 @@ require get_parent_theme_file_path( 'inc/taxonomies/class-project-technology-tax
 
 require get_parent_theme_file_path( 'inc/post-types/class-contact-submission-cpt.php' );
 require get_parent_theme_file_path( 'inc/ajax-handlers/class-contact-form-handler.php' );
+require get_parent_theme_file_path( 'inc/ajax-handlers/class-nonce-fetch-handler.php' );
 
 require get_parent_theme_file_path( 'inc/components/class-project-card-data-loader.php' );
 require get_parent_theme_file_path( 'inc/components/class-project-card-data.php' );
@@ -48,6 +49,7 @@ AMPortfolioTheme\Taxonomies\Project_Technology_Taxonomy::init();
 
 AMPortfolioTheme\PostTypes\Contact_Submission_CPT::init();
 AMPortfolioTheme\AjaxHandlers\Contact_Form_Handler::init();
+AMPortfolioTheme\AjaxHandlers\Nonce_Fetch_Handler::init();
 
 AMPortfolioTheme\Admin\Settings_Page::init();
 AMPortfolioTheme\Admin\Settings_API::init();
