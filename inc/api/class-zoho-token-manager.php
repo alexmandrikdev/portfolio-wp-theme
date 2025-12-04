@@ -114,7 +114,11 @@ class Zoho_Token_Manager {
 		$data = json_decode( $body, true );
 
 		if ( empty( $data['access_token'] ) ) {
-			error_log( 'Zoho Token Manager: Failed to refresh token. Response code: ' . wp_remote_retrieve_response_code( $response ) );
+			log_message(
+				'Failed to refresh token. Response code: ' . wp_remote_retrieve_response_code( $response ),
+				'Zoho_Token_Manager',
+				'error'
+			);
 			return new \WP_Error( 'zoho_refresh_invalid', __( 'Failed to refresh access token.', 'portfolio' ) );
 		}
 
