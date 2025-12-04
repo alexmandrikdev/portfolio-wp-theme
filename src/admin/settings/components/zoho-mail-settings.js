@@ -1,5 +1,6 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
 import {
 	TextControl,
 	Button,
@@ -7,12 +8,17 @@ import {
 	Notice,
 	Card,
 	CardBody,
+	SelectControl,
+	BaseControl,
 } from '@wordpress/components';
 
 export function ZohoMailSettings( { settings, onSave } ) {
 	const [ localSettings, setLocalSettings ] = useState( settings || {} );
 	const [ saving, setSaving ] = useState( false );
 	const [ notice, setNotice ] = useState( null );
+	const [ fetchingAccounts, setFetchingAccounts ] = useState( false );
+	const [ accounts, setAccounts ] = useState( [] );
+	const [ accountsError, setAccountsError ] = useState( null );
 
 	useEffect( () => {
 		setLocalSettings( settings || {} );
@@ -49,6 +55,40 @@ export function ZohoMailSettings( { settings, onSave } ) {
 			[ key ]: value,
 		} ) );
 	};
+
+	const fetchAccounts = useCallback( async () => {
+		setFetchingAccounts( true );
+		setAccountsError( null );
+		try {
+			const response = await apiFetch( {
+				path: '/portfolio/v1/zoho-accounts',
+				method: 'GET',
+			} );
+			setAccounts( response.accounts || [] );
+		} catch ( error ) {
+			setAccountsError(
+				error.message || __( 'Failed to fetch accounts.', 'portfolio' )
+			);
+		} finally {
+			setFetchingAccounts( false );
+		}
+	}, [] );
+
+	// Auto-fetch accounts when access token is present and accounts are empty.
+	useEffect( () => {
+		if (
+			localSettings.zoho_access_token &&
+			accounts.length === 0 &&
+			! fetchingAccounts
+		) {
+			fetchAccounts();
+		}
+	}, [
+		localSettings.zoho_access_token,
+		accounts.length,
+		fetchingAccounts,
+		fetchAccounts,
+	] );
 
 	const hasCredentials =
 		localSettings.zoho_client_id && localSettings.zoho_client_secret;
@@ -118,6 +158,83 @@ export function ZohoMailSettings( { settings, onSave } ) {
 							type="password"
 							placeholder="XXXXXXXXXXXXXXXX"
 						/>
+						<BaseControl
+							id="zoho-account-id"
+							label={ __( 'Account ID', 'portfolio' ) }
+							help={ __(
+								'Your Zoho Mail Account ID (found in Zoho Mail settings).',
+								'portfolio'
+							) }
+						>
+							<div
+								style={ {
+									display: 'flex',
+									alignItems: 'flex-start',
+									gap: '0.5rem',
+								} }
+							>
+								{ accounts.length > 0 ? (
+									<SelectControl
+										value={
+											localSettings.zoho_account_id || ''
+										}
+										onChange={ ( value ) =>
+											updateSetting(
+												'zoho_account_id',
+												value
+											)
+										}
+										options={ [
+											{
+												label: __(
+													'Select an account…',
+													'portfolio'
+												),
+												value: '',
+											},
+											...accounts.map( ( account ) => ( {
+												label: `${ account.displayName } (${ account.email })`,
+												value: account.id,
+											} ) ),
+										] }
+										style={ { flex: 1 } }
+									/>
+								) : (
+									<TextControl
+										value={
+											localSettings.zoho_account_id || ''
+										}
+										onChange={ ( value ) =>
+											updateSetting(
+												'zoho_account_id',
+												value
+											)
+										}
+										placeholder="123456789"
+										style={ { flex: 1 } }
+									/>
+								) }
+								<Button
+									variant="secondary"
+									size="compact"
+									onClick={ fetchAccounts }
+									disabled={
+										fetchingAccounts ||
+										! localSettings.zoho_access_token
+									}
+									isBusy={ fetchingAccounts }
+								>
+									{ fetchingAccounts
+										? __( 'Fetching…', 'portfolio' )
+										: __( 'Fetch Accounts', 'portfolio' ) }
+								</Button>
+							</div>
+							{ accountsError && (
+								<Notice status="error" isDismissible={ false }>
+									{ accountsError }
+								</Notice>
+							) }
+						</BaseControl>
 						<TextControl
 							label={ __( 'Base API URL', 'portfolio' ) }
 							value={ localSettings.zoho_base_api_url || '' }
@@ -153,7 +270,7 @@ export function ZohoMailSettings( { settings, onSave } ) {
 							</li>
 							<li>
 								{ __(
-									'Create a new OAuth client for Zoho Mail with the scope ZohoMail.messages.CREATE',
+									'Create a new OAuth client for Zoho Mail',
 									'portfolio'
 								) }
 							</li>
