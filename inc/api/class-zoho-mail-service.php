@@ -27,13 +27,13 @@ class Zoho_Mail_Service {
 
 		$token = Zoho_Token_Manager::ensure_valid_token( $settings );
 		if ( is_wp_error( $token ) ) {
-			error_log( 'Zoho_Mail_Service: Token validation failed - ' . $token->get_error_message() );
+			log_message( 'Token validation failed - ' . $token->get_error_message(), 'Zoho_Mail_Service', 'error' );
 			return false;
 		}
 
 		$from = self::get_from_address( $settings );
 		if ( empty( $from ) ) {
-			error_log( 'Zoho_Mail_Service: No from address configured.' );
+			log_message( 'No from address configured.', 'Zoho_Mail_Service', 'error' );
 			return false;
 		}
 
@@ -54,7 +54,7 @@ class Zoho_Mail_Service {
 	 */
 	private static function validate_configuration( $settings ) {
 		if ( empty( $settings['zoho_access_token'] ) || empty( $settings['zoho_account_id'] ) ) {
-			error_log( 'Zoho_Mail_Service: Missing access token or account ID.' );
+			log_message( 'Missing access token or account ID.', 'Zoho_Mail_Service', 'error' );
 			return false;
 		}
 		return true;
@@ -129,7 +129,7 @@ class Zoho_Mail_Service {
 	 */
 	private static function handle_response( $response, $to ) {
 		if ( is_wp_error( $response ) ) {
-			error_log( 'Zoho_Mail_Service: API request failed - ' . $response->get_error_message() );
+			log_message( 'API request failed - ' . $response->get_error_message(), 'Zoho_Mail_Service', 'error' );
 			return false;
 		}
 
@@ -138,13 +138,11 @@ class Zoho_Mail_Service {
 
 		if ( $status_code >= 200 && $status_code < 300 ) {
 			// Success.
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'Zoho_Mail_Service: Email sent successfully to ' . $to );
-			}
+			log_message( 'Email sent successfully to ' . $to, 'Zoho_Mail_Service', 'info' );
 			return true;
 		} else {
 			// Log error.
-			error_log( 'Zoho_Mail_Service: API error ' . $status_code . ' - ' . $body );
+			log_message( 'API error ' . $status_code . ' - ' . $body, 'Zoho_Mail_Service', 'error' );
 			return false;
 		}
 	}
