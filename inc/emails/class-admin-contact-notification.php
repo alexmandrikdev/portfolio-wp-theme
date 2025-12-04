@@ -92,8 +92,7 @@ class Admin_Contact_Notification {
 		$submission_id = $args['submission_id'] ?? 0;
 
 		if ( ! $submission_id ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Admin_Contact_Notification: Invalid submission ID' );
+			log_message( 'Invalid submission ID', 'Admin_Contact_Notification', 'warning' );
 			return false;
 		}
 
@@ -118,8 +117,7 @@ class Admin_Contact_Notification {
 	private static function send_immediately( $submission_id ) {
 		$submission_data = self::get_submission_data( $submission_id );
 		if ( empty( $submission_data ) ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Admin_Contact_Notification: Could not load submission data for ID: ' . $submission_id );
+			log_message( 'Could not load submission data for ID: ' . $submission_id, 'Admin_Contact_Notification', 'warning' );
 			return false;
 		}
 
@@ -127,8 +125,7 @@ class Admin_Contact_Notification {
 		$to       = $settings['contact_email'] ?? get_option( 'admin_email' );
 
 		if ( ! $to ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Admin_Contact_Notification: No admin email address found' );
+			log_message( 'No admin email address found', 'Admin_Contact_Notification', 'warning' );
 			return false;
 		}
 
@@ -147,16 +144,12 @@ class Admin_Contact_Notification {
 				throw new \Exception( 'wp_mail returned false' );
 			}
 
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( 'Admin_Contact_Notification: Email sent successfully to ' . $to );
-			}
+			log_message( 'Email sent successfully to ' . $to, 'Admin_Contact_Notification', 'info' );
 
 			return true;
 
 		} catch ( \Exception $e ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'Admin_Contact_Notification: Failed to send email - ' . $e->getMessage() );
+			log_message( 'Failed to send email - ' . $e->getMessage(), 'Admin_Contact_Notification', 'error' );
 
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 				wp_mail(
