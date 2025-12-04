@@ -26,6 +26,7 @@ require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
 
 require get_parent_theme_file_path( 'inc/api/class-zoho-oauth-handler.php' );
+require get_parent_theme_file_path( 'inc/api/class-zoho-mail-service.php' );
 require get_parent_theme_file_path( 'inc/api/class-zoho-token-manager.php' );
 require get_parent_theme_file_path( 'inc/api/class-zoho-accounts-api.php' );
 
