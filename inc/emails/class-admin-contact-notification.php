@@ -3,6 +3,7 @@
 namespace AMPortfolioTheme\Emails;
 
 use AMPortfolioTheme\Helpers\Markdown_Helper;
+use AMPortfolioTheme\Api\Zoho_Mail_Service;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -140,12 +141,7 @@ class Admin_Contact_Notification {
 		try {
 			$message = self::get( $submission_data, $submission_id );
 
-			$headers = array(
-				'Content-Type: text/html; charset=UTF-8',
-				'X-Mailer: WordPress/' . get_bloginfo( 'version' ),
-			);
-
-			$result = wp_mail( $to, $subject, $message, $headers );
+			$result = Zoho_Mail_Service::send_email( $to, $subject, $message );
 
 			if ( ! $result ) {
 				throw new \Exception( 'wp_mail returned false' );
