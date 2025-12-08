@@ -54,7 +54,9 @@ class Theme_Init {
 				'https://www.googletagmanager.com/gtag/js?id=' . $ga_id,
 				array(),
 				'1.0.0',
-				false
+				array(
+					'strategy' => 'async',
+				)
 			);
 
 			wp_add_inline_script(
