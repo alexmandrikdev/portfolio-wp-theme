@@ -21,6 +21,9 @@
 		},
 		"live_project_url": {
 			"type": "string"
+		},
+		"source_code_url": {
+			"type": "string"
 		}
 	}
 }
