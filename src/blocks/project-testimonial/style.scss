@@ -36,7 +36,7 @@
 	&__author {
 		font-weight: 600;
 		color: var(--color-text-primary);
-		margin-bottom: var(--space-xs);
+		margin-bottom: var(--space-xxs);
 	}
 
 	&__role {
@@ -57,6 +57,68 @@
 			top: var(--space-lg);
 			left: var(--space-lg);
 			font-size: 1.5rem;
+		}
+	}
+
+	&__author-info {
+		display: flex;
+		align-items: center;
+		gap: var(--space-md);
+		margin-top: var(--space-lg);
+		text-align: left;
+		width: max-content;
+		margin-left: auto;
+		margin-right: auto;
+
+		@include mixins.breakpoint-down("md") {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			gap: var(--space-sm);
+		}
+	}
+
+	&__profile-picture {
+		flex-shrink: 0;
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		border: 2px solid var(--color-text-accent-primary);
+		overflow: clip;
+
+		@include mixins.breakpoint-down("md") {
+			width: 56px;
+			height: 56px;
+		}
+
+		&-image {
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+			transition: all 0.2s ease-in-out;
+		}
+	}
+
+	&__author-details {
+		flex: 1;
+	}
+
+	&__author-info--linked {
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			opacity: 0.8;
+
+			.project-testimonial__profile-picture-image {
+				border-color: var(--color-text-accent-primary);
+				transform: scale(1.05);
+			}
+
+			.project-testimonial__author {
+				color: var(--color-text-accent-primary);
+			}
 		}
 	}
 }

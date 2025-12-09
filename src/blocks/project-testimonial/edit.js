@@ -7,6 +7,8 @@ import {
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
@@ -35,6 +37,94 @@ const TextareaInput = ( { label, value, onChange, placeholder } ) => (
 		/>
 	</FlexBlock>
 );
+
+const MediaUploadField = ( { label, value, onChange } ) => {
+	const imageUrl = useSelect(
+		( select ) => {
+			if ( ! value ) {
+				return '';
+			}
+			const image = select( 'core' ).getMedia( value );
+			return image?.source_url || '';
+		},
+		[ value ]
+	);
+
+	return (
+		<FlexBlock>
+			<BaseControl
+				id={ `media-upload-${ value || 'new' }` }
+				label={ label }
+			>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={ ( media ) => onChange( media.id ) }
+						allowedTypes={ [ 'image' ] }
+						value={ value }
+						render={ ( { open } ) => (
+							<div>
+								{ value ? (
+									<div>
+										<img
+											src={ imageUrl }
+											alt={ __(
+												'Profile picture preview',
+												'am-portfolio-theme'
+											) }
+											style={ {
+												display: 'block',
+												marginBottom: '8px',
+												width: '64px',
+												height: '64px',
+												borderRadius: '50%',
+												objectFit: 'cover',
+											} }
+										/>
+										<div
+											style={ {
+												display: 'flex',
+												gap: '8px',
+											} }
+										>
+											<Button
+												variant="secondary"
+												onClick={ open }
+											>
+												{ __(
+													'Replace Picture',
+													'am-portfolio-theme'
+												) }
+											</Button>
+											<Button
+												variant="tertiary"
+												onClick={ () => onChange( '' ) }
+											>
+												{ __(
+													'Remove',
+													'am-portfolio-theme'
+												) }
+											</Button>
+										</div>
+									</div>
+								) : (
+									<Button
+										variant="secondary"
+										onClick={ open }
+									>
+										{ __(
+											'Select Profile Picture',
+											'am-portfolio-theme'
+										) }
+									</Button>
+								) }
+							</div>
+						) }
+					/>
+				</MediaUploadCheck>
+			</BaseControl>
+		</FlexBlock>
+	);
+};
 
 const TestimonialItem = ( {
 	item,
@@ -98,7 +188,30 @@ const TestimonialItem = ( {
 							'am-portfolio-theme'
 						) }
 					/>
+
+					<TextInput
+						label={ __(
+							'Social Media Link',
+							'am-portfolio-theme'
+						) }
+						value={ item.social_media_link || '' }
+						onChange={ ( value ) =>
+							onUpdate( index, 'social_media_link', value )
+						}
+						placeholder={ __(
+							'https://linkedin.com/in/username',
+							'am-portfolio-theme'
+						) }
+					/>
 				</Flex>
+
+				<MediaUploadField
+					label={ __( 'Profile Picture', 'am-portfolio-theme' ) }
+					value={ item.profile_picture || '' }
+					onChange={ ( value ) =>
+						onUpdate( index, 'profile_picture', value )
+					}
+				/>
 
 				<RemoveButton
 					index={ index }
@@ -124,6 +237,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		quote: '',
 		author: '',
 		role: '',
+		profile_picture: '',
+		social_media_link: '',
 	};
 
 	return (
