@@ -67,8 +67,11 @@ const MetaItem = ( { item, index, metaItems, onUpdate, onRemove, onMove } ) => {
 };
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { meta_items: metaItems = [], live_project_url: liveProjectUrl } =
-		attributes;
+	const {
+		meta_items: metaItems = [],
+		live_project_url: liveProjectUrl,
+		source_code_url: sourceCodeUrl,
+	} = attributes;
 	const { addItem, moveItem, removeItem, updateItem } = useListManagement(
 		metaItems,
 		setAttributes,
@@ -96,6 +99,28 @@ export default function Edit( { attributes, setAttributes } ) {
 					}
 					placeholder={ __(
 						'https://example.com',
+						'am-portfolio-theme'
+					) }
+				/>
+			</BaseControl>
+
+			<BaseControl
+				id="project-hero-source-code"
+				label={ __( 'Source Code URL', 'am-portfolio-theme' ) }
+				help={ __(
+					'Enter the URL for the source code repository.',
+					'am-portfolio-theme'
+				) }
+			>
+				<TextControl
+					value={ sourceCodeUrl || '' }
+					onChange={ ( value ) =>
+						setAttributes( {
+							source_code_url: value,
+						} )
+					}
+					placeholder={ __(
+						'https://github.com/user/repo',
 						'am-portfolio-theme'
 					) }
 				/>
