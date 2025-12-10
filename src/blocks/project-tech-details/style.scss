@@ -56,7 +56,10 @@
 
 		@include mixins.breakpoint-up("md") {
 			grid-template-columns: repeat(2, 1fr);
-			padding-bottom: 200px;
+
+			&--even {
+				padding-bottom: 200px;
+			}
 		}
 	}
 
