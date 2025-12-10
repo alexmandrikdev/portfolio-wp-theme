@@ -4,6 +4,19 @@ use AMPortfolioTheme\Helpers\Media_Display;
 
 $challenges = $attributes['challenges'] ?? array();
 
+// Filter out challenges with empty title and description.
+$displayed_challenges = array_filter(
+	$challenges,
+	function ( $challenge ) {
+		$title       = $challenge['title'] ?? '';
+		$description = $challenge['description'] ?? '';
+		return ! ( empty( $title ) && empty( $description ) );
+	}
+);
+
+$challenge_count = count( $displayed_challenges );
+$list_class      = 'project-tech-details__challenges-list' . ( 0 === $challenge_count % 2 ? ' project-tech-details__challenges-list--even' : '' );
+
 $section_title    = pll__( 'Technical Implementation' );
 $tech_stack_title = pll__( 'Tech Stack' );
 $challenges_title = pll__( 'Key Challenges & Solutions' );
@@ -48,7 +61,7 @@ if ( $technologies && ! is_wp_error( $technologies ) ) {
 }
 
 $challenge_media_ids = array();
-foreach ( $challenges as $challenge ) {
+foreach ( $displayed_challenges as $challenge ) {
 	$media_id = $challenge['icon'] ?? 0;
 	if ( $media_id ) {
 		$challenge_media_ids[] = $media_id;
@@ -102,18 +115,14 @@ if ( ! empty( $all_media_ids ) ) {
 		<div class="project-tech-details__challenges scroll-fade">
 			<h3><?php echo esc_html( $challenges_title ); ?></h3>
 			
-			<?php if ( ! empty( $challenges ) ) : ?>
-				<div class="project-tech-details__challenges-list">
-					<?php foreach ( $challenges as $challenge ) : ?>
+			<?php if ( ! empty( $displayed_challenges ) ) : ?>
+				<div class="<?php echo esc_attr( $list_class ); ?>">
+					<?php foreach ( $displayed_challenges as $challenge ) : ?>
 						<?php
 						$icon_id         = $challenge['icon'] ?? 0;
 						$challenge_title = $challenge['title'] ?? '';
 						$description     = $challenge['description'] ?? '';
 						$solution        = $challenge['solution'] ?? '';
-
-						if ( empty( $challenge_title ) && empty( $description ) ) {
-							continue;
-						}
 						?>
 						<div class="project-tech-details__challenge-item">
 							<div class="project-tech-details__challenge-header">
