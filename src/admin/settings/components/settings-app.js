@@ -1,15 +1,15 @@
-import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { TabPanel, Notice } from '@wordpress/components';
 import { useSettingsAPI } from '../hooks/use-settings-api';
+import { useTabNavigation } from '../hooks/use-tab-navigation';
 import { RecaptchaSettings } from './recaptcha-settings';
 import { GeneralSettings } from './general-settings';
 import { ContactSettings } from './contact-settings';
 import { ZohoMailSettings } from './zoho-mail-settings';
 
 export function SettingsApp() {
-	const [ , setActiveTab ] = useState( 'general' );
 	const { settings, error, saveSettings } = useSettingsAPI();
+	const { activeTab, changeTab } = useTabNavigation();
 
 	const tabs = [
 		{
@@ -85,8 +85,11 @@ export function SettingsApp() {
 				<TabPanel
 					className="portfolio-settings-tabs"
 					activeClass="is-active"
-					onSelect={ setActiveTab }
+					onSelect={ changeTab }
 					tabs={ tabs }
+					initialTabName={ activeTab }
+					// Force the active tab to be re-rendered
+					key={ activeTab }
 				>
 					{ ( tab ) => (
 						<div
