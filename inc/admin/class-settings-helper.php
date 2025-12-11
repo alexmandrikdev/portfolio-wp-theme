@@ -164,12 +164,20 @@ class Settings_Helper {
 		$current_settings   = self::get_current_settings();
 		$updated_settings   = array_merge( $current_settings, $sanitized_settings );
 
+		// Check if settings have actually changed.
+		if ( $current_settings === $updated_settings ) {
+			// No changes needed, return current settings as success.
+			return $current_settings;
+		}
+
 		$result = update_option( Settings_Page::OPTION_NAME, $updated_settings );
 
 		if ( $result ) {
 			return $updated_settings;
 		}
 
+		// update_option returned false but settings were different.
+		// This indicates an actual database failure.
 		return false;
 	}
 
