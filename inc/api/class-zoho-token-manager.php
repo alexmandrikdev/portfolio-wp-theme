@@ -47,7 +47,7 @@ class Zoho_Token_Manager {
 	}
 
 	/**
-	 * Extract credentials from settings.
+	 * Extract credentials from settings and constants.
 	 *
 	 * @param array $settings Theme settings.
 	 * @return array Extracted credentials.
@@ -57,8 +57,8 @@ class Zoho_Token_Manager {
 			'access_token'    => $settings['zoho_access_token'] ?? '',
 			'refresh_token'   => $settings['zoho_refresh_token'] ?? '',
 			'expires'         => $settings['zoho_token_expires'] ?? 0,
-			'client_id'       => $settings['zoho_client_id'] ?? '',
-			'client_secret'   => $settings['zoho_client_secret'] ?? '',
+			'client_id'       => defined( 'PORTFOLIO_ZOHO_CLIENT_ID' ) ? \PORTFOLIO_ZOHO_CLIENT_ID : '',
+			'client_secret'   => defined( 'PORTFOLIO_ZOHO_CLIENT_SECRET' ) ? \PORTFOLIO_ZOHO_CLIENT_SECRET : '',
 			'accounts_server' => $settings['zoho_accounts_server'] ?? '',
 		);
 	}

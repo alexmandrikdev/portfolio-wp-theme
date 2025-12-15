@@ -1,6 +1,5 @@
 <?php
-$settings           = get_option( 'portfolio_theme_settings', array() );
-$recaptcha_site_key = $settings['recaptcha_site_key'] ?? '';
+$recaptcha_site_key = defined( 'PORTFOLIO_RECAPTCHA_SITE_KEY' ) ? \PORTFOLIO_RECAPTCHA_SITE_KEY : '';
 
 wp_interactivity_state(
 	'contactFormModal',
