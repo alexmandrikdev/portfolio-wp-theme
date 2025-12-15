@@ -174,8 +174,7 @@ class Contact_Form_Handler {
 	private function validate_recaptcha() {
 		$errors = array();
 
-		$settings             = get_option( 'portfolio_theme_settings', array() );
-		$recaptcha_secret_key = $settings['recaptcha_secret_key'] ?? '';
+		$recaptcha_secret_key = defined( 'PORTFOLIO_RECAPTCHA_SECRET_KEY' ) ? \PORTFOLIO_RECAPTCHA_SECRET_KEY : '';
 
 		if ( empty( $recaptcha_secret_key ) ) {
 			return $errors;

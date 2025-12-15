@@ -107,11 +107,12 @@ export function ZohoMailSettings( { settings, onSave } ) {
 	}, [ localSettings.zoho_access_token ] );
 
 	const hasCredentials =
-		localSettings.zoho_client_id && localSettings.zoho_client_secret;
+		window.portfolioSettings?.zoho_client_id &&
+		window.portfolioSettings?.zoho_client_secret;
 
 	// Build authorization URL
 	const getAuthorizationUrl = () => {
-		const clientId = localSettings.zoho_client_id;
+		const clientId = window.portfolioSettings?.zoho_client_id || '';
 		const redirectUri =
 			window.portfolioSettings?.zoho_redirect_uri ||
 			`${ window.location.origin }/wp-json/portfolio/v1/zoho-auth/callback`;
@@ -149,31 +150,6 @@ export function ZohoMailSettings( { settings, onSave } ) {
 			<Card style={ { marginTop: '1rem' } }>
 				<CardBody>
 					<div className="portfolio-settings-fields">
-						<TextControl
-							label={ __( 'Client ID', 'portfolio' ) }
-							value={ localSettings.zoho_client_id || '' }
-							onChange={ ( value ) =>
-								updateSetting( 'zoho_client_id', value )
-							}
-							help={ __(
-								'Your Zoho Mail OAuth Client ID.',
-								'portfolio'
-							) }
-							placeholder="1000.XXXXXXXXXXXX"
-						/>
-						<TextControl
-							label={ __( 'Client Secret', 'portfolio' ) }
-							value={ localSettings.zoho_client_secret || '' }
-							onChange={ ( value ) =>
-								updateSetting( 'zoho_client_secret', value )
-							}
-							help={ __(
-								'Your Zoho Mail OAuth Client Secret.',
-								'portfolio'
-							) }
-							type="password"
-							placeholder="XXXXXXXXXXXXXXXX"
-						/>
 						<BaseControl
 							id="zoho-account-id"
 							label={ __( 'Account ID', 'portfolio' ) }
@@ -302,7 +278,7 @@ export function ZohoMailSettings( { settings, onSave } ) {
 							</li>
 							<li>
 								{ __(
-									'Enter your Client ID and Client Secret above',
+									'Define PORTFOLIO_ZOHO_CLIENT_ID and PORTFOLIO_ZOHO_CLIENT_SECRET constants in your wp-config.php file.',
 									'portfolio'
 								) }
 							</li>

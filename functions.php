@@ -41,6 +41,8 @@ require get_parent_theme_file_path( 'inc/helpers/class-project-permalink-helper.
 
 require get_parent_theme_file_path( 'inc/managers/class-project-permalink-manager.php' );
 
+require get_parent_theme_file_path( 'inc/helpers/class-crypto.php' );
+
 AMPortfolioTheme\Theme_Init::init();
 
 AMPortfolioTheme\PostTypes\Project_CPT::init();

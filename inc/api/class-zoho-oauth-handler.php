@@ -69,8 +69,7 @@ class Zoho_OAuth_Handler {
 		}
 
 		// Get client credentials.
-		$settings    = Settings_Helper::get_current_settings();
-		$credentials = $this->get_client_credentials( $settings );
+		$credentials = $this->get_client_credentials();
 		if ( is_wp_error( $credentials ) ) {
 			return $credentials;
 		}
@@ -133,19 +132,18 @@ class Zoho_OAuth_Handler {
 	}
 
 	/**
-	 * Get client credentials from settings.
+	 * Get client credentials from constants.
 	 *
-	 * @param array $settings The current settings.
 	 * @return array|\WP_Error Array with client_id and client_secret, or WP_Error.
 	 */
-	private function get_client_credentials( $settings ) {
-		$client_id     = $settings['zoho_client_id'] ?? '';
-		$client_secret = $settings['zoho_client_secret'] ?? '';
+	private function get_client_credentials() {
+		$client_id     = defined( 'PORTFOLIO_ZOHO_CLIENT_ID' ) ? \PORTFOLIO_ZOHO_CLIENT_ID : '';
+		$client_secret = defined( 'PORTFOLIO_ZOHO_CLIENT_SECRET' ) ? \PORTFOLIO_ZOHO_CLIENT_SECRET : '';
 
 		if ( empty( $client_id ) || empty( $client_secret ) ) {
 			return new \WP_Error(
 				'zoho_credentials_missing',
-				__( 'Zoho OAuth credentials are not configured.', 'portfolio' ),
+				__( 'Zoho OAuth credentials are not configured. Please define PORTFOLIO_ZOHO_CLIENT_ID and PORTFOLIO_ZOHO_CLIENT_SECRET constants.', 'portfolio' ),
 				array( 'status' => 400 )
 			);
 		}
