@@ -9,19 +9,13 @@ class Project_Technology_Taxonomy {
 		$self = new self();
 		add_action( 'init', array( $self, 'register' ) );
 		add_action( 'project_technology_add_form_fields', array( $self, 'add_icon_field' ) );
-		add_action( 'project_technology_add_form_fields', array( $self, 'add_order_field' ) );
 		add_action( 'project_technology_edit_form_fields', array( $self, 'edit_icon_field' ) );
-		add_action( 'project_technology_edit_form_fields', array( $self, 'edit_order_field' ) );
 		add_action( 'created_project_technology', array( $self, 'save_icon_field' ) );
-		add_action( 'created_project_technology', array( $self, 'save_order_field' ) );
 		add_action( 'edited_project_technology', array( $self, 'save_icon_field' ) );
-		add_action( 'edited_project_technology', array( $self, 'save_order_field' ) );
 		add_action( 'admin_enqueue_scripts', array( $self, 'enqueue_media' ) );
 
 		add_filter( 'manage_edit-project_technology_columns', array( $self, 'add_icon_column' ) );
-		add_filter( 'manage_edit-project_technology_columns', array( $self, 'add_order_column' ) );
 		add_filter( 'manage_project_technology_custom_column', array( $self, 'display_icon_column' ), 10, 3 );
-		add_filter( 'manage_project_technology_custom_column', array( $self, 'display_order_column' ), 10, 3 );
 	}
 
 	public function register() {
@@ -136,91 +130,6 @@ class Project_Technology_Taxonomy {
 		}
 	}
 
-	/**
-	 * Add order field to the add term form.
-	 */
-	public function add_order_field() {
-		?>
-		<div class="form-field term-order-wrap">
-			<label for="technology-order"><?php esc_html_e( 'Order', 'am-portfolio-theme' ); ?></label>
-			<input type="number" name="technology_order" id="technology-order" value="0" min="0" step="1" />
-			<p class="description"><?php esc_html_e( 'Set the display order for this technology. Lower numbers appear first.', 'am-portfolio-theme' ); ?></p>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Add order field to the edit term form.
-	 *
-	 * @param WP_Term $term The term being edited.
-	 */
-	public function edit_order_field( $term ) {
-		$order = get_term_meta( $term->term_id, 'technology_order', true );
-		$order = $order ? intval( $order ) : 0;
-		?>
-		<tr class="form-field term-order-wrap">
-			<th scope="row">
-				<label for="technology-order"><?php esc_html_e( 'Order', 'am-portfolio-theme' ); ?></label>
-			</th>
-			<td>
-				<input type="number" name="technology_order" id="technology-order" value="<?php echo esc_attr( $order ); ?>" min="0" step="1" />
-				<p class="description"><?php esc_html_e( 'Set the display order for this technology. Lower numbers appear first.', 'am-portfolio-theme' ); ?></p>
-			</td>
-		</tr>
-		<?php
-	}
-
-	/**
-	 * Save order field data.
-	 *
-	 * @param int $term_id The term ID.
-	 */
-	public function save_order_field( $term_id ) {
-		$is_update_nonce_valid = isset( $_POST['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-tag_' . $term_id );
-		$is_add_nonce_valid    = isset( $_POST['_wpnonce_add-tag'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce_add-tag'] ) ), 'add-tag' );
-
-		if ( ! $is_update_nonce_valid && ! $is_add_nonce_valid ) {
-			return;
-		}
-
-		if ( isset( $_POST['technology_order'] ) ) {
-			$order = intval( $_POST['technology_order'] );
-			update_term_meta( $term_id, 'technology_order', $order );
-		}
-	}
-
-	/**
-	 * Add order column to taxonomy listing.
-	 *
-	 * @param array $columns The existing columns.
-	 * @return array The modified columns.
-	 */
-	public function add_order_column( $columns ) {
-		$new_columns = array();
-		foreach ( $columns as $key => $value ) {
-			$new_columns[ $key ] = $value;
-			if ( 'name' === $key ) {
-				$new_columns['order'] = __( 'Order', 'am-portfolio-theme' );
-			}
-		}
-		return $new_columns;
-	}
-
-	/**
-	 * Display order values in the order column.
-	 *
-	 * @param string $content     The column content.
-	 * @param string $column_name The column name.
-	 * @param int    $term_id     The term ID.
-	 * @return string The modified content.
-	 */
-	public function display_order_column( $content, $column_name, $term_id ) {
-		if ( 'order' === $column_name ) {
-			$order = get_term_meta( $term_id, 'technology_order', true );
-			return $order ? intval( $order ) : 0;
-		}
-		return $content;
-	}
 
 	public function add_icon_column( $columns ) {
 		$new_columns = array();
