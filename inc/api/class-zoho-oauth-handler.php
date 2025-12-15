@@ -218,10 +218,13 @@ class Zoho_OAuth_Handler {
 	private function save_tokens( $token_data, $accounts_server ) {
 		$partial_settings = array(
 			'zoho_access_token'    => $token_data['access_token'],
-			'zoho_refresh_token'   => $token_data['refresh_token'] ?? '',
 			'zoho_token_expires'   => time() + (int) ( $token_data['expires_in'] ?? 3600 ),
 			'zoho_accounts_server' => $accounts_server,
 		);
+
+		if ( isset( $token_data['refresh_token'] ) ) {
+			$partial_settings['zoho_refresh_token'] = $token_data['refresh_token'];
+		}
 
 		$updated_settings = Settings_Helper::update_settings( $partial_settings );
 
