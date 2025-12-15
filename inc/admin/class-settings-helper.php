@@ -2,21 +2,19 @@
 
 namespace AMPortfolioTheme\Admin;
 
+use AMPortfolioTheme\Helpers\Crypto;
+
 defined( 'ABSPATH' ) || exit;
 
 class Settings_Helper {
 
 	public static function get_default_settings() {
 		return array(
-			'recaptcha_site_key'        => '',
-			'recaptcha_secret_key'      => '',
 			'projects_listing_page_ids' => array(),
 			'contact_email'             => '',
 			'github_url'                => '',
 			'linkedin_url'              => '',
 			'google_analytics_id'       => '',
-			'zoho_client_id'            => '',
-			'zoho_client_secret'        => '',
 			'zoho_access_token'         => '',
 			'zoho_refresh_token'        => '',
 			'zoho_token_expires'        => 0,
@@ -29,23 +27,15 @@ class Settings_Helper {
 
 	public static function get_current_settings() {
 		$settings = get_option( Settings_Page::OPTION_NAME, array() );
-		return wp_parse_args( $settings, self::get_default_settings() );
+		$settings = wp_parse_args( $settings, self::get_default_settings() );
+
+		$settings = self::decrypt_tokens( $settings );
+
+		return $settings;
 	}
 
 	public static function get_settings_schema() {
 		return array(
-			'recaptcha_site_key'        => array(
-				'description'       => __( 'Google reCAPTCHA site key for frontend integration.', 'portfolio' ),
-				'type'              => 'string',
-				'required'          => false,
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'recaptcha_secret_key'      => array(
-				'description'       => __( 'Google reCAPTCHA secret key for server-side verification.', 'portfolio' ),
-				'type'              => 'string',
-				'required'          => false,
-				'sanitize_callback' => 'sanitize_text_field',
-			),
 			'projects_listing_page_ids' => array(
 				'description'          => __( 'Projects Listing Page IDs by language.', 'portfolio' ),
 				'type'                 => 'object',
@@ -80,26 +70,14 @@ class Settings_Helper {
 				'required'          => false,
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'zoho_client_id'            => array(
-				'description'       => __( 'Zoho Mail OAuth Client ID.', 'portfolio' ),
-				'type'              => 'string',
-				'required'          => false,
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'zoho_client_secret'        => array(
-				'description'       => __( 'Zoho Mail OAuth Client Secret.', 'portfolio' ),
-				'type'              => 'string',
-				'required'          => false,
-				'sanitize_callback' => 'sanitize_text_field',
-			),
 			'zoho_access_token'         => array(
-				'description'       => __( 'Zoho Mail OAuth Access Token (automatically managed).', 'portfolio' ),
+				'description'       => __( 'Zoho Mail OAuth Access Token (automatically managed, stored encrypted).', 'portfolio' ),
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'zoho_refresh_token'        => array(
-				'description'       => __( 'Zoho Mail OAuth Refresh Token (automatically managed).', 'portfolio' ),
+				'description'       => __( 'Zoho Mail OAuth Refresh Token (automatically managed, stored encrypted).', 'portfolio' ),
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => 'sanitize_text_field',
@@ -160,9 +138,11 @@ class Settings_Helper {
 	 * @return array|bool If successful, returns the updated settings array; false on failure.
 	 */
 	public static function update_settings( $new_settings ) {
+
 		$sanitized_settings = self::sanitize_settings( $new_settings );
 		$current_settings   = self::get_current_settings();
 		$updated_settings   = array_merge( $current_settings, $sanitized_settings );
+		$updated_settings   = self::encrypt_tokens( $updated_settings );
 
 		// Check if settings have actually changed.
 		if ( $current_settings === $updated_settings ) {
@@ -259,5 +239,77 @@ class Settings_Helper {
 				'name' => __( 'Default Language', 'portfolio' ),
 			),
 		);
+	}
+
+	/**
+	 * Decrypt tokens in settings array.
+	 *
+	 * @param array $settings Settings array.
+	 * @return array Settings with decrypted tokens.
+	 */
+	private static function decrypt_tokens( $settings ) {
+		if ( isset( $settings['zoho_access_token'] ) && ! empty( $settings['zoho_access_token'] ) ) {
+			try {
+				$settings['zoho_access_token'] = Crypto::decrypt( $settings['zoho_access_token'] );
+			} catch ( \Exception $e ) {
+				// If decryption fails, keep original.
+				log_message(
+					sprintf( 'Failed to decrypt access token: %s', $e->getMessage() ),
+					'Settings_Helper',
+					'error'
+				);
+			}
+		}
+
+		if ( isset( $settings['zoho_refresh_token'] ) && ! empty( $settings['zoho_refresh_token'] ) ) {
+			try {
+				$settings['zoho_refresh_token'] = Crypto::decrypt( $settings['zoho_refresh_token'] );
+			} catch ( \Exception $e ) {
+				// If decryption fails, keep original.
+				log_message(
+					sprintf( 'Failed to decrypt refresh token: %s', $e->getMessage() ),
+					'Settings_Helper',
+					'error'
+				);
+			}
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Encrypt tokens in settings array.
+	 *
+	 * @param array $settings Settings array.
+	 * @return array Settings with encrypted tokens.
+	 */
+	private static function encrypt_tokens( $settings ) {
+		if ( isset( $settings['zoho_access_token'] ) && ! empty( $settings['zoho_access_token'] ) ) {
+			try {
+				$settings['zoho_access_token'] = Crypto::encrypt( $settings['zoho_access_token'] );
+			} catch ( \Exception $e ) {
+				// If encryption fails, keep original.
+				log_message(
+					sprintf( 'Failed to encrypt access token: %s', $e->getMessage() ),
+					'Settings_Helper',
+					'error'
+				);
+			}
+		}
+
+		if ( isset( $settings['zoho_refresh_token'] ) && ! empty( $settings['zoho_refresh_token'] ) ) {
+			try {
+				$settings['zoho_refresh_token'] = Crypto::encrypt( $settings['zoho_refresh_token'] );
+			} catch ( \Exception $e ) {
+				// If encryption fails, keep original.
+				log_message(
+					sprintf( 'Failed to encrypt refresh token: %s', $e->getMessage() ),
+					'Settings_Helper',
+					'error'
+				);
+			}
+		}
+
+		return $settings;
 	}
 }
