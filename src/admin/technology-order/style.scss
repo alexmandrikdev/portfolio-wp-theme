@@ -1,0 +1,153 @@
+.portfolio-technology-order-app {
+	max-width: 800px;
+	margin: 20px 0;
+
+	.portfolio-technology-order-loading {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 20px;
+	}
+
+	.portfolio-technology-order-header {
+		margin-bottom: 24px;
+
+		h2 {
+			margin: 0 0 8px;
+		}
+
+		.description {
+			margin: 0;
+			color: #646970;
+		}
+	}
+
+	.portfolio-technology-order-actions {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+
+		.button {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+	}
+}
+
+.portfolio-technology-list {
+
+	.portfolio-technology-list-items {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin-bottom: 24px;
+	}
+
+	.portfolio-technology-list-empty {
+		padding: 40px;
+		text-align: center;
+		color: #646970;
+		background: #f6f7f7;
+		border-radius: 4px;
+	}
+}
+
+.portfolio-technology-item {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		border-color: #8c8f94;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	&.sortable-drag {
+		opacity: 0.5;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.portfolio-technology-item-content {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 16px;
+	}
+
+	.portfolio-technology-item-drag-handle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		color: #8c8f94;
+		cursor: grab;
+		user-select: none;
+
+		&:hover {
+			color: #1d2327;
+		}
+
+		&:active {
+			cursor: grabbing;
+		}
+	}
+
+	.portfolio-technology-item-icon {
+		flex-shrink: 0;
+
+		img {
+			width: 40px;
+			height: 40px;
+			object-fit: contain;
+			border-radius: 4px;
+		}
+	}
+
+	.portfolio-technology-item-info {
+		flex: 1;
+		min-width: 0;
+
+		.portfolio-technology-item-name {
+			margin: 0 0 4px;
+			font-size: 16px;
+			font-weight: 600;
+			color: #1d2327;
+		}
+
+		.portfolio-technology-item-description {
+			margin: 0 0 8px;
+			font-size: 13px;
+			color: #646970;
+			line-height: 1.4;
+		}
+
+		.portfolio-technology-item-meta {
+			display: flex;
+			gap: 16px;
+			font-size: 12px;
+			color: #8c8f94;
+
+			.portfolio-technology-item-count,
+			.portfolio-technology-item-order {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+			}
+		}
+	}
+}
+
+// WordPress admin specific adjustments
+body.wp-admin {
+
+	.portfolio-technology-order-app {
+
+		.components-notice {
+			margin: 0 0 16px;
+		}
+	}
+}

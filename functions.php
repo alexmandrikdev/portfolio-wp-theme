@@ -25,11 +25,13 @@ require get_theme_file_path( 'inc/emails/class-sender-confirmation-email.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-page.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-api.php' );
 require get_parent_theme_file_path( 'inc/admin/class-settings-helper.php' );
+require get_parent_theme_file_path( 'inc/admin/class-technology-order-page.php' );
 
 require get_parent_theme_file_path( 'inc/api/class-zoho-oauth-handler.php' );
 require get_parent_theme_file_path( 'inc/api/class-zoho-mail-service.php' );
 require get_parent_theme_file_path( 'inc/api/class-zoho-token-manager.php' );
 require get_parent_theme_file_path( 'inc/api/class-zoho-accounts-api.php' );
+require get_parent_theme_file_path( 'inc/api/class-technology-order-api.php' );
 
 require get_parent_theme_file_path( 'inc/class-polylang-string-registration.php' );
 
@@ -58,6 +60,8 @@ AMPortfolioTheme\Admin\Settings_API::init();
 
 AMPortfolioTheme\Api\Zoho_OAuth_Handler::init();
 AMPortfolioTheme\Api\Zoho_Accounts_API::init();
+AMPortfolioTheme\Api\Technology_Order_API::init();
+AMPortfolioTheme\Admin\Technology_Order_Page::init();
 
 AMPortfolioTheme\Polylang_String_Registration::init();
 
