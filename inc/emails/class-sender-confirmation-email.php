@@ -77,6 +77,9 @@ class Sender_Confirmation_Email {
 	}
 
 	public static function schedule( $submission_id ) {
+		// Initialize email status tracking.
+		Email_Status_Tracker::initialize_status( $submission_id );
+
 		$args = array(
 			'submission_id' => $submission_id,
 		);
@@ -124,10 +127,18 @@ class Sender_Confirmation_Email {
 		return $submission_data;
 	}
 
-	private static function send_immediately( $submission_id ) {
+	/**
+	 * Send email immediately with status tracking.
+	 *
+	 * @param int $submission_id Contact submission post ID.
+	 * @return bool True on success, false on failure.
+	 * @throws \Exception If email sending fails.
+	 */
+	public static function send_immediately( $submission_id ) {
 		$submission_data = self::get_submission_data( $submission_id );
 		if ( empty( $submission_data ) ) {
 			log_message( 'Could not load submission data for ID: ' . $submission_id, 'Sender_Confirmation_Email', 'warning' );
+			Email_Status_Tracker::track_email_attempt( $submission_id, false, __( 'Could not load submission data', 'am-portfolio-theme' ) );
 			return false;
 		}
 
@@ -135,6 +146,7 @@ class Sender_Confirmation_Email {
 
 		if ( ! $to ) {
 			log_message( 'No recipient email address found', 'Sender_Confirmation_Email', 'warning' );
+			Email_Status_Tracker::track_email_attempt( $submission_id, false, __( 'No recipient email address found', 'am-portfolio-theme' ) );
 			return false;
 		}
 
@@ -151,11 +163,14 @@ class Sender_Confirmation_Email {
 			}
 
 			log_message( 'Email sent successfully to ' . $to, 'Sender_Confirmation_Email', 'info' );
+			Email_Status_Tracker::track_email_attempt( $submission_id, true );
 
 			return true;
 
 		} catch ( \Exception $e ) {
-			log_message( 'Failed to send email - ' . $e->getMessage(), 'Sender_Confirmation_Email', 'error' );
+			$error_message = $e->getMessage();
+			log_message( 'Failed to send email - ' . $error_message, 'Sender_Confirmation_Email', 'error' );
+			Email_Status_Tracker::track_email_attempt( $submission_id, false, $error_message );
 
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 				wp_mail(
@@ -165,7 +180,7 @@ class Sender_Confirmation_Email {
 						/* translators: 1: recipient email, 2: error message */
 						__( 'Failed to send contact form confirmation email to %1$s. Error: %2$s', 'am-portfolio-theme' ),
 						$to,
-						$e->getMessage()
+						$error_message
 					)
 				);
 			}
