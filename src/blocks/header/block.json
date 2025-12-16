@@ -5,8 +5,6 @@
 	"version": "0.1.0",
 	"title": "Header",
 	"category": "widgets",
-	"icon": "menu",
-	"description": "Example block scaffolded with Create Block tool.",
 	"example": {},
 	"supports": {
 		"html": false,
@@ -14,7 +12,8 @@
 	},
 	"attributes": {
 		"menu_items": {
-			"type": "array"
+			"type": "array",
+			"default": []
 		},
 		"cta_text": {
 			"type": "string",
@@ -23,6 +22,7 @@
 	},
 	"textdomain": "header",
 	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"render": "file:./render.php",
 	"viewScriptModule": "file:./view.js"
