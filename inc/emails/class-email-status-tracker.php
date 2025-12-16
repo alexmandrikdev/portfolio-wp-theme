@@ -216,7 +216,7 @@ class Email_Status_Tracker {
 			'next_retry'    => (int) get_post_meta( $submission_id, self::META_NEXT_RETRY, true ),
 			'error_message' => get_post_meta( $submission_id, self::META_ERROR, true ),
 			'is_failed'     => in_array( $status, array( self::STATUS_FAILED, self::STATUS_RETRYING ), true ),
-			'can_retry'     => ( self::STATUS_FAILED === $status && $attempts < self::MAX_ATTEMPTS ),
+			'can_retry'     => ( ( self::STATUS_FAILED === $status || self::STATUS_RETRYING === $status ) && $attempts < self::MAX_ATTEMPTS ),
 			'max_attempts'  => self::MAX_ATTEMPTS,
 		);
 	}

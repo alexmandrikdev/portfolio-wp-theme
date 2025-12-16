@@ -131,11 +131,6 @@ class Contact_Submission_CPT {
 		// Get email status.
 		$status_data = Email_Status_Tracker::get_email_status( $post_id );
 
-		// Only allow retry for failed emails.
-		if ( Email_Status_Tracker::STATUS_FAILED !== $status_data['status'] ) {
-			wp_die( esc_html__( 'Email is not in a failed state.', 'am-portfolio-theme' ) );
-		}
-
 		// Trigger immediate retry.
 		$result = Email_Status_Tracker::manual_retry( $post_id );
 
