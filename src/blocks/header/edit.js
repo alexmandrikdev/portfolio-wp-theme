@@ -1,20 +1,34 @@
 import { __ } from '@wordpress/i18n';
-import { trash as trashIcon } from '@wordpress/icons';
 import {
 	BaseControl,
 	Button,
 	ComboboxControl,
 	Flex,
 	FlexBlock,
-	FlexItem,
 	TextControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
+import RemoveButton from '../../js/shared/edit/components/remove-button';
+import MoveButtons from '../../js/shared/edit/components/move-buttons';
+import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
+import './editor.scss';
 
-export default function Edit( { attributes, setAttributes } ) {
-	const { menu_items: menuItems = [], cta_text: ctaText } = attributes;
+const TextInput = ( { label, value, onChange, placeholder } ) => (
+	<FlexBlock>
+		<TextControl
+			label={ label }
+			value={ value }
+			onChange={ onChange }
+			placeholder={ placeholder }
+		/>
+	</FlexBlock>
+);
+
+const MenuItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
+	const isFirst = index === 0;
+	const isLast = index === items.length - 1;
 
 	const pages =
 		useSelect( ( select ) => {
@@ -27,31 +41,58 @@ export default function Edit( { attributes, setAttributes } ) {
 			);
 		} ) || [];
 
-	const menuItemOptions = pages.map( ( page ) => {
+	const pageOptions = pages.map( ( page ) => {
 		return {
 			label: page.title.rendered,
 			value: page.id,
 		};
 	} );
 
-	const addMenuItem = () =>
-		setAttributes( { menu_items: [ ...menuItems, '' ] } );
+	return (
+		<div className="menu-item">
+			<Flex align="center" gap={ 3 } style={ { marginBottom: '12px' } }>
+				<MoveButtons
+					index={ index }
+					isFirst={ isFirst }
+					isLast={ isLast }
+					onMove={ onMove }
+				/>
 
-	const removeMenuItem = ( index ) => {
-		const newMenuItems = [ ...menuItems ];
-		newMenuItems.splice( index, 1 );
-		setAttributes( { menu_items: newMenuItems } );
-	};
+				<FlexBlock>
+					<ComboboxControl
+						label={ __( 'Page', 'portfolio' ) }
+						value={ item.page_id || '' }
+						onChange={ ( value ) =>
+							onUpdate( index, 'page_id', value )
+						}
+						options={ pageOptions }
+					/>
+				</FlexBlock>
 
-	const updateMenuItem = ( index, value ) => {
-		const newMenuItems = [ ...menuItems ];
-		newMenuItems[ index ] = value;
-		setAttributes( { menu_items: newMenuItems } );
-	};
+				<RemoveButton
+					index={ index }
+					onRemove={ onRemove }
+					style={ { alignSelf: 'flex-end', marginBottom: '8px' } }
+				/>
+			</Flex>
+			{ ! isLast && <hr className="menu-item-separator" /> }
+		</div>
+	);
+};
+
+export default function Edit( { attributes, setAttributes } ) {
+	const { menu_items: menuItems = [], cta_text: ctaText } = attributes;
+	const { addItem, moveItem, removeItem, updateItem } = useListManagement(
+		menuItems,
+		setAttributes,
+		'menu_items'
+	);
+
+	const defaultMenuItem = { page_id: '' };
 
 	return (
 		<BlockCard title={ __( 'Header', 'portfolio' ) }>
-			<TextControl
+			<TextInput
 				label={ __( 'CTA Text', 'portfolio' ) }
 				value={ ctaText }
 				onChange={ ( value ) => setAttributes( { cta_text: value } ) }
@@ -61,35 +102,36 @@ export default function Edit( { attributes, setAttributes } ) {
 				) }
 			/>
 			<BaseControl
+				id="header-menu-items"
 				__nextHasNoMarginBottom
 				label={ __( 'Menu Items', 'portfolio' ) }
-				id="header-menu-items"
+				help={ __(
+					'Add navigation menu items by selecting pages.',
+					'portfolio'
+				) }
 			>
-				{ menuItems.map( ( item, index ) => (
-					<Flex align="center" key={ index }>
-						<FlexBlock>
-							<ComboboxControl
+				{ menuItems.length > 0 && (
+					<div className="menu-items-list">
+						{ menuItems.map( ( item, index ) => (
+							<MenuItem
 								key={ index }
-								value={ item }
-								onChange={ ( value ) => {
-									updateMenuItem( index, value );
-								} }
-								options={ menuItemOptions }
+								item={ item }
+								index={ index }
+								items={ menuItems }
+								onUpdate={ updateItem }
+								onRemove={ removeItem }
+								onMove={ moveItem }
 							/>
-						</FlexBlock>
-						<FlexItem>
-							<Button
-								size="small"
-								isDestructive
-								icon={ trashIcon }
-								onClick={ () => removeMenuItem( index ) }
-							></Button>
-						</FlexItem>
-					</Flex>
-				) ) }
+						) ) }
+					</div>
+				) }
 
-				<Button variant="primary" onClick={ addMenuItem }>
-					Add menu item
+				<Button
+					variant="primary"
+					onClick={ () => addItem( defaultMenuItem ) }
+					style={ { marginTop: '16px' } }
+				>
+					{ __( 'Add Menu Item', 'portfolio' ) }
 				</Button>
 			</BaseControl>
 		</BlockCard>
