@@ -5,6 +5,7 @@ namespace AMPortfolioTheme;
 use AMPortfolioTheme\Admin\Settings_Page;
 use AMPortfolioTheme\Emails\Admin_Contact_Notification;
 use AMPortfolioTheme\Emails\Sender_Confirmation_Email;
+use AMPortfolioTheme\Emails\Email_Status_Tracker;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -126,6 +127,9 @@ class Theme_Init {
 			10,
 			1
 		);
+
+		// Initialize email status tracker for retry functionality.
+		Email_Status_Tracker::init();
 	}
 
 
