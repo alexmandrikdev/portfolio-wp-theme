@@ -9,7 +9,6 @@ This file provides guidance to agents when working with code in this repository.
     -   **Remove the default styles (including the selector) from the generated `style.scss` file**
     -   **Remove the default styles (excluding the selector) from the generated `editor.scss` file**
 -   `npm run start` and `npm run build` use `--blocks-manifest --experimental-modules`.
--   PHP linting/formatting: `composer lint` / `composer format`. These use `phpcs` and `phpcbf` respectively, with specific exclusions for commenting rules (File, Class, Function, Variable comments are not strictly enforced by the linter).
 -   **DDEV Environment:** All WordPress and PHP CLI commands must be prefixed with `ddev`. For example: `ddev wp`, `ddev php`.
 
 ## Code Style
@@ -17,7 +16,7 @@ This file provides guidance to agents when working with code in this repository.
 -   Gutenberg block attribute names must use `snake_case`.
 -   For array-type Gutenberg block attributes, define `type: "array"` and `default: []` in `block.json`. The structure of individual items within the array is managed by the `edit.js` component, typically with a repeater. Do not use `items` or `properties` keys directly within the `block.json` attribute definition for array elements.
 -   CSS/SCSS: Follows `@wordpress/stylelint-config/scss` with a custom BEM-like class pattern: `^[a-z](?:[a-z0-9-]+)?(?:__[a-z0-9-]+)?(?:--[a-z0-9-]+)?$`.
--   PHP: Adheres to WordPress coding standards, but the linter **does not enforce** file, class, function, or variable comments.
+-   PHP linter **does not enforce** file, class, function, or variable comments.
 -   CSS/SCSS: When copying CSS from prototypes, convert variable names to match the conventions used in [`src/components/global/_variables.scss`](src/components/global/_variables.scss).
 -   CSS/SCSS: When copying responsive media queries from prototypes, convert them to use the `breakpoint-up`, `breakpoint-down`, or `breakpoint-only` mixins from [`src/scss/shared/_mixins.scss`](src/scss/shared/_mixins.scss) with the breakpoints defined in [`src/scss/shared/_variables.scss`](src/scss/shared/_variables.scss).
 
@@ -27,7 +26,7 @@ This file provides guidance to agents when working with code in this repository.
 -   Use `Asset_Helper` class for enqueuing new scripts or styles.
 -   `theme.json` can be modified for global styles, but **does not need to be kept in sync with global styles**.
 -   Internationalization: Use `am-portfolio-theme` text domain.
--   **Polylang String Registration:** Whenever new translatable strings are introduced, they must be registered in [`inc/class-polylang-string-registration.php`](inc/class-polylang-string-registration.php) to ensure they are available for translation.
+-   **Polylang String Registration:** Whenever new translatable strings are introduced for **public-facing views**, they must be registered in [`inc/class-polylang-string-registration.php`](inc/class-polylang-string-registration.php) to ensure they are available for translation.
 -   `webpack.config.js` extends `@wordpress/scripts` to include custom entry points for `src/components/**/index.js` and `src/admin/**/index.js`.
 -   **Media Field Reference:** For media upload fields in Gutenberg blocks, use the `MediaUploadField` component pattern from [`src/blocks/services-packages/edit.js`](src/blocks/services-packages/edit.js:79) which properly handles image display using `useSelect` hook.
 -   **Repeater Field Reference:** For repeater fields in Gutenberg blocks, use the `useListManagement` hook pattern from [`src/blocks/project-overview/edit.js`](src/blocks/project-overview/edit.js:65) which provides add, remove, and move functionality for list items.
