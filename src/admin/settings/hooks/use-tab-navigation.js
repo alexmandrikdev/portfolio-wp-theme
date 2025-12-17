@@ -71,7 +71,7 @@ export function useTabNavigation(
 			setActiveTab( tabName );
 			updateUrl( tabName );
 		},
-		[ validTabs, defaultTab, updateUrl ]
+		[ validTabs, defaultTab, updateUrl, activeTab ]
 	);
 
 	/**
