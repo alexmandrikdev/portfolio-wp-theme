@@ -15,17 +15,6 @@ import { useListManagement } from '../../js/shared/edit/hooks/use-list-managemen
 import BlockCard from '../../js/shared/edit/components/block-card';
 import './editor.scss';
 
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
 const MenuItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
 	const isLast = index === items.length - 1;
@@ -92,7 +81,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Header', 'portfolio' ) }>
-			<TextInput
+			<TextControl
 				label={ __( 'CTA Text', 'portfolio' ) }
 				value={ ctaText }
 				onChange={ ( value ) => setAttributes( { cta_text: value } ) }

@@ -1,23 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Flex,
-	FlexBlock,
-	TextControl,
-} from '@wordpress/components';
+import { BaseControl, Flex, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { heading = '', content = '' } = attributes;
@@ -29,7 +13,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<BlockCard title={ __( 'About Story Section', 'am-portfolio-theme' ) }>
 			<Flex direction="column" gap={ 4 }>
-				<TextInput
+				<TextControl
 					label={ __( 'Heading', 'am-portfolio-theme' ) }
 					value={ heading }
 					onChange={ ( value ) =>

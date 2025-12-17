@@ -1,27 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	Flex,
-	FlexBlock,
-	TextControl,
-} from '@wordpress/components';
+import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 const MetaItem = ( { item, index, metaItems, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -37,14 +20,14 @@ const MetaItem = ( { item, index, metaItems, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Label', 'am-portfolio-theme' ) }
 					value={ item.label }
 					onChange={ ( value ) => onUpdate( index, 'label', value ) }
 					placeholder={ __( 'e.g., Role', 'am-portfolio-theme' ) }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Value', 'am-portfolio-theme' ) }
 					value={ item.value }
 					onChange={ ( value ) => onUpdate( index, 'value', value ) }
