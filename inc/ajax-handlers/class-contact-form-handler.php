@@ -130,7 +130,7 @@ class Contact_Form_Handler {
 				'_contact_submission_timezone'   => $submission_data['timezone'],
 				'_contact_submission_ip'         => $this->get_client_ip(),
 				'_contact_submission_user_agent' => $this->get_user_agent(),
-				'_contant_submission_language'   => $current_language,
+				'_contact_submission_language'   => $current_language,
 			),
 		);
 
