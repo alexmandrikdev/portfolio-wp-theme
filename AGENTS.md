@@ -23,6 +23,7 @@ This file provides guidance to agents when working with code in this repository.
 ## Custom Utilities/Patterns
 
 -   Gutenberg blocks in `src/blocks` are **automatically registered** by `inc/class-theme-init.php`. No manual registration is needed.
+-   **New PHP Class Files:** When creating new PHP classes (especially in `inc/`), ensure they are required in [`functions.php`](functions.php) to be loaded by the theme. The base class `Base_Email_Notification` is an example.
 -   Use `Asset_Helper` class for enqueuing new scripts or styles.
 -   `theme.json` can be modified for global styles, but **does not need to be kept in sync with global styles**.
 -   Internationalization: Use `am-portfolio-theme` text domain.
