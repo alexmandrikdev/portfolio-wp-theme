@@ -45,7 +45,7 @@ abstract class Base_Email_Notification {
 	}
 
 	protected static function get_submission_data( $submission_id ) {
-		$language = get_post_meta( $submission_id, '_contant_submission_language', true );
+		$language = get_post_meta( $submission_id, '_contact_submission_language', true );
 
 		$submission_data = array(
 			'name'     => get_post_meta( $submission_id, '_contact_submission_name', true ),

@@ -85,7 +85,7 @@ class Contact_Submission_CPT {
 				echo esc_html( get_post_meta( $post_id, '_contact_submission_email', true ) );
 				break;
 			case 'language':
-				$language = get_post_meta( $post_id, '_contant_submission_language', true );
+				$language = get_post_meta( $post_id, '_contact_submission_language', true );
 				if ( ! empty( $language ) ) {
 					echo esc_html( $language );
 				} else {
@@ -165,7 +165,7 @@ class Contact_Submission_CPT {
 		$subject    = get_post_meta( $post->ID, '_contact_submission_subject', true );
 		$message    = get_post_meta( $post->ID, '_contact_submission_message', true );
 		$timezone   = get_post_meta( $post->ID, '_contact_submission_timezone', true );
-		$language   = get_post_meta( $post->ID, '_contant_submission_language', true );
+		$language   = get_post_meta( $post->ID, '_contact_submission_language', true );
 		$ip_address = get_post_meta( $post->ID, '_contact_submission_ip', true );
 		$user_agent = get_post_meta( $post->ID, '_contact_submission_user_agent', true );
 
