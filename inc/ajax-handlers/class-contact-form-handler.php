@@ -17,6 +17,58 @@ class Contact_Form_Handler {
 	}
 
 	public function handle_contact_submission() {
+		$validation_result = $this->validate_submission();
+		if ( is_wp_error( $validation_result ) ) {
+			$error_data  = $validation_result->get_error_data();
+			$status_code = isset( $error_data['status'] ) ? $error_data['status'] : 400;
+			wp_send_json_error(
+				array(
+					'message' => $validation_result->get_error_message(),
+					'errors'  => isset( $error_data['errors'] ) ? $error_data['errors'] : array(),
+				),
+				$status_code
+			);
+		}
+
+		$submission_data = $this->prepare_submission_data();
+
+		try {
+			$post_id = $this->create_submission_post( $submission_data );
+			$this->schedule_notification_emails( $post_id );
+
+			wp_send_json_success(
+				array(
+					'post_id' => $post_id,
+				)
+			);
+
+		} catch ( \Exception $e ) {
+			log_message(
+				sprintf(
+					'[Contact Form] Exception during submission: %s, IP: %s, User Agent: %s',
+					$e->getMessage(),
+					$this->get_client_ip(),
+					$this->get_user_agent()
+				),
+				'Contact_Form_Handler',
+				'error'
+			);
+			wp_send_json_error(
+				array(
+					'message' => pll__( 'Sorry, there was an error submitting your form. Please try again.' ),
+					'debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? $e->getMessage() : '',
+				),
+				500
+			);
+		}
+	}
+
+	/**
+	 * Validate the contact form submission.
+	 *
+	 * @return \WP_Error|true Returns WP_Error on validation failure, true on success.
+	 */
+	private function validate_submission() {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- wp_verify_nonce handles validation
 		$nonce = isset( $_POST['nonce'] ) ? wp_unslash( $_POST['nonce'] ) : '';
 		if ( ! wp_verify_nonce( $nonce, 'am_contact_form_nonce' ) ) {
@@ -30,11 +82,10 @@ class Contact_Form_Handler {
 				'Contact_Form_Handler',
 				'warning'
 			);
-			wp_send_json_error(
-				array(
-					'message' => pll__( 'Security verification failed.' ),
-				),
-				403
+			return new \WP_Error(
+				'security_failed',
+				pll__( 'Security verification failed.' ),
+				array( 'status' => 403 )
 			);
 		}
 
@@ -49,12 +100,13 @@ class Contact_Form_Handler {
 				'Contact_Form_Handler',
 				'warning'
 			);
-			wp_send_json_error(
+			return new \WP_Error(
+				'recaptcha_failed',
+				pll__( 'Security verification failed.' ),
 				array(
-					'message' => pll__( 'Security verification failed.' ),
-					'errors'  => $recaptcha_errors,
-				),
-				403
+					'status' => 403,
+					'errors' => $recaptcha_errors,
+				)
 			);
 		}
 
@@ -96,23 +148,46 @@ class Contact_Form_Handler {
 				'Contact_Form_Handler',
 				'warning'
 			);
-			wp_send_json_error(
+			return new \WP_Error(
+				'validation_failed',
+				pll__( 'Please review and correct the highlighted fields' ),
 				array(
-					'message' => pll__( 'Please review and correct the highlighted fields' ),
-					'errors'  => $errors,
-				),
-				400
+					'status' => 400,
+					'errors' => $errors,
+				)
 			);
 		}
 
-		$submission_data = array(
+		return true;
+	}
+
+	/**
+	 * Prepare sanitized submission data from POST.
+	 *
+	 * @return array Sanitized submission data.
+	 */
+	private function prepare_submission_data() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce already verified in validate_submission()
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Already validated in validate_submission()
+		$email = isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '';
+		return array(
 			'name'     => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
 			'email'    => sanitize_email( wp_unslash( $email ) ),
 			'subject'  => isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '',
 			'message'  => isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '',
 			'timezone' => isset( $_POST['timezone'] ) ? $this->sanitize_timezone( sanitize_text_field( wp_unslash( $_POST['timezone'] ) ) ) : '',
 		);
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+	}
 
+	/**
+	 * Create a contact submission post from sanitized data.
+	 *
+	 * @param array $submission_data Sanitized submission data.
+	 * @return int Post ID.
+	 * @throws \Exception If post creation fails.
+	 */
+	private function create_submission_post( $submission_data ) {
 		$current_language = '';
 		if ( function_exists( 'pll_current_language' ) ) {
 			$current_language = pll_current_language();
@@ -134,41 +209,24 @@ class Contact_Form_Handler {
 			),
 		);
 
-		try {
-			$post_id = wp_insert_post( $post_data, true );
-
-			if ( is_wp_error( $post_id ) ) {
-				throw new \Exception( $post_id->get_error_message() );
-			}
-
-			Admin_Contact_Notification::schedule( $post_id );
-			Sender_Confirmation_Email::schedule( $post_id );
-
-			wp_send_json_success(
-				array(
-					'post_id' => $post_id,
-				)
-			);
-
-		} catch ( \Exception $e ) {
-			log_message(
-				sprintf(
-					'[Contact Form] Exception during submission: %s, IP: %s, User Agent: %s',
-					$e->getMessage(),
-					$this->get_client_ip(),
-					$this->get_user_agent()
-				),
-				'Contact_Form_Handler',
-				'error'
-			);
-			wp_send_json_error(
-				array(
-					'message' => pll__( 'Sorry, there was an error submitting your form. Please try again.' ),
-					'debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ) ? $e->getMessage() : '',
-				),
-				500
-			);
+		$post_id = wp_insert_post( $post_data, true );
+		if ( is_wp_error( $post_id ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Internal exception, not output to user.
+			throw new \Exception( $post_id->get_error_message() );
 		}
+
+		return $post_id;
+	}
+
+	/**
+	 * Schedule notification emails for a submission.
+	 *
+	 * @param int $post_id Post ID of the contact submission.
+	 * @return void
+	 */
+	private function schedule_notification_emails( $post_id ) {
+		Admin_Contact_Notification::schedule( $post_id );
+		Sender_Confirmation_Email::schedule( $post_id );
 	}
 
 	private function validate_recaptcha() {
