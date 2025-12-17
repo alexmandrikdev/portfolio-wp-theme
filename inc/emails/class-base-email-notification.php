@@ -26,6 +26,10 @@ abstract class Base_Email_Notification {
 	public function render() {
 		$template_path = $this->get_template_path();
 
+		if ( ! file_exists( $template_path ) ) {
+			throw new \Exception( esc_html( "Template file not found: {$template_path}" ) );
+		}
+
 		$data = $this->data;
 
 		ob_start();
@@ -45,15 +49,15 @@ abstract class Base_Email_Notification {
 	}
 
 	protected static function get_submission_data( $submission_id ) {
-		$language = get_post_meta( $submission_id, '_contact_submission_language', true );
+		$meta_data = get_post_meta( $submission_id );
 
 		$submission_data = array(
-			'name'     => get_post_meta( $submission_id, '_contact_submission_name', true ),
-			'email'    => get_post_meta( $submission_id, '_contact_submission_email', true ),
-			'subject'  => get_post_meta( $submission_id, '_contact_submission_subject', true ),
-			'message'  => get_post_meta( $submission_id, '_contact_submission_message', true ),
-			'timezone' => get_post_meta( $submission_id, '_contact_submission_timezone', true ),
-			'language' => $language ? $language : pll_default_language(),
+			'name'     => sanitize_text_field( $meta_data['_contact_submission_name'][0] ?? '' ),
+			'email'    => sanitize_email( $meta_data['_contact_submission_email'][0] ?? '' ),
+			'subject'  => sanitize_text_field( $meta_data['_contact_submission_subject'][0] ?? '' ),
+			'message'  => wp_kses_post( $meta_data['_contact_submission_message'][0] ?? '' ),
+			'timezone' => sanitize_text_field( $meta_data['_contact_submission_timezone'][0] ?? '' ),
+			'language' => sanitize_text_field( $meta_data['_contact_submission_language'][0] ?? pll_default_language() ),
 		);
 
 		return $submission_data;
