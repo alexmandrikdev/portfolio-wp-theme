@@ -11,13 +11,13 @@ import {
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
+import RichTextControl from '../../js/shared/edit/components/rich-text-control';
 import './editor.scss';
 
 const QuickLinkItem = ( {
@@ -140,36 +140,20 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<BaseControl
+						<RichTextControl
 							id="personal-description"
-							__nextHasNoMarginBottom
 							label={ __( 'Description', 'am-portfolio-theme' ) }
-						>
-							<RichText
-								style={ {
-									border: '1px solid #949494',
-									borderRadius: '2px',
-									padding: '6px 8px',
-								} }
-								tagName="p"
-								value={ personalDescription }
-								onChange={ ( value ) =>
-									setAttributes( {
-										personal_description: value,
-									} )
-								}
-								placeholder={ __(
-									'Brief description about yourself…',
-									'am-portfolio-theme'
-								) }
-								allowedFormats={ [
-									'core/bold',
-									'core/italic',
-									'core/link',
-									'core/strikethrough',
-								] }
-							/>
-						</BaseControl>
+							value={ personalDescription }
+							onChange={ ( value ) =>
+								setAttributes( {
+									personal_description: value,
+								} )
+							}
+							placeholder={ __(
+								'Brief description about yourself…',
+								'am-portfolio-theme'
+							) }
+						/>
 					</Flex>
 				</CardBody>
 			</Card>
@@ -279,34 +263,18 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<BaseControl
+						<RichTextControl
 							id="contact-text"
-							__nextHasNoMarginBottom
 							label={ __( 'Contact Text', 'am-portfolio-theme' ) }
-						>
-							<RichText
-								style={ {
-									border: '1px solid #949494',
-									borderRadius: '2px',
-									padding: '6px 8px',
-								} }
-								tagName="p"
-								value={ contactText }
-								onChange={ ( value ) =>
-									setAttributes( { contact_text: value } )
-								}
-								placeholder={ __(
-									'Text inviting visitors to contact you…',
-									'am-portfolio-theme'
-								) }
-								allowedFormats={ [
-									'core/bold',
-									'core/italic',
-									'core/link',
-									'core/strikethrough',
-								] }
-							/>
-						</BaseControl>
+							value={ contactText }
+							onChange={ ( value ) =>
+								setAttributes( { contact_text: value } )
+							}
+							placeholder={ __(
+								'Text inviting visitors to contact you…',
+								'am-portfolio-theme'
+							) }
+						/>
 
 						<TextControl
 							label={ __(

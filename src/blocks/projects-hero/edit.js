@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, TextControl } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
+import { TextControl } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
+import RichTextControl from '../../js/shared/edit/components/rich-text-control';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const { title = '', description = '' } = attributes;
@@ -12,39 +12,23 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Projects Hero', 'portfolio' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Title', 'portfolio' ) }
+			<TextControl
 				id="projects-hero-title"
-			>
-				<TextControl
-					id="projects-hero-title"
-					value={ title }
-					onChange={ ( value ) => updateAttribute( 'title', value ) }
-					placeholder={ __( 'Enter hero title', 'portfolio' ) }
-				/>
-			</BaseControl>
+				value={ title }
+				label={ __( 'Title', 'portfolio' ) }
+				onChange={ ( value ) => updateAttribute( 'title', value ) }
+				placeholder={ __( 'Enter hero title', 'portfolio' ) }
+			/>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Description', 'portfolio' ) }
+			<RichTextControl
 				id="projects-hero-description"
-			>
-				<RichText
-					tagName="p"
-					value={ description }
-					onChange={ ( value ) =>
-						updateAttribute( 'description', value )
-					}
-					placeholder={ __( 'Enter hero description', 'portfolio' ) }
-					allowedFormats={ [
-						'core/bold',
-						'core/italic',
-						'core/link',
-						'core/strikethrough',
-					] }
-				/>
-			</BaseControl>
+				label={ __( 'Description', 'portfolio' ) }
+				value={ description }
+				onChange={ ( value ) =>
+					updateAttribute( 'description', value )
+				}
+				placeholder={ __( 'Enter hero description', 'portfolio' ) }
+			/>
 		</BlockCard>
 	);
 }
