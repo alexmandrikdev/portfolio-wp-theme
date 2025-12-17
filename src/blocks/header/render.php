@@ -1,6 +1,6 @@
 <?php
-	$menu_item_ids = $attributes['menu_items'] ?? array();
-	$cta_text      = $attributes['cta_text'] ?? 'Get a Free Project Estimate';
+	$menu_items = $attributes['menu_items'] ?? array();
+	$cta_text   = $attributes['cta_text'] ?? 'Get a Free Project Estimate';
 ?>
 
 <div 
@@ -51,15 +51,16 @@
 			data-wp-class--wp-block-portfolio-header__menu--open="context.isOpen"
 		>
 			<div class="wp-block-portfolio-header__menu-items">
-				<?php foreach ( $menu_item_ids as $menu_item_id ) : ?>
+				<?php foreach ( $menu_items as $menu_item ) : ?>
 					<?php
-					$translated_post_id     = pll_get_post( $menu_item_id );
+					$page_id                = $menu_item['page_id'] ?? 0;
+					$translated_post_id     = pll_get_post( $page_id );
 					$translated_post_status = get_post_status( $translated_post_id );
 					?>
 					<?php if ( $translated_post_id && 'publish' === $translated_post_status ) : ?>
-						<a 
+						<a
 							class="wp-block-portfolio-header__menu-item"
-							href="<?php echo esc_html( get_permalink( $translated_post_id ) ); ?>"
+							href="<?php echo esc_url( get_permalink( $translated_post_id ) ); ?>"
 						>
 							<?php echo esc_html( get_the_title( $translated_post_id ) ); ?>
 						</a>
