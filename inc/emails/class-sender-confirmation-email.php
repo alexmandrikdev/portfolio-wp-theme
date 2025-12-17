@@ -7,22 +7,11 @@ use AMPortfolioTheme\Api\Zoho_Mail_Service;
 
 defined( 'ABSPATH' ) || exit;
 
-class Sender_Confirmation_Email {
-
-	private $submission_data;
-	private $submission_id;
-	private $data;
+class Sender_Confirmation_Email extends Base_Email_Notification {
 
 	const SCHEDULED_ACTION_HOOK = 'am_portfolio_send_sender_confirmation';
 
-	public function __construct( $submission_data, $submission_id ) {
-		$this->submission_data = $submission_data;
-		$this->submission_id   = $submission_id;
-
-		$this->initialize_data();
-	}
-
-	private function initialize_data() {
+	protected function initialize_data() {
 		$current_timestamp    = time();
 		$user_timezone_string = $this->submission_data['timezone'] ?? '';
 		$user_timezone        = null;
@@ -55,89 +44,27 @@ class Sender_Confirmation_Email {
 		);
 	}
 
-	public function render() {
-		$template_path = get_theme_file_path( 'templates/emails/sender-confirmation.php' );
-
-		$data = $this->data;
-
-		ob_start();
-		include $template_path;
-		return ob_get_clean();
+	protected function get_template_path() {
+		return get_theme_file_path( 'templates/emails/sender-confirmation.php' );
 	}
 
-	public static function display( $submission_data, $submission_id ) {
-		$email = new self( $submission_data, $submission_id );
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $email->render();
+	protected static function get_scheduled_action_hook() {
+		return self::SCHEDULED_ACTION_HOOK;
 	}
 
-	public static function get( $submission_data, $submission_id ) {
-		$email = new self( $submission_data, $submission_id );
-		return $email->render();
-	}
-
-	public static function schedule( $submission_id ) {
+	protected static function before_schedule( $submission_id ) {
 		// Initialize email status tracking.
 		Email_Status_Tracker::initialize_status( $submission_id );
-
-		$args = array(
-			'submission_id' => $submission_id,
-		);
-
-		$args = apply_filters( 'am_portfolio_sender_confirmation_schedule_args', $args, $submission_id );
-
-		$scheduled = wp_schedule_single_event(
-			time(),
-			self::SCHEDULED_ACTION_HOOK,
-			array( $args )
-		);
-
-		if ( false === $scheduled ) {
-			return self::send_immediately( $submission_id );
-		}
-
-		return true;
 	}
 
-	public static function handle_scheduled_send( $args ) {
-		$submission_id = $args['submission_id'] ?? 0;
-
-		if ( ! $submission_id ) {
-			log_message( 'Invalid submission ID', 'Sender_Confirmation_Email', 'warning' );
-			return false;
-		}
-
-		$result = self::send_immediately( $submission_id );
-
-		return $result;
+	protected static function get_schedule_filter_name() {
+		return 'am_portfolio_sender_confirmation_schedule_args';
 	}
 
-	private static function get_submission_data( $submission_id ) {
-		$language = get_post_meta( $submission_id, '_contant_submission_language', true );
-
-		$submission_data = array(
-			'name'     => get_post_meta( $submission_id, '_contact_submission_name', true ),
-			'email'    => get_post_meta( $submission_id, '_contact_submission_email', true ),
-			'subject'  => get_post_meta( $submission_id, '_contact_submission_subject', true ),
-			'message'  => get_post_meta( $submission_id, '_contact_submission_message', true ),
-			'timezone' => get_post_meta( $submission_id, '_contact_submission_timezone', true ),
-			'language' => $language ? $language : pll_default_language(),
-		);
-
-		return $submission_data;
-	}
-
-	/**
-	 * Send email immediately with status tracking.
-	 *
-	 * @param int $submission_id Contact submission post ID.
-	 * @return bool True on success, false on failure.
-	 * @throws \Exception If email sending fails.
-	 */
 	public static function send_immediately( $submission_id ) {
-		$submission_data = self::get_submission_data( $submission_id );
+		$submission_data = static::get_submission_data( $submission_id );
 		if ( empty( $submission_data ) ) {
-			log_message( 'Could not load submission data for ID: ' . $submission_id, 'Sender_Confirmation_Email', 'warning' );
+			log_message( 'Could not load submission data for ID: ' . $submission_id, static::class, 'warning' );
 			Email_Status_Tracker::track_email_attempt( $submission_id, false, __( 'Could not load submission data', 'am-portfolio-theme' ) );
 			return false;
 		}
@@ -145,7 +72,7 @@ class Sender_Confirmation_Email {
 		$to = $submission_data['email'] ?? '';
 
 		if ( ! $to ) {
-			log_message( 'No recipient email address found', 'Sender_Confirmation_Email', 'warning' );
+			log_message( 'No recipient email address found', static::class, 'warning' );
 			Email_Status_Tracker::track_email_attempt( $submission_id, false, __( 'No recipient email address found', 'am-portfolio-theme' ) );
 			return false;
 		}
@@ -154,7 +81,7 @@ class Sender_Confirmation_Email {
 		$subject  = pll_translate_string( 'Thank You for Reaching Out', $language );
 
 		try {
-			$message = self::get( $submission_data, $submission_id );
+			$message = static::get( $submission_data, $submission_id );
 
 			$result = Zoho_Mail_Service::send_email( $to, $subject, $message );
 
@@ -162,14 +89,14 @@ class Sender_Confirmation_Email {
 				throw new \Exception( 'wp_mail returned false' );
 			}
 
-			log_message( 'Email sent successfully to ' . $to, 'Sender_Confirmation_Email', 'info' );
+			log_message( 'Email sent successfully to ' . $to, static::class, 'info' );
 			Email_Status_Tracker::track_email_attempt( $submission_id, true );
 
 			return true;
 
 		} catch ( \Exception $e ) {
 			$error_message = $e->getMessage();
-			log_message( 'Failed to send email - ' . $error_message, 'Sender_Confirmation_Email', 'error' );
+			log_message( 'Failed to send email - ' . $error_message, static::class, 'error' );
 			Email_Status_Tracker::track_email_attempt( $submission_id, false, $error_message );
 
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
