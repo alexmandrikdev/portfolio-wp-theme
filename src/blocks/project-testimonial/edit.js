@@ -3,128 +3,15 @@ import {
 	BaseControl,
 	Button,
 	Flex,
-	FlexBlock,
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const TextareaInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextareaControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-			rows={ 4 }
-		/>
-	</FlexBlock>
-);
-
-const MediaUploadField = ( { label, value, onChange } ) => {
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! value ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( value );
-			return image?.source_url || '';
-		},
-		[ value ]
-	);
-
-	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt={ __(
-												'Profile picture preview',
-												'am-portfolio-theme'
-											) }
-											style={ {
-												display: 'block',
-												marginBottom: '8px',
-												width: '64px',
-												height: '64px',
-												borderRadius: '50%',
-												objectFit: 'cover',
-											} }
-										/>
-										<div
-											style={ {
-												display: 'flex',
-												gap: '8px',
-											} }
-										>
-											<Button
-												variant="secondary"
-												onClick={ open }
-											>
-												{ __(
-													'Replace Picture',
-													'am-portfolio-theme'
-												) }
-											</Button>
-											<Button
-												variant="tertiary"
-												onClick={ () => onChange( '' ) }
-											>
-												{ __(
-													'Remove',
-													'am-portfolio-theme'
-												) }
-											</Button>
-										</div>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __(
-											'Select Profile Picture',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
-	);
-};
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 const TestimonialItem = ( {
 	item,
@@ -153,7 +40,7 @@ const TestimonialItem = ( {
 				/>
 
 				<Flex direction="column" gap={ 3 } style={ { flex: 1 } }>
-					<TextareaInput
+					<TextareaControl
 						label={ __( 'Quote', 'am-portfolio-theme' ) }
 						value={ item.quote || '' }
 						onChange={ ( value ) =>
@@ -165,7 +52,7 @@ const TestimonialItem = ( {
 						) }
 					/>
 
-					<TextInput
+					<TextControl
 						label={ __( 'Author', 'am-portfolio-theme' ) }
 						value={ item.author || '' }
 						onChange={ ( value ) =>
@@ -177,7 +64,7 @@ const TestimonialItem = ( {
 						) }
 					/>
 
-					<TextInput
+					<TextControl
 						label={ __( 'Role', 'am-portfolio-theme' ) }
 						value={ item.role || '' }
 						onChange={ ( value ) =>
@@ -189,7 +76,7 @@ const TestimonialItem = ( {
 						) }
 					/>
 
-					<TextInput
+					<TextControl
 						label={ __(
 							'Social Media Link',
 							'am-portfolio-theme'
@@ -211,6 +98,10 @@ const TestimonialItem = ( {
 					onChange={ ( value ) =>
 						onUpdate( index, 'profile_picture', value )
 					}
+					width={ 64 }
+					height={ 64 }
+					objectFit="cover"
+					imageStyle={ { borderRadius: '50%' } }
 				/>
 
 				<RemoveButton

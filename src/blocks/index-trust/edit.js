@@ -1,27 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	Flex,
-	FlexBlock,
-	TextControl,
-} from '@wordpress/components';
+import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 const TrustItem = ( {
 	item,
@@ -44,14 +27,14 @@ const TrustItem = ( {
 					onMove={ onMove }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Number', 'portfolio' ) }
 					value={ item.number }
 					onChange={ ( value ) => onUpdate( index, 'number', value ) }
 					placeholder={ __( 'e.g., 100+', 'portfolio' ) }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Label', 'portfolio' ) }
 					value={ item.label }
 					onChange={ ( value ) => onUpdate( index, 'label', value ) }

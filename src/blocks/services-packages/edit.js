@@ -6,44 +6,17 @@ import {
 	CardBody,
 	CardHeader,
 	Flex,
-	FlexBlock,
 	TextControl,
 	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
-import {
-	MediaUpload,
-	MediaUploadCheck,
-	RichText,
-} from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { RichText } from '@wordpress/block-editor';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const TextareaInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextareaControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 const FeatureItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -59,7 +32,7 @@ const FeatureItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Feature', 'am-portfolio-theme' ) }
 					value={ item }
 					onChange={ ( value ) => onUpdate( index, value ) }
@@ -77,74 +50,6 @@ const FeatureItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 			</Flex>
 			{ ! isLast && <hr className="feature-item-separator" /> }
 		</div>
-	);
-};
-
-const MediaUploadField = ( { label, value, onChange } ) => {
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! value ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( value );
-			return image?.source_url || '';
-		},
-		[ value ]
-	);
-
-	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt=""
-											style={ {
-												display: 'block',
-												marginBottom: '8px',
-												width: '60px',
-												height: '60px',
-												objectFit: 'contain',
-											} }
-										/>
-										<Button
-											variant="secondary"
-											onClick={ open }
-										>
-											{ __(
-												'Change Icon',
-												'am-portfolio-theme'
-											) }
-										</Button>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __(
-											'Select Icon',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
 	);
 };
 
@@ -210,7 +115,7 @@ const PackageCardEditor = ( {
 					/>
 
 					{ packageData.is_featured && (
-						<TextInput
+						<TextControl
 							label={ __(
 								'Featured Label',
 								'am-portfolio-theme'
@@ -234,7 +139,7 @@ const PackageCardEditor = ( {
 						}
 					/>
 
-					<TextInput
+					<TextControl
 						label={ __( 'Package Title', 'am-portfolio-theme' ) }
 						value={ packageData.title || '' }
 						onChange={ ( value ) =>
@@ -246,7 +151,7 @@ const PackageCardEditor = ( {
 						) }
 					/>
 
-					<TextareaInput
+					<TextareaControl
 						label={ __(
 							'Package Description',
 							'am-portfolio-theme'
@@ -261,7 +166,7 @@ const PackageCardEditor = ( {
 						) }
 					/>
 
-					<TextInput
+					<TextControl
 						label={ __(
 							'Highlighted Value Title',
 							'am-portfolio-theme'
@@ -311,7 +216,7 @@ const PackageCardEditor = ( {
 						/>
 					</BaseControl>
 
-					<TextInput
+					<TextControl
 						label={ __(
 							'Design Approach Title',
 							'am-portfolio-theme'
@@ -462,7 +367,7 @@ const PackageCardEditor = ( {
 						</Button>
 					</BaseControl>
 
-					<TextInput
+					<TextControl
 						label={ __( 'Button Text', 'am-portfolio-theme' ) }
 						value={ packageData.button_text || '' }
 						onChange={ ( value ) =>
@@ -516,7 +421,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Section Title',
 								'am-portfolio-theme'
@@ -531,7 +436,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<TextareaInput
+						<TextareaControl
 							label={ __(
 								'Section Subtitle',
 								'am-portfolio-theme'

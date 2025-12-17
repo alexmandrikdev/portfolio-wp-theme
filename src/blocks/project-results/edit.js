@@ -1,100 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	Flex,
-	FlexBlock,
-	TextControl,
-} from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const MediaUploadField = ( { label, value, onChange } ) => {
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! value ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( value );
-			return image?.source_url || '';
-		},
-		[ value ]
-	);
-
-	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt={ __(
-												'Screenshot preview',
-												'am-portfolio-theme'
-											) }
-											style={ {
-												maxWidth: '150px',
-												maxHeight: '100px',
-												height: 'auto',
-												display: 'block',
-												marginBottom: '8px',
-											} }
-										/>
-										<Button
-											variant="secondary"
-											onClick={ open }
-										>
-											{ __(
-												'Replace Image',
-												'am-portfolio-theme'
-											) }
-										</Button>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __(
-											'Select Image',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
-	);
-};
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 const ScreenshotItem = ( {
 	item,
@@ -122,7 +33,7 @@ const ScreenshotItem = ( {
 					style={ { alignSelf: 'flex-start', marginTop: '24px' } }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Page/Section Title', 'am-portfolio-theme' ) }
 					value={ item.title || '' }
 					onChange={ ( value ) => onUpdate( index, 'title', value ) }
@@ -138,6 +49,13 @@ const ScreenshotItem = ( {
 					onChange={ ( value ) =>
 						onUpdate( index, 'desktop_screenshot_id', value )
 					}
+					width={ 150 }
+					height={ 100 }
+					imageStyle={ {
+						maxWidth: '150px',
+						maxHeight: '100px',
+						height: 'auto',
+					} }
 				/>
 
 				<MediaUploadField
@@ -149,6 +67,13 @@ const ScreenshotItem = ( {
 					onChange={ ( value ) =>
 						onUpdate( index, 'mobile_screenshot_id', value )
 					}
+					width={ 150 }
+					height={ 100 }
+					imageStyle={ {
+						maxWidth: '150px',
+						maxHeight: '100px',
+						height: 'auto',
+					} }
 				/>
 
 				<RemoveButton

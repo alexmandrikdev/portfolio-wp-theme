@@ -3,110 +3,15 @@ import {
 	BaseControl,
 	Button,
 	Flex,
-	FlexBlock,
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const MediaUploadField = ( { label, value, onChange } ) => {
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! value ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( value );
-			return image?.source_url || '';
-		},
-		[ value ]
-	);
-
-	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt={ __(
-												'Challenge icon preview',
-												'am-portfolio-theme'
-											) }
-											style={ {
-												display: 'block',
-												marginBottom: '8px',
-											} }
-											width={ 32 }
-											height={ 32 }
-										/>
-										<Button
-											variant="secondary"
-											onClick={ open }
-										>
-											{ __(
-												'Replace Icon',
-												'am-portfolio-theme'
-											) }
-										</Button>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __(
-											'Select Icon',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
-	);
-};
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const TextareaInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextareaControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-			rows={ 4 }
-		/>
-	</FlexBlock>
-);
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 const ChallengeItem = ( {
 	item,
@@ -135,7 +40,7 @@ const ChallengeItem = ( {
 				/>
 
 				<Flex direction="column" gap={ 3 } style={ { flex: 1 } }>
-					<TextInput
+					<TextControl
 						label={ __( 'Title', 'am-portfolio-theme' ) }
 						value={ item.title || '' }
 						onChange={ ( value ) =>
@@ -147,7 +52,7 @@ const ChallengeItem = ( {
 						) }
 					/>
 
-					<TextareaInput
+					<TextareaControl
 						label={ __( 'Description', 'am-portfolio-theme' ) }
 						value={ item.description || '' }
 						onChange={ ( value ) =>
@@ -157,9 +62,10 @@ const ChallengeItem = ( {
 							'Describe the challenge…',
 							'am-portfolio-theme'
 						) }
+						rows={ 4 }
 					/>
 
-					<TextareaInput
+					<TextareaControl
 						label={ __( 'Solution', 'am-portfolio-theme' ) }
 						value={ item.solution || '' }
 						onChange={ ( value ) =>
@@ -169,6 +75,7 @@ const ChallengeItem = ( {
 							'Describe the solution…',
 							'am-portfolio-theme'
 						) }
+						rows={ 4 }
 					/>
 				</Flex>
 
@@ -176,6 +83,8 @@ const ChallengeItem = ( {
 					label={ __( 'Icon', 'am-portfolio-theme' ) }
 					value={ item.icon || '' }
 					onChange={ ( value ) => onUpdate( index, 'icon', value ) }
+					width={ 32 }
+					height={ 32 }
 				/>
 
 				<RemoveButton

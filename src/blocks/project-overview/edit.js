@@ -6,7 +6,6 @@ import {
 	CardBody,
 	CardHeader,
 	Flex,
-	FlexBlock,
 	TextControl,
 } from '@wordpress/components';
 import './editor.scss';
@@ -14,17 +13,6 @@ import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 const BulletItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -40,7 +28,7 @@ const BulletItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Item Text', 'am-portfolio-theme' ) }
 					value={ item.text }
 					onChange={ ( value ) => onUpdate( index, 'text', value ) }

@@ -5,22 +5,10 @@ import {
 	CardBody,
 	CardHeader,
 	Flex,
-	FlexBlock,
 	TextareaControl,
 	TextControl,
 } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
@@ -47,7 +35,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Filter Toggle Text',
 								'am-portfolio-theme'
@@ -61,7 +49,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __( 'Filter Title', 'am-portfolio-theme' ) }
 							value={ filterTitle }
 							onChange={ ( value ) =>
@@ -72,7 +60,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Project Type Title',
 								'am-portfolio-theme'
@@ -86,7 +74,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Project Type Description',
 								'am-portfolio-theme'
@@ -102,7 +90,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'All Types Label',
 								'am-portfolio-theme'
@@ -116,7 +104,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Technologies Title',
 								'am-portfolio-theme'
@@ -130,7 +118,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Clear All Label',
 								'am-portfolio-theme'
@@ -144,7 +132,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Technologies Description',
 								'am-portfolio-theme'
@@ -160,7 +148,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								'am-portfolio-theme'
 							) }
 						/>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Apply Filters Label',
 								'am-portfolio-theme'
@@ -186,7 +174,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'No Results Title',
 								'am-portfolio-theme'

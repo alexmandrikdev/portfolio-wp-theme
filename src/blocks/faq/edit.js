@@ -1,28 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	Flex,
-	FlexBlock,
-	TextControl,
-} from '@wordpress/components';
+import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
 
 const FAQItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -44,7 +27,7 @@ const FAQItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 				/>
 
 				<Flex direction="column" gap={ 3 } style={ { flex: 1 } }>
-					<TextInput
+					<TextControl
 						label={ __( 'Question', 'am-portfolio-theme' ) }
 						value={ item.question || '' }
 						onChange={ ( value ) =>
@@ -109,7 +92,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'FAQ Section', 'am-portfolio-theme' ) }>
-			<TextInput
+			<TextControl
 				label={ __( 'Section Title', 'am-portfolio-theme' ) }
 				value={ title }
 				onChange={ ( value ) => setAttributes( { title: value } ) }

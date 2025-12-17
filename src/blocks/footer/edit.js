@@ -20,28 +20,6 @@ import { useListManagement } from '../../js/shared/edit/hooks/use-list-managemen
 import BlockCard from '../../js/shared/edit/components/block-card';
 import './editor.scss';
 
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const TextareaInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextareaControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
 const QuickLinkItem = ( {
 	item,
 	index,
@@ -138,7 +116,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __( 'Name', 'am-portfolio-theme' ) }
 							value={ personalName }
 							onChange={ ( value ) =>
@@ -150,7 +128,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<TextInput
+						<TextControl
 							label={ __( 'Tagline', 'am-portfolio-theme' ) }
 							value={ personalTagline }
 							onChange={ ( value ) =>
@@ -202,7 +180,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Quick Links Title',
 								'am-portfolio-theme'
@@ -262,7 +240,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Social Media Title',
 								'am-portfolio-theme'
@@ -286,7 +264,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Contact Title',
 								'am-portfolio-theme'
@@ -330,7 +308,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							/>
 						</BaseControl>
 
-						<TextInput
+						<TextControl
 							label={ __(
 								'Contact Button Text',
 								'am-portfolio-theme'
@@ -354,7 +332,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</CardHeader>
 				<CardBody>
 					<Flex direction="column" gap={ 4 }>
-						<TextInput
+						<TextControl
 							label={ __(
 								'Copyright Text',
 								'am-portfolio-theme'
@@ -373,7 +351,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<TextareaInput
+						<TextareaControl
 							label={ __( 'Footer Note', 'am-portfolio-theme' ) }
 							value={ footerNote }
 							onChange={ ( value ) =>
@@ -385,7 +363,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							) }
 						/>
 
-						<TextInput
+						<TextControl
 							label={ __(
 								'Cookie Preferences Link Text',
 								'am-portfolio-theme'

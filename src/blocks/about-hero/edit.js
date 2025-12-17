@@ -1,105 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	Flex,
-	FlexBlock,
-	TextControl,
-	TextareaControl,
-} from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { Flex, TextControl, TextareaControl } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
-
-const TextInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const TextareaInput = ( { label, value, onChange, placeholder } ) => (
-	<FlexBlock>
-		<TextareaControl
-			label={ label }
-			value={ value }
-			onChange={ onChange }
-			placeholder={ placeholder }
-		/>
-	</FlexBlock>
-);
-
-const MediaUploadField = ( { label, value, onChange } ) => {
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! value ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( value );
-			return image?.source_url || '';
-		},
-		[ value ]
-	);
-
-	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt=""
-											style={ {
-												display: 'block',
-												marginBottom: '8px',
-												width: '60px',
-												height: '60px',
-												objectFit: 'contain',
-											} }
-										/>
-										<Button
-											variant="secondary"
-											onClick={ open }
-										>
-											{ __(
-												'Change Image',
-												'am-portfolio-theme'
-											) }
-										</Button>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __(
-											'Select Image',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
-	);
-};
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
@@ -116,7 +18,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<BlockCard title={ __( 'About Hero Section', 'am-portfolio-theme' ) }>
 			<Flex direction="column" gap={ 4 }>
-				<TextInput
+				<TextControl
 					label={ __( 'Heading', 'am-portfolio-theme' ) }
 					value={ heading }
 					onChange={ ( value ) =>
@@ -128,7 +30,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 				/>
 
-				<TextareaInput
+				<TextareaControl
 					label={ __( 'Description', 'am-portfolio-theme' ) }
 					value={ description }
 					onChange={ ( value ) =>
@@ -138,9 +40,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'Brief description about yourself…',
 						'am-portfolio-theme'
 					) }
+					rows={ 4 }
 				/>
 
-				<TextInput
+				<TextControl
 					label={ __( 'Button Text', 'am-portfolio-theme' ) }
 					value={ buttonText }
 					onChange={ ( value ) =>
@@ -158,6 +61,9 @@ export default function Edit( { attributes, setAttributes } ) {
 					onChange={ ( value ) =>
 						updateAttribute( 'profile_image', value )
 					}
+					imageStyle={ {
+						borderRadius: '50%',
+					} }
 				/>
 			</Flex>
 		</BlockCard>
