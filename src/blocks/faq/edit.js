@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
 import { useListManagement } from '../../js/shared/edit/hooks/use-list-management';
 import BlockCard from '../../js/shared/edit/components/block-card';
+import RichTextControl from '../../js/shared/edit/components/rich-text-control';
 
 const FAQItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 	const isFirst = index === 0;
@@ -39,34 +39,18 @@ const FAQItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 						) }
 					/>
 
-					<BaseControl
+					<RichTextControl
 						id={ `faq-answer-${ index }` }
-						__nextHasNoMarginBottom
 						label={ __( 'Answer', 'am-portfolio-theme' ) }
-					>
-						<RichText
-							style={ {
-								border: '1px solid #949494',
-								borderRadius: '2px',
-								padding: '6px 8px',
-							} }
-							tagName="p"
-							value={ item.answer || '' }
-							onChange={ ( value ) =>
-								onUpdate( index, 'answer', value )
-							}
-							placeholder={ __(
-								'Provide a detailed answer to the question…',
-								'am-portfolio-theme'
-							) }
-							allowedFormats={ [
-								'core/bold',
-								'core/italic',
-								'core/link',
-								'core/strikethrough',
-							] }
-						/>
-					</BaseControl>
+						value={ item.answer || '' }
+						onChange={ ( value ) =>
+							onUpdate( index, 'answer', value )
+						}
+						placeholder={ __(
+							'Provide a detailed answer to the question…',
+							'am-portfolio-theme'
+						) }
+					/>
 				</Flex>
 
 				<RemoveButton

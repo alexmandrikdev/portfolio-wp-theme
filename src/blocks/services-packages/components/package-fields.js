@@ -1,20 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import {
-	BaseControl,
 	Flex,
 	TextControl,
 	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
 import MediaUploadField from '../../../js/shared/edit/components/media-upload-field';
-
-const ALLOWED_FORMATS = [
-	'core/bold',
-	'core/italic',
-	'core/link',
-	'core/strikethrough',
-];
+import RichTextControl from '../../../js/shared/edit/components/rich-text-control';
 
 const PackageFields = ( { packageData, index, updatePackageField } ) => {
 	return (
@@ -75,32 +67,21 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 				placeholder={ __( 'Highlighted Value', 'am-portfolio-theme' ) }
 			/>
 
-			<BaseControl
+			<RichTextControl
 				id={ `package-${ index }-highlighted-value` }
-				__nextHasNoMarginBottom
 				label={ __(
 					'Highlighted Value Content',
 					'am-portfolio-theme'
 				) }
-			>
-				<RichText
-					style={ {
-						border: '1px solid #949494',
-						borderRadius: '2px',
-						padding: '6px 8px',
-					} }
-					tagName="p"
-					value={ packageData.highlighted_value || '' }
-					onChange={ ( value ) =>
-						updatePackageField( 'highlighted_value', value )
-					}
-					placeholder={ __(
-						'What makes this package special…',
-						'am-portfolio-theme'
-					) }
-					allowedFormats={ ALLOWED_FORMATS }
-				/>
-			</BaseControl>
+				value={ packageData.highlighted_value || '' }
+				onChange={ ( value ) =>
+					updatePackageField( 'highlighted_value', value )
+				}
+				placeholder={ __(
+					'What makes this package special…',
+					'am-portfolio-theme'
+				) }
+			/>
 
 			<TextControl
 				label={ __( 'Design Approach Title', 'am-portfolio-theme' ) }
@@ -111,29 +92,18 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 				placeholder={ __( 'Design Approach', 'am-portfolio-theme' ) }
 			/>
 
-			<BaseControl
+			<RichTextControl
 				id={ `package-${ index }-design-approach` }
-				__nextHasNoMarginBottom
 				label={ __( 'Design Approach Content', 'am-portfolio-theme' ) }
-			>
-				<RichText
-					style={ {
-						border: '1px solid #949494',
-						borderRadius: '2px',
-						padding: '6px 8px',
-					} }
-					tagName="p"
-					value={ packageData.design_approach || '' }
-					onChange={ ( value ) =>
-						updatePackageField( 'design_approach', value )
-					}
-					placeholder={ __(
-						'How we approach design for this package…',
-						'am-portfolio-theme'
-					) }
-					allowedFormats={ ALLOWED_FORMATS }
-				/>
-			</BaseControl>
+				value={ packageData.design_approach || '' }
+				onChange={ ( value ) =>
+					updatePackageField( 'design_approach', value )
+				}
+				placeholder={ __(
+					'How we approach design for this package…',
+					'am-portfolio-theme'
+				) }
+			/>
 
 			<TextControl
 				label={ __( 'Button Text', 'am-portfolio-theme' ) }
