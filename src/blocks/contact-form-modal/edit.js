@@ -1,9 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	TextareaControl,
-	TextControl,
-} from '@wordpress/components';
+import { Flex, TextareaControl, TextControl } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -30,12 +26,10 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Contact Form Modal', 'am-portfolio-theme' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Modal Title', 'am-portfolio-theme' ) }
-				id="contact-form-modal-title"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Modal Title', 'am-portfolio-theme' ) }
 					id="contact-form-modal-title"
 					value={ modalTitle }
 					onChange={ ( value ) =>
@@ -46,14 +40,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Modal Description', 'am-portfolio-theme' ) }
-				id="contact-form-modal-description"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Modal Description', 'am-portfolio-theme' ) }
 					id="contact-form-modal-description"
 					value={ modalDescription }
 					onChange={ ( value ) =>
@@ -65,14 +55,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 2 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Subject Placeholder', 'am-portfolio-theme' ) }
-				id="contact-form-subject-placeholder"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Subject Placeholder', 'am-portfolio-theme' ) }
 					id="contact-form-subject-placeholder"
 					value={ subjectPlaceholder }
 					onChange={ ( value ) =>
@@ -83,14 +69,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Name Placeholder', 'am-portfolio-theme' ) }
-				id="contact-form-name-placeholder"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Name Placeholder', 'am-portfolio-theme' ) }
 					id="contact-form-name-placeholder"
 					value={ namePlaceholder }
 					onChange={ ( value ) =>
@@ -101,14 +83,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Email Placeholder', 'am-portfolio-theme' ) }
-				id="contact-form-email-placeholder"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Email Placeholder', 'am-portfolio-theme' ) }
 					id="contact-form-email-placeholder"
 					value={ emailPlaceholder }
 					onChange={ ( value ) =>
@@ -119,14 +97,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Message Placeholder', 'am-portfolio-theme' ) }
-				id="contact-form-message-placeholder"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Message Placeholder', 'am-portfolio-theme' ) }
 					id="contact-form-message-placeholder"
 					value={ messagePlaceholder }
 					onChange={ ( value ) =>
@@ -137,14 +111,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Cancel Button Text', 'am-portfolio-theme' ) }
-				id="contact-form-cancel-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Cancel Button Text', 'am-portfolio-theme' ) }
 					id="contact-form-cancel-button-text"
 					value={ cancelButtonText }
 					onChange={ ( value ) =>
@@ -155,14 +125,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Submit Button Ready Text', 'am-portfolio-theme' ) }
-				id="contact-form-submit-ready-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Submit Button Ready Text',
+						'am-portfolio-theme'
+					) }
 					id="contact-form-submit-ready-text"
 					value={ submitButtonReadyText }
 					onChange={ ( value ) =>
@@ -173,17 +142,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __(
-					'Submit Button Sending Text',
-					'am-portfolio-theme'
-				) }
-				id="contact-form-submit-sending-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Submit Button Sending Text',
+						'am-portfolio-theme'
+					) }
 					id="contact-form-submit-sending-text"
 					value={ submitButtonSendingText }
 					onChange={ ( value ) =>
@@ -194,14 +159,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Success Title', 'am-portfolio-theme' ) }
-				id="contact-form-success-title"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Success Title', 'am-portfolio-theme' ) }
 					id="contact-form-success-title"
 					value={ successTitle }
 					onChange={ ( value ) =>
@@ -212,14 +173,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Success Body Large', 'am-portfolio-theme' ) }
-				id="contact-form-success-body-large"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Success Body Large', 'am-portfolio-theme' ) }
 					id="contact-form-success-body-large"
 					value={ successBodyLarge }
 					onChange={ ( value ) =>
@@ -231,14 +188,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 2 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Success Body Small', 'am-portfolio-theme' ) }
-				id="contact-form-success-body-small"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Success Body Small', 'am-portfolio-theme' ) }
 					id="contact-form-success-body-small"
 					value={ successBodySmall }
 					onChange={ ( value ) =>
@@ -254,14 +207,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 2 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Success Button Text', 'am-portfolio-theme' ) }
-				id="contact-form-success-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Success Button Text', 'am-portfolio-theme' ) }
 					id="contact-form-success-button-text"
 					value={ successButtonText }
 					onChange={ ( value ) =>
@@ -272,14 +221,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Network Error Message', 'am-portfolio-theme' ) }
-				id="contact-form-network-error-message"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Network Error Message',
+						'am-portfolio-theme'
+					) }
 					id="contact-form-network-error-message"
 					value={ networkErrorMessage }
 					onChange={ ( value ) =>
@@ -290,7 +238,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

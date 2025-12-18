@@ -52,6 +52,7 @@ const HobbyItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 							}
 						/>
 						<TextControl
+							__nextHasNoMarginBottom
 							label={ __( 'Hobby Title', 'am-portfolio-theme' ) }
 							value={ item.title }
 							onChange={ ( value ) =>
@@ -63,6 +64,7 @@ const HobbyItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 							) }
 						/>
 						<TextareaControl
+							__nextHasNoMarginBottom
 							label={ __(
 								'Hobby Description',
 								'am-portfolio-theme'
@@ -168,6 +170,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		>
 			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Section Heading', 'am-portfolio-theme' ) }
 					value={ heading }
 					onChange={ ( value ) =>

@@ -1,13 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	Button,
-	TextControl,
-	TextareaControl,
-} from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { Flex, TextControl, TextareaControl } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
+import MediaUploadField from '../../js/shared/edit/components/media-upload-field';
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
@@ -21,107 +15,32 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( { [ attributeName ]: value } );
 	};
 
-	const imageUrl = useSelect(
-		( select ) => {
-			if ( ! profileImage ) {
-				return '';
-			}
-			const image = select( 'core' ).getMedia( profileImage );
-			return image?.source_url || '';
-		},
-		[ profileImage ]
-	);
-
 	return (
 		<BlockCard title={ __( 'About Section', 'portfolio' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Profile Image', 'portfolio' ) }
-				id="profile-image"
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) =>
-							updateAttribute( 'profile_image', media.id )
-						}
-						allowedTypes={ [ 'image' ] }
-						value={ profileImage }
-						render={ ( { open } ) => (
-							<div style={ { marginBottom: '16px' } }>
-								{ ! profileImage ? (
-									<Button
-										variant="secondary"
-										onClick={ open }
-									>
-										{ __( 'Select Image', 'portfolio' ) }
-									</Button>
-								) : (
-									<div>
-										<img
-											src={ imageUrl }
-											alt={ __(
-												'Profile image',
-												'portfolio'
-											) }
-											style={ {
-												maxWidth: '200px',
-												height: 'auto',
-												display: 'block',
-												marginBottom: '8px',
-											} }
-										/>
-										<div>
-											<Button
-												variant="secondary"
-												onClick={ open }
-												style={ {
-													marginRight: '8px',
-												} }
-											>
-												{ __(
-													'Change Image',
-													'portfolio'
-												) }
-											</Button>
-											<Button
-												variant="tertiary"
-												onClick={ () =>
-													updateAttribute(
-														'profile_image',
-														''
-													)
-												}
-											>
-												{ __( 'Remove', 'portfolio' ) }
-											</Button>
-										</div>
-									</div>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
+			<Flex direction="column" gap={ 4 }>
+				<MediaUploadField
+					label={ __( 'Profile Image', 'portfolio' ) }
+					value={ profileImage }
+					onChange={ ( value ) =>
+						updateAttribute( 'profile_image', value )
+					}
+					width={ 200 }
+					height={ 200 }
+					imageStyle={ { borderRadius: '50%' } }
+				/>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Title', 'portfolio' ) }
-				id="profile-title"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Title', 'portfolio' ) }
 					id="profile-title"
 					value={ title }
 					onChange={ ( value ) => updateAttribute( 'title', value ) }
 					placeholder={ __( 'Enter title', 'portfolio' ) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Name Highlight', 'portfolio' ) }
-				id="name-highlight"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Name Highlight', 'portfolio' ) }
 					id="name-highlight"
 					value={ nameHighlight }
 					onChange={ ( value ) =>
@@ -133,14 +52,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 3 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Description', 'portfolio' ) }
-				id="description"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Description', 'portfolio' ) }
 					id="description"
 					value={ description }
 					onChange={ ( value ) =>
@@ -149,7 +64,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					placeholder={ __( 'Enter description', 'portfolio' ) }
 					rows={ 5 }
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

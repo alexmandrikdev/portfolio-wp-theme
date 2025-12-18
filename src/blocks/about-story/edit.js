@@ -14,6 +14,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<BlockCard title={ __( 'About Story Section', 'am-portfolio-theme' ) }>
 			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Heading', 'am-portfolio-theme' ) }
 					value={ heading }
 					onChange={ ( value ) =>

@@ -1,9 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import {
-	BaseControl,
-	TextControl,
-	TextareaControl,
-} from '@wordpress/components';
+import { TextControl, TextareaControl, Flex } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -15,34 +11,28 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Services Hero', 'portfolio' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Title', 'portfolio' ) }
-				id="services-hero-title"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextControl
 					id="services-hero-title"
 					value={ title }
+					label={ __( 'Title', 'portfolio' ) }
 					onChange={ ( value ) => updateAttribute( 'title', value ) }
 					placeholder={ __( 'Enter hero title', 'portfolio' ) }
+					__nextHasNoMarginBottom
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Subtitle', 'portfolio' ) }
-				id="services-hero-subtitle"
-			>
 				<TextareaControl
 					id="services-hero-subtitle"
 					value={ subtitle }
+					label={ __( 'Subtitle', 'portfolio' ) }
 					onChange={ ( value ) =>
 						updateAttribute( 'subtitle', value )
 					}
 					placeholder={ __( 'Enter hero subtitle', 'portfolio' ) }
 					rows={ 4 }
+					__nextHasNoMarginBottom
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

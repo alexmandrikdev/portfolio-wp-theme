@@ -6,6 +6,7 @@ import {
 	CardBody,
 	CardHeader,
 	Flex,
+	FlexBlock,
 	TextControl,
 } from '@wordpress/components';
 import './editor.scss';
@@ -28,15 +29,19 @@ const BulletItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextControl
-					label={ __( 'Item Text', 'am-portfolio-theme' ) }
-					value={ item.text }
-					onChange={ ( value ) => onUpdate( index, 'text', value ) }
-					placeholder={ __(
-						'e.g., Fully responsive design',
-						'am-portfolio-theme'
-					) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Item Text', 'am-portfolio-theme' ) }
+						value={ item.text }
+						onChange={ ( value ) =>
+							onUpdate( index, 'text', value )
+						}
+						placeholder={ __(
+							'e.g., Fully responsive design',
+							'am-portfolio-theme'
+						) }
+					/>
+				</FlexBlock>
 
 				<RemoveButton
 					index={ index }

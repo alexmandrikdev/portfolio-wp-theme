@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, Button, FlexBlock } from '@wordpress/components';
+import { BaseControl, Button } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
@@ -26,77 +26,73 @@ const MediaUploadField = ( {
 	const altText = label + ' ' + __( 'preview', 'am-portfolio-theme' );
 
 	return (
-		<FlexBlock>
-			<BaseControl
-				id={ `media-upload-${ value || 'new' }` }
-				label={ label }
-			>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => onChange( media.id ) }
-						allowedTypes={ [ 'image' ] }
-						value={ value }
-						render={ ( { open } ) => (
-							<div>
-								{ value ? (
-									<div>
-										<img
-											src={ imageUrl }
-											alt={ altText }
-											style={ {
-												display: 'block',
-												marginBottom: '8px',
-												width: `${ width }px`,
-												height: `${ height }px`,
-												objectFit,
-												...imageStyle,
-											} }
-											width={ width }
-											height={ height }
-										/>
-										<div
-											style={ {
-												display: 'flex',
-												gap: '8px',
-											} }
-										>
-											<Button
-												variant="secondary"
-												onClick={ open }
-											>
-												{ __(
-													'Change Image',
-													'am-portfolio-theme'
-												) }
-											</Button>
-											<Button
-												variant="tertiary"
-												onClick={ () => onChange( '' ) }
-											>
-												{ __(
-													'Remove',
-													'am-portfolio-theme'
-												) }
-											</Button>
-										</div>
-									</div>
-								) : (
-									<Button
-										variant="secondary"
-										onClick={ open }
+		<BaseControl
+			id={ `media-upload-${ value || 'new' }` }
+			label={ label }
+			__nextHasNoMarginBottom
+		>
+			<MediaUploadCheck>
+				<MediaUpload
+					onSelect={ ( media ) => onChange( media.id ) }
+					allowedTypes={ [ 'image' ] }
+					value={ value }
+					render={ ( { open } ) => (
+						<div>
+							{ value ? (
+								<div>
+									<img
+										src={ imageUrl }
+										alt={ altText }
+										style={ {
+											display: 'block',
+											marginBottom: '8px',
+											width: `${ width }px`,
+											height: `${ height }px`,
+											objectFit,
+											...imageStyle,
+										} }
+										width={ width }
+										height={ height }
+									/>
+									<div
+										style={ {
+											display: 'flex',
+											gap: '8px',
+										} }
 									>
-										{ __(
-											'Select Image',
-											'am-portfolio-theme'
-										) }
-									</Button>
-								) }
-							</div>
-						) }
-					/>
-				</MediaUploadCheck>
-			</BaseControl>
-		</FlexBlock>
+										<Button
+											variant="secondary"
+											onClick={ open }
+										>
+											{ __(
+												'Change Image',
+												'am-portfolio-theme'
+											) }
+										</Button>
+										<Button
+											variant="tertiary"
+											onClick={ () => onChange( '' ) }
+										>
+											{ __(
+												'Remove',
+												'am-portfolio-theme'
+											) }
+										</Button>
+									</div>
+								</div>
+							) : (
+								<Button variant="secondary" onClick={ open }>
+									{ __(
+										'Select Image',
+										'am-portfolio-theme'
+									) }
+								</Button>
+							) }
+						</div>
+					) }
+				/>
+			</MediaUploadCheck>
+		</BaseControl>
 	);
 };
 

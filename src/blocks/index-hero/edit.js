@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, TextControl } from '@wordpress/components';
+import { TextControl, Flex } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -11,25 +11,19 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Hero Content', 'portfolio' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Title', 'portfolio' ) }
-				id="hero-title"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Title', 'portfolio' ) }
 					id="hero-title"
 					value={ title }
 					onChange={ ( value ) => updateAttribute( 'title', value ) }
 					placeholder={ __( 'Enter title', 'portfolio' ) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Subtitle', 'portfolio' ) }
-				id="hero-subtitle"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Subtitle', 'portfolio' ) }
 					id="hero-subtitle"
 					value={ subtitle }
 					onChange={ ( value ) =>
@@ -37,14 +31,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					}
 					placeholder={ __( 'Enter subtitle', 'portfolio' ) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Call to Action Note', 'portfolio' ) }
-				id="hero-cta-note"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Call to Action Note', 'portfolio' ) }
 					id="hero-cta-note"
 					value={ ctaNote }
 					onChange={ ( value ) =>
@@ -52,7 +42,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					}
 					placeholder={ __( 'Enter CTA note', 'portfolio' ) }
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, TextControl } from '@wordpress/components';
+import { TextControl, Flex } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -11,21 +11,19 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Social Media Links', 'am-portfolio-theme' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Title', 'am-portfolio-theme' ) }
-				id="contact-social-media-title"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextControl
 					id="contact-social-media-title"
 					value={ title }
+					label={ __( 'Title', 'am-portfolio-theme' ) }
 					onChange={ ( value ) => updateAttribute( 'title', value ) }
 					placeholder={ __(
 						'Enter title for social media section',
 						'am-portfolio-theme'
 					) }
+					__nextHasNoMarginBottom
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

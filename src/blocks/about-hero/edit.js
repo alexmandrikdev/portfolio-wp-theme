@@ -19,6 +19,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<BlockCard title={ __( 'About Hero Section', 'am-portfolio-theme' ) }>
 			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Heading', 'am-portfolio-theme' ) }
 					value={ heading }
 					onChange={ ( value ) =>
@@ -31,6 +32,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				/>
 
 				<TextareaControl
+					__nextHasNoMarginBottom
 					label={ __( 'Description', 'am-portfolio-theme' ) }
 					value={ description }
 					onChange={ ( value ) =>
@@ -44,6 +46,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				/>
 
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Button Text', 'am-portfolio-theme' ) }
 					value={ buttonText }
 					onChange={ ( value ) =>

@@ -7,8 +7,14 @@ import {
 } from '@wordpress/components';
 import MediaUploadField from '../../../js/shared/edit/components/media-upload-field';
 import RichTextControl from '../../../js/shared/edit/components/rich-text-control';
+import FeatureList from './feature-list';
 
-const PackageFields = ( { packageData, index, updatePackageField } ) => {
+const PackageFields = ( {
+	packageData,
+	index,
+	updatePackageField,
+	updateFeatureItem,
+} ) => {
 	return (
 		<Flex direction="column" gap={ 4 }>
 			<ToggleControl
@@ -17,10 +23,12 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 				onChange={ ( value ) =>
 					updatePackageField( 'is_featured', value )
 				}
+				__nextHasNoMarginBottom
 			/>
 
 			{ packageData.is_featured && (
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Featured Label', 'am-portfolio-theme' ) }
 					value={ packageData.featured_label }
 					onChange={ ( value ) =>
@@ -37,6 +45,7 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 			/>
 
 			<TextControl
+				__nextHasNoMarginBottom
 				label={ __( 'Package Title', 'am-portfolio-theme' ) }
 				value={ packageData.title || '' }
 				onChange={ ( value ) => updatePackageField( 'title', value ) }
@@ -47,6 +56,7 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 			/>
 
 			<TextareaControl
+				__nextHasNoMarginBottom
 				label={ __( 'Package Description', 'am-portfolio-theme' ) }
 				value={ packageData.description || '' }
 				onChange={ ( value ) =>
@@ -59,6 +69,7 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 			/>
 
 			<TextControl
+				__nextHasNoMarginBottom
 				label={ __( 'Highlighted Value Title', 'am-portfolio-theme' ) }
 				value={ packageData.highlighted_value_title || '' }
 				onChange={ ( value ) =>
@@ -84,6 +95,7 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 			/>
 
 			<TextControl
+				__nextHasNoMarginBottom
 				label={ __( 'Design Approach Title', 'am-portfolio-theme' ) }
 				value={ packageData.design_approach_title || '' }
 				onChange={ ( value ) =>
@@ -106,12 +118,20 @@ const PackageFields = ( { packageData, index, updatePackageField } ) => {
 			/>
 
 			<TextControl
+				__nextHasNoMarginBottom
 				label={ __( 'Button Text', 'am-portfolio-theme' ) }
 				value={ packageData.button_text || '' }
 				onChange={ ( value ) =>
 					updatePackageField( 'button_text', value )
 				}
 				placeholder={ __( 'e.g., Get Started', 'am-portfolio-theme' ) }
+			/>
+
+			<FeatureList
+				packageData={ packageData }
+				index={ index }
+				updatePackageField={ updatePackageField }
+				updateFeatureItem={ updateFeatureItem }
 			/>
 		</Flex>
 	);

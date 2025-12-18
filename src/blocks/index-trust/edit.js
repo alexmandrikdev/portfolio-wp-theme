@@ -1,5 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
+import {
+	BaseControl,
+	Button,
+	Flex,
+	FlexBlock,
+	TextControl,
+} from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
@@ -27,19 +33,27 @@ const TrustItem = ( {
 					onMove={ onMove }
 				/>
 
-				<TextControl
-					label={ __( 'Number', 'portfolio' ) }
-					value={ item.number }
-					onChange={ ( value ) => onUpdate( index, 'number', value ) }
-					placeholder={ __( 'e.g., 100+', 'portfolio' ) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Number', 'portfolio' ) }
+						value={ item.number }
+						onChange={ ( value ) =>
+							onUpdate( index, 'number', value )
+						}
+						placeholder={ __( 'e.g., 100+', 'portfolio' ) }
+					/>
+				</FlexBlock>
 
-				<TextControl
-					label={ __( 'Label', 'portfolio' ) }
-					value={ item.label }
-					onChange={ ( value ) => onUpdate( index, 'label', value ) }
-					placeholder={ __( 'e.g., Happy Clients', 'portfolio' ) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Label', 'portfolio' ) }
+						value={ item.label }
+						onChange={ ( value ) =>
+							onUpdate( index, 'label', value )
+						}
+						placeholder={ __( 'e.g., Happy Clients', 'portfolio' ) }
+					/>
+				</FlexBlock>
 
 				<RemoveButton
 					index={ index }

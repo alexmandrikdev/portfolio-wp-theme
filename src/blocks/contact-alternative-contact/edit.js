@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, TextControl } from '@wordpress/components';
+import { Flex, TextControl } from '@wordpress/components';
 import BlockCard from '../../js/shared/edit/components/block-card';
 
 export default function Edit( { attributes, setAttributes } ) {
@@ -11,12 +11,10 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Alternative Contact Content', 'portfolio' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Contact Text', 'portfolio' ) }
-				id="alternative-contact-text"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Contact Text', 'portfolio' ) }
 					id="alternative-contact-text"
 					value={ text }
 					onChange={ ( value ) => updateAttribute( 'text', value ) }
@@ -29,7 +27,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						'portfolio'
 					) }
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }
