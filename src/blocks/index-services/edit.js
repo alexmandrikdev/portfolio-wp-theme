@@ -61,6 +61,7 @@ const ServiceItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 						/>
 
 						<TextControl
+							__nextHasNoMarginBottom
 							label={ __( 'Title', 'portfolio' ) }
 							value={ item.title }
 							onChange={ ( value ) =>
@@ -73,6 +74,7 @@ const ServiceItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 						/>
 
 						<TextareaControl
+							__nextHasNoMarginBottom
 							label={ __( 'Description', 'portfolio' ) }
 							value={ item.text }
 							onChange={ ( value ) =>
@@ -109,6 +111,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<BlockCard title={ __( 'Services Section', 'portfolio' ) }>
 			<Flex direction="column" gap={ 4 }>
 				<TextControl
+					__nextHasNoMarginBottom
 					label={ __( 'Section Title', 'portfolio' ) }
 					value={ title }
 					onChange={ ( value ) => setAttributes( { title: value } ) }

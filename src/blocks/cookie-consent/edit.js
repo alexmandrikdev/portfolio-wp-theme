@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import {
-	BaseControl,
 	ComboboxControl,
+	Flex,
 	TextControl,
 	TextareaControl,
 } from '@wordpress/components';
@@ -52,12 +52,10 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	return (
 		<BlockCard title={ __( 'Cookie Consent', 'am-portfolio-theme' ) }>
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Consent Message', 'am-portfolio-theme' ) }
-				id="cookie-consent-message"
-			>
+			<Flex direction="column" gap={ 4 }>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __( 'Consent Message', 'am-portfolio-theme' ) }
 					id="cookie-consent-message"
 					value={ consentMessage }
 					onChange={ ( value ) =>
@@ -69,17 +67,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 3 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __(
-					'Necessary Cookies Description',
-					'am-portfolio-theme'
-				) }
-				id="cookie-consent-necessary-description"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Necessary Cookies Description',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-necessary-description"
 					value={ necessaryDescription }
 					onChange={ ( value ) =>
@@ -91,17 +85,13 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 2 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __(
-					'Analytics Cookies Description',
-					'am-portfolio-theme'
-				) }
-				id="cookie-consent-analytics-description"
-			>
 				<TextareaControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Analytics Cookies Description',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-analytics-description"
 					value={ analyticsDescription }
 					onChange={ ( value ) =>
@@ -113,14 +103,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					) }
 					rows={ 2 }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Accept Button Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-accept-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Accept Button Text', 'am-portfolio-theme' ) }
 					id="cookie-consent-accept-button-text"
 					value={ acceptButtonText }
 					onChange={ ( value ) =>
@@ -131,14 +117,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Reject Button Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-reject-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Reject Button Text', 'am-portfolio-theme' ) }
 					id="cookie-consent-reject-button-text"
 					value={ rejectButtonText }
 					onChange={ ( value ) =>
@@ -149,14 +131,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Customize Button Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-customize-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Customize Button Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-customize-button-text"
 					value={ customizeButtonText }
 					onChange={ ( value ) =>
@@ -167,17 +148,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __(
-					'Save Preferences Button Text',
-					'am-portfolio-theme'
-				) }
-				id="cookie-consent-save-button-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Save Preferences Button Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-save-button-text"
 					value={ saveButtonText }
 					onChange={ ( value ) =>
@@ -188,33 +165,25 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Privacy Policy Page', 'am-portfolio-theme' ) }
-				id="cookie-consent-privacy-policy-page"
-				help={ __(
-					'Select the page that contains your privacy policy',
-					'am-portfolio-theme'
-				) }
-			>
 				<ComboboxControl
+					__nextHasNoMarginBottom
+					label={ __( 'Privacy Policy Page', 'am-portfolio-theme' ) }
 					id="cookie-consent-privacy-policy-page"
 					value={ privacyPolicyPageId }
 					onChange={ ( value ) =>
 						updateAttribute( 'privacy_policy_page_id', value )
 					}
 					options={ pageOptions }
+					help={ __(
+						'Select the page that contains your privacy policy',
+						'am-portfolio-theme'
+					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Privacy Policy Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-privacy-policy-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Privacy Policy Text', 'am-portfolio-theme' ) }
 					id="cookie-consent-privacy-policy-text"
 					value={ privacyPolicyText }
 					onChange={ ( value ) =>
@@ -225,14 +194,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Cookie Preferences Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-preferences-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Cookie Preferences Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-preferences-text"
 					value={ cookiePreferencesText }
 					onChange={ ( value ) =>
@@ -243,14 +211,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Necessary Cookies Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-necessary-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Necessary Cookies Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-necessary-text"
 					value={ necessaryCookiesText }
 					onChange={ ( value ) =>
@@ -261,14 +228,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Analytics Cookies Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-analytics-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Analytics Cookies Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-analytics-text"
 					value={ analyticsCookiesText }
 					onChange={ ( value ) =>
@@ -279,14 +245,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Close Preferences Text', 'am-portfolio-theme' ) }
-				id="cookie-consent-close-text"
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __(
+						'Close Preferences Text',
+						'am-portfolio-theme'
+					) }
 					id="cookie-consent-close-text"
 					value={ closePreferencesText }
 					onChange={ ( value ) =>
@@ -297,20 +262,11 @@ export default function Edit( { attributes, setAttributes } ) {
 						'am-portfolio-theme'
 					) }
 				/>
-			</BaseControl>
 
-			<BaseControl
-				__nextHasNoMarginBottom
-				label={ __( 'Cookie Expiry (Days)', 'am-portfolio-theme' ) }
-				id="cookie-consent-expiry-days"
-				help={ __(
-					'How many days should the cookie consent be remembered for?',
-					'am-portfolio-theme'
-				) }
-			>
 				<TextControl
+					__nextHasNoMarginBottom
+					label={ __( 'Cookie Expiry (Days)', 'am-portfolio-theme' ) }
 					id="cookie-consent-expiry-days"
-					type="number"
 					value={ expiryDays }
 					onChange={ ( value ) =>
 						updateAttribute(
@@ -318,10 +274,19 @@ export default function Edit( { attributes, setAttributes } ) {
 							parseInt( value ) || 365
 						)
 					}
+					placeholder={ __(
+						'Enter cookie expiry in days',
+						'am-portfolio-theme'
+					) }
+					type="number"
 					min="1"
 					max="730"
+					help={ __(
+						'How many days should the cookie consent be remembered for?',
+						'am-portfolio-theme'
+					) }
 				/>
-			</BaseControl>
+			</Flex>
 		</BlockCard>
 	);
 }

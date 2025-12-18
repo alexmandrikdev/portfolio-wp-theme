@@ -40,6 +40,7 @@ const RichTextControl = ( {
 				onChange={ onChange }
 				placeholder={ placeholder }
 				allowedFormats={ allowedFormats }
+				__nextHasNoMarginBottom
 			/>
 		</BaseControl>
 	);

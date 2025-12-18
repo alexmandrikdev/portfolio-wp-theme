@@ -1,5 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
+import {
+	BaseControl,
+	Button,
+	Flex,
+	FlexBlock,
+	TextControl,
+} from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
@@ -20,22 +26,30 @@ const MetaItem = ( { item, index, metaItems, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextControl
-					label={ __( 'Label', 'am-portfolio-theme' ) }
-					value={ item.label }
-					onChange={ ( value ) => onUpdate( index, 'label', value ) }
-					placeholder={ __( 'e.g., Role', 'am-portfolio-theme' ) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Label', 'am-portfolio-theme' ) }
+						value={ item.label }
+						onChange={ ( value ) =>
+							onUpdate( index, 'label', value )
+						}
+						placeholder={ __( 'e.g., Role', 'am-portfolio-theme' ) }
+					/>
+				</FlexBlock>
 
-				<TextControl
-					label={ __( 'Value', 'am-portfolio-theme' ) }
-					value={ item.value }
-					onChange={ ( value ) => onUpdate( index, 'value', value ) }
-					placeholder={ __(
-						'e.g., Full-Stack Developer',
-						'am-portfolio-theme'
-					) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Value', 'am-portfolio-theme' ) }
+						value={ item.value }
+						onChange={ ( value ) =>
+							onUpdate( index, 'value', value )
+						}
+						placeholder={ __(
+							'e.g., Full-Stack Developer',
+							'am-portfolio-theme'
+						) }
+					/>
+				</FlexBlock>
 
 				<RemoveButton
 					index={ index }

@@ -1,5 +1,11 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, Button, Flex, TextControl } from '@wordpress/components';
+import {
+	BaseControl,
+	Button,
+	Flex,
+	FlexBlock,
+	TextControl,
+} from '@wordpress/components';
 import './editor.scss';
 import RemoveButton from '../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../js/shared/edit/components/move-buttons';
@@ -33,12 +39,22 @@ const ScreenshotItem = ( {
 					style={ { alignSelf: 'flex-start', marginTop: '24px' } }
 				/>
 
-				<TextControl
-					label={ __( 'Page/Section Title', 'am-portfolio-theme' ) }
-					value={ item.title || '' }
-					onChange={ ( value ) => onUpdate( index, 'title', value ) }
-					placeholder={ __( 'e.g., Homepage', 'am-portfolio-theme' ) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __(
+							'Page/Section Title',
+							'am-portfolio-theme'
+						) }
+						value={ item.title || '' }
+						onChange={ ( value ) =>
+							onUpdate( index, 'title', value )
+						}
+						placeholder={ __(
+							'e.g., Homepage',
+							'am-portfolio-theme'
+						) }
+					/>
+				</FlexBlock>
 
 				<MediaUploadField
 					label={ __(

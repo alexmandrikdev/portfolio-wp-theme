@@ -2,7 +2,6 @@ import { Card, CardBody } from '@wordpress/components';
 import { useListManagement } from '../../../js/shared/edit/hooks/use-list-management';
 import PackageHeader from './package-header';
 import PackageFields from './package-fields';
-import FeatureList from './feature-list';
 
 const PackageCardEditor = ( {
 	packageData,
@@ -45,11 +44,6 @@ const PackageCardEditor = ( {
 			/>
 			<CardBody>
 				<PackageFields
-					packageData={ packageData }
-					index={ index }
-					updatePackageField={ updatePackageField }
-				/>
-				<FeatureList
 					packageData={ packageData }
 					index={ index }
 					updatePackageField={ updatePackageField }

@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { Flex, TextControl } from '@wordpress/components';
+import { Flex, FlexBlock, TextControl } from '@wordpress/components';
 import RemoveButton from '../../../js/shared/edit/components/remove-button';
 import MoveButtons from '../../../js/shared/edit/components/move-buttons';
 
@@ -17,15 +17,17 @@ const FeatureItem = ( { item, index, items, onUpdate, onRemove, onMove } ) => {
 					onMove={ onMove }
 				/>
 
-				<TextControl
-					label={ __( 'Feature', 'am-portfolio-theme' ) }
-					value={ item }
-					onChange={ ( value ) => onUpdate( index, value ) }
-					placeholder={ __(
-						'e.g., Fully responsive design',
-						'am-portfolio-theme'
-					) }
-				/>
+				<FlexBlock>
+					<TextControl
+						label={ __( 'Feature', 'am-portfolio-theme' ) }
+						value={ item }
+						onChange={ ( value ) => onUpdate( index, value ) }
+						placeholder={ __(
+							'e.g., Fully responsive design',
+							'am-portfolio-theme'
+						) }
+					/>
+				</FlexBlock>
 
 				<RemoveButton
 					index={ index }
