@@ -8,6 +8,7 @@
 	--color-text-primary: #000;
 	--color-text-secondary: #5a5a5a;
 	--color-text-tertiary: #8a8a8a;
+	--color-text-inverse: #fff;
 	--color-accent-primary: #06f;
 	--color-accent-secondary: #0c8;
 	--color-text-accent-primary: var(--color-accent-primary);
@@ -16,6 +17,9 @@
 	--color-error: #d00;
 	--color-error-light: #fdd;
 	--color-error-dark: #b00;
+	--color-success: #10b981;
+	--color-success-light: #d1fae5;
+	--color-success-dark: #0da271;
 
 	// Typography
 	--font-family: "Inter", sans-serif;
@@ -60,12 +64,16 @@
 	--color-text-primary: #fff;
 	--color-text-secondary: #a0a0a0;
 	--color-text-tertiary: #828282;
+	--color-text-inverse: #000;
 	--color-text-accent-primary: #4d94ff;
 	--color-border-divider: #3a3a3a;
 	--color-hover-overlay: rgba(255, 255, 255, 0.05);
 	--color-error: #f44;
 	--color-error-light: #422;
 	--color-error-dark: #f88;
+	--color-success: #34d399;
+	--color-success-light: #064e3b;
+	--color-success-dark: #a7f3d0;
 
 	// Shadow system
 	--shadow-small: 0 2px 8px rgba(0, 0, 0, 0.4);

@@ -55,8 +55,16 @@ wp_interactivity_state(
 						data-wp-class--form__input--invalid="state.fieldErrors.subject"
 						placeholder="<?php echo esc_attr( $attributes['subject_placeholder'] ?? 'e.g., Website Redesign Project' ); ?>"
 					/>
-					<div 
-						class="form__field-error" 
+					<div
+						class="form__save-indicator"
+						<?php echo wp_interactivity_data_wp_context( array( 'field' => 'subject' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						data-wp-class--form__save-indicator--visible="state.isSavingIndicatorVisible"
+					>
+						<span class="form__save-indicator-icon">✓</span>
+						<span class="form__save-indicator-text"><?php pll_e( 'Saved' ); ?></span>
+					</div>
+					<div
+						class="form__field-error"
 						data-wp-class--form__field-error--visible="state.fieldErrors.subject"
 					>
 						<span data-wp-text="state.fieldErrors.subject"></span>
@@ -77,8 +85,16 @@ wp_interactivity_state(
 							data-wp-class--form__input--invalid="state.fieldErrors.name"
 							placeholder="<?php echo esc_attr( $attributes['name_placeholder'] ?? 'Your full name' ); ?>"
 						/>
-						<div 
-							class="form__field-error" 
+						<div
+							class="form__save-indicator"
+							<?php echo wp_interactivity_data_wp_context( array( 'field' => 'name' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							data-wp-class--form__save-indicator--visible="state.isSavingIndicatorVisible"
+						>
+							<span class="form__save-indicator-icon">✓</span>
+							<span class="form__save-indicator-text"><?php pll_e( 'Saved' ); ?></span>
+						</div>
+						<div
+							class="form__field-error"
 							data-wp-class--form__field-error--visible="state.fieldErrors.name"
 						>
 							<span data-wp-text="state.fieldErrors.name"></span>
@@ -98,8 +114,16 @@ wp_interactivity_state(
 							data-wp-class--form__input--invalid="state.fieldErrors.email"
 							placeholder="<?php echo esc_attr( $attributes['email_placeholder'] ?? 'name@company.com' ); ?>"
 						/>
-						<div 
-							class="form__field-error" 
+						<div
+							class="form__save-indicator"
+							<?php echo wp_interactivity_data_wp_context( array( 'field' => 'email' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							data-wp-class--form__save-indicator--visible="state.isSavingIndicatorVisible"
+						>
+							<span class="form__save-indicator-icon">✓</span>
+							<span class="form__save-indicator-text"><?php pll_e( 'Saved' ); ?></span>
+						</div>
+						<div
+							class="form__field-error"
 							data-wp-class--form__field-error--visible="state.fieldErrors.email"
 						>
 							<span data-wp-text="state.fieldErrors.email"></span>
@@ -120,8 +144,16 @@ wp_interactivity_state(
 						placeholder="<?php echo esc_attr( $attributes['message_placeholder'] ?? 'Tell me about your project goals, timeline, and any specific requirements...' ); ?>"
 						rows="4"
 					></textarea>
-					<div 
-						class="form__field-error" 
+					<div
+						class="form__save-indicator"
+						<?php echo wp_interactivity_data_wp_context( array( 'field' => 'message' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						data-wp-class--form__save-indicator--visible="state.isSavingIndicatorVisible"
+					>
+						<span class="form__save-indicator-icon">✓</span>
+						<span class="form__save-indicator-text"><?php pll_e( 'Saved' ); ?></span>
+					</div>
+					<div
+						class="form__field-error"
 						data-wp-class--form__field-error--visible="state.fieldErrors.message"
 					>
 						<span data-wp-text="state.fieldErrors.message"></span>
