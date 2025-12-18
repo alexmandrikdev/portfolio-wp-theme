@@ -1,7 +1,12 @@
-import { store, getElement } from '@wordpress/interactivity';
+import { store, getElement, getContext } from '@wordpress/interactivity';
 import EasyMDE from 'easymde';
 
 let easyMDEInstance = null;
+
+// localStorage configuration
+const STORAGE_KEY = 'contactFormDraft';
+const EXPIRATION_DAYS = 7;
+const DEBOUNCE_DELAY = 300; // milliseconds
 
 const trackGAEvent = ( eventName, parameters = {} ) => {
 	if ( typeof window.gtag === 'function' ) {
@@ -17,6 +22,9 @@ const { state, actions } = store( 'contactFormModal', {
 		hasErrors: false,
 		errorMessage: '',
 		isEasyMdeFullscreen: false,
+		savingField: '',
+		saveDebounceTimer: null,
+		hideIndicatorTimer: null,
 		fieldErrors: {
 			subject: '',
 			name: '',
@@ -34,14 +42,146 @@ const { state, actions } = store( 'contactFormModal', {
 				? state.submitButtonSendingText
 				: state.submitButtonReadyText;
 		},
+		get isSavingIndicatorVisible() {
+			const { field } = getContext();
+
+			return state.savingField === field;
+		},
 	},
 	actions: {
+		/**
+		 * Save form data to localStorage with expiration
+		 * @param {Object} formData - The form data to save
+		 */
+		saveFormDataToStorage: ( formData ) => {
+			try {
+				const dataToSave = {
+					formData: {
+						subject: formData.subject || '',
+						name: formData.name || '',
+						email: formData.email || '',
+						message: formData.message || '',
+					},
+					timestamp: Date.now(),
+				};
+				window.localStorage.setItem(
+					STORAGE_KEY,
+					JSON.stringify( dataToSave )
+				);
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'Failed to save form data to localStorage:',
+					error
+				);
+			}
+		},
+
+		/**
+		 * Load form data from localStorage, checking expiration
+		 * @return {Object|null} Form data if valid and not expired, null otherwise
+		 */
+		loadFormDataFromStorage: () => {
+			try {
+				const savedData = window.localStorage.getItem( STORAGE_KEY );
+				if ( ! savedData ) {
+					return null;
+				}
+
+				const parsedData = JSON.parse( savedData );
+
+				// Check if data has expired (7 days)
+				const expirationTime = EXPIRATION_DAYS * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+				const isExpired =
+					Date.now() - parsedData.timestamp > expirationTime;
+
+				if ( isExpired ) {
+					// Clear expired data
+					window.localStorage.removeItem( STORAGE_KEY );
+					return null;
+				}
+
+				return parsedData.formData;
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'Failed to load form data from localStorage:',
+					error
+				);
+				// Clear corrupted data
+				window.localStorage.removeItem( STORAGE_KEY );
+				return null;
+			}
+		},
+
+		/**
+		 * Clear saved form data from localStorage
+		 */
+		clearFormDataFromStorage: () => {
+			try {
+				window.localStorage.removeItem( STORAGE_KEY );
+			} catch ( error ) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'Failed to clear form data from localStorage:',
+					error
+				);
+			}
+		},
+
+		/**
+		 * Show save indicator for a specific field
+		 * @param {string} fieldName - The field name to show indicator for
+		 */
+		showSaveIndicator: ( fieldName ) => {
+			if ( state.hideIndicatorTimer ) {
+				clearTimeout( state.hideIndicatorTimer );
+				state.hideIndicatorTimer = null;
+			}
+
+			// Set the field that's being saved
+			state.savingField = fieldName;
+
+			// Hide indicator after 1 second
+			state.hideIndicatorTimer = setTimeout( () => {
+				state.savingField = '';
+				state.hideIndicatorTimer = null;
+			}, 1000 );
+		},
+
+		/**
+		 * Debounced save function to prevent excessive localStorage writes
+		 * @param {Object} formData  - The form data to save
+		 * @param {string} fieldName - Optional field name to show save indicator for
+		 */
+		debouncedSaveFormData: ( formData, fieldName = '' ) => {
+			if ( state.saveDebounceTimer ) {
+				clearTimeout( state.saveDebounceTimer );
+			}
+
+			// Show save indicator immediately when user starts typing
+			if ( fieldName ) {
+				actions.showSaveIndicator( fieldName );
+			}
+
+			state.saveDebounceTimer = setTimeout( () => {
+				actions.saveFormDataToStorage( formData );
+				state.saveDebounceTimer = null;
+			}, DEBOUNCE_DELAY );
+		},
+
 		openModal: () => {
 			state.isOpen = true;
 
 			trackGAEvent( 'contact_modal_opened', {
 				interaction_type: 'direct_open',
 			} );
+
+			// Load saved form data from localStorage
+			const savedFormData = actions.loadFormDataFromStorage();
+			if ( savedFormData ) {
+				state.formData = { ...state.formData, ...savedFormData };
+			}
 
 			// Fetch a fresh nonce to avoid caching issues
 			actions.fetchNonce();
@@ -107,6 +247,9 @@ const { state, actions } = store( 'contactFormModal', {
 			const value = event.target.value;
 
 			state.formData[ fieldName ] = value;
+
+			// Save form data to localStorage with debouncing
+			actions.debouncedSaveFormData( state.formData, fieldName );
 
 			// Real-time validation
 			if ( state.fieldErrors[ fieldName ] ) {
@@ -260,6 +403,9 @@ const { state, actions } = store( 'contactFormModal', {
 
 				state.isSuccess = true;
 
+				// Clear saved form data from localStorage after successful submission
+				actions.clearFormDataFromStorage();
+
 				const filledFields = Object.values( state.formData ).filter(
 					( value ) => value.trim() !== ''
 				).length;
@@ -298,6 +444,7 @@ const { state, actions } = store( 'contactFormModal', {
 			state.isSuccess = false;
 			state.isSubmitting = false;
 			state.isEasyMdeFullscreen = false;
+			state.savingField = '';
 		},
 	},
 	callbacks: {
@@ -335,6 +482,11 @@ const { state, actions } = store( 'contactFormModal', {
 
 					easyMDEInstance.codemirror.on( 'change', () => {
 						state.formData.message = easyMDEInstance.value();
+						// Save form data to localStorage when EasyMDE content changes
+						actions.debouncedSaveFormData(
+							state.formData,
+							'message'
+						);
 					} );
 				}
 			}
