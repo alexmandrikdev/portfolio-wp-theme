@@ -220,13 +220,22 @@
 	&__save-indicator {
 		color: var(--color-success);
 		font-size: 0.75rem;
-		margin-top: var(--space-xs);
 		display: flex;
 		align-items: center;
 		gap: var(--space-xxs);
 		opacity: 0;
-		transform: translateY(-8px);
+		transform: translateY(5px);
+		position: absolute;
+		bottom: -24px;
+		left: 0;
+		background: var(--color-background-primary);
+		padding: var(--space-xxs) var(--space-xs);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-small);
+		border: 1px solid var(--color-border-divider);
+		z-index: 1;
 		transition: opacity 0.2s ease, transform 0.2s ease;
+		pointer-events: none;
 
 		&--visible {
 			opacity: 1;
