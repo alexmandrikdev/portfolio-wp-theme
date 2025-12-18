@@ -292,30 +292,81 @@ class Contact_Form_Handler {
 	}
 
 	private function get_client_ip() {
+		// Check Cloudflare header first if present.
+		if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Will be sanitized with sanitize_text_field
+			$ip = wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+			if ( $this->is_valid_public_ip( $ip ) ) {
+				return sanitize_text_field( $ip );
+			}
+		}
+
+		// Check other headers in order of preference.
 		$ip_keys = array(
 			'HTTP_X_REAL_IP',
 			'HTTP_X_FORWARDED_FOR',
 			'HTTP_CLIENT_IP',
-			'REMOTE_ADDR',
 		);
 
 		foreach ( $ip_keys as $key ) {
 			if ( ! empty( $_SERVER[ $key ] ) ) {
 				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Will be sanitized with sanitize_text_field
-				$ip = wp_unslash( $_SERVER[ $key ] );
-				if ( strpos( $ip, ',' ) !== false ) {
-					$ips = explode( ',', $ip );
-					$ip  = trim( $ips[0] );
-				}
-				if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+				$ip_value = wp_unslash( $_SERVER[ $key ] );
+				$ip       = $this->extract_valid_ip_from_header( $ip_value, $key );
+				if ( false !== $ip ) {
 					return sanitize_text_field( $ip );
 				}
 			}
 		}
 
+		// Fallback to REMOTE_ADDR.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Will be sanitized with sanitize_text_field
 		$remote_addr = isset( $_SERVER['REMOTE_ADDR'] ) ? wp_unslash( $_SERVER['REMOTE_ADDR'] ) : '0.0.0.0';
 		return sanitize_text_field( $remote_addr );
+	}
+
+	/**
+	 * Extract a valid IP address from a header value.
+	 *
+	 * For X-Forwarded-For headers with multiple IPs (client, proxy1, proxy2...),
+	 * check all IPs in the chain to find the first valid public IP.
+	 *
+	 * @param string $ip_value The raw header value.
+	 * @param string $header_name The header name (for logging/debugging).
+	 * @return string|false The valid IP address, or false if none found.
+	 */
+	private function extract_valid_ip_from_header( $ip_value, $header_name ) {
+		// Split by commas if multiple IPs.
+		$ip_candidates = array_map( 'trim', explode( ',', $ip_value ) );
+
+		// For X-Forwarded-For, the client IP is usually the first one,
+		// but proxies might prepend their IPs. We'll check all candidates.
+		foreach ( $ip_candidates as $candidate ) {
+			if ( $this->is_valid_public_ip( $candidate ) ) {
+				return $candidate;
+			}
+		}
+
+		// If no public IP found but we have at least one valid IP (even private),
+		// return the first valid IP for X-Forwarded-For (this handles trusted proxy scenarios).
+		if ( 'HTTP_X_FORWARDED_FOR' === $header_name && ! empty( $ip_candidates[0] ) ) {
+			$first_ip = $ip_candidates[0];
+			if ( filter_var( $first_ip, FILTER_VALIDATE_IP ) ) {
+				return $first_ip;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if an IP address is a valid public IP (not private or reserved).
+	 *
+	 * @param string $ip The IP address to check.
+	 * @return bool True if valid public IP, false otherwise.
+	 */
+	private function is_valid_public_ip( $ip ) {
+		return filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false;
 	}
 
 	private function get_user_agent() {
